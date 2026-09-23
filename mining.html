@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mining — ADSY</title>
+<style>
+  :root {
+    --bg: #f7f8fa;
+    --bg-soft: #ffffff;
+    --card: #ffffff;
+    --card-hover: #ffffff;
+    --text: #0b0f14;
+    --sub: #6b7681;
+    --muted: #9aa4ad;
+    --line: #e8ecf0;
+    --line-strong: #d8dee5;
+    --accent: #0066ff;
+    --accent-soft: rgba(0,102,255,0.08);
+    --accent-glow: rgba(0,102,255,0.25);
+    --shadow-sm: 0 1px 2px rgba(11,15,20,0.04);
+    --shadow-md: 0 4px 16px rgba(11,15,20,0.06);
+    --shadow-lg: 0 20px 48px rgba(11,15,20,0.12);
+    --header-bg: rgba(247,248,250,0.72);
+    --overlay: rgba(11,15,20,0.35);
+  }
+  body.dark {
+    --bg: #08090c;
+    --bg-soft: #0e1014;
+    --card: #101318;
+    --card-hover: #14181f;
+    --text: #f2f4f7;
+    --sub: #8b95a1;
+    --muted: #5a636e;
+    --line: #1c2027;
+    --line-strong: #262b33;
+    --accent: #3d8bff;
+    --accent-soft: rgba(61,139,255,0.12);
+    --accent-glow: rgba(61,139,255,0.35);
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.5);
+    --shadow-lg: 0 20px 48px rgba(0,0,0,0.6);
+    --header-bg: rgba(8,9,12,0.72);
+    --overlay: rgba(0,0,0,0.55);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background 0.35s ease, color 0.35s ease;
+  }
+  body.no-scroll { overflow: hidden; }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    background:
+      radial-gradient(1000px circle at 15% 0%, var(--accent-soft), transparent 45%),
+      radial-gradient(800px circle at 85% 100%, var(--accent-soft), transparent 50%);
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(circle at 50% 30%, black 0%, transparent 75%);
+    -webkit-mask-image: radial-gradient(circle at 50% 30%, black 0%, transparent 75%);
+    opacity: 0.5;
+  }
+
+  /* ===== Header ===== */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--header-bg);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border-bottom: 1px solid var(--line);
+    animation: headerIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @keyframes headerIn {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+  }
+
+  /* Menu button */
+  .menu-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 0;
+    transition: background 0.3s ease,
+                border-color 0.3s ease,
+                transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    flex-shrink: 0;
+    box-shadow: var(--shadow-sm);
+  }
+  .menu-btn:hover {
+    border-color: var(--line-strong);
+    background: var(--card-hover);
+  }
+  .menu-btn:active { transform: scale(0.93); }
+
+  .menu-btn span {
+    display: block;
+    width: 16px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--text);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.25s ease,
+                width 0.3s ease;
+    transform-origin: center;
+  }
+  .menu-btn span:nth-child(2) { width: 11px; }
+  .menu-btn:hover span:nth-child(2) { width: 16px; }
+
+  .logo {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    font-weight: 800;
+    font-size: 20px;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    user-select: none;
+  }
+  .logo-mark {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-soft);
+    align-self: center;
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 4px var(--accent-soft); }
+    50% { box-shadow: 0 0 0 8px transparent; }
+  }
+
+  /* Theme toggle */
+  .theme-toggle {
+    position: relative;
+    width: 60px; height: 32px;
+    border-radius: 100px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    transition: background 0.3s ease,
+                border-color 0.3s ease,
+                transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    flex-shrink: 0;
+  }
+  .theme-toggle:hover { border-color: var(--line-strong); }
+  .theme-toggle:active { transform: scale(0.94); }
+
+  .toggle-thumb {
+    position: absolute;
+    top: 3px; left: 3px;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    transition: transform 0.4s cubic-bezier(0.34, 1.4, 0.64, 1);
+    will-change: transform;
+  }
+  body.dark .toggle-thumb { transform: translateX(28px); }
+
+  .toggle-thumb svg {
+    width: 13px; height: 13px;
+    stroke: var(--bg);
+    fill: none;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 0.5s cubic-bezier(0.34, 1.4, 0.64, 1);
+  }
+  body.dark .toggle-thumb svg { transform: rotate(180deg); }
+
+  .toggle-icon {
+    position: absolute;
+    top: 50%; transform: translateY(-50%);
+    width: 13px; height: 13px;
+    stroke: var(--muted);
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  .icon-moon { left: 10px; }
+  .icon-sun  { right: 10px; }
+  body:not(.dark) .icon-moon { opacity: 0; }
+  body.dark .icon-sun { opacity: 0; }
+
+  /* ===== Drawer ===== */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--overlay);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 200;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+  }
+  .overlay.open { opacity: 1; visibility: visible; }
+
+  .drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 300px;
+    max-width: 84vw;
+    background: var(--card);
+    border-right: 1px solid var(--line);
+    z-index: 201;
+    transform: translateX(-105%);
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    will-change: transform;
+  }
+  .drawer.open { transform: translateX(0); }
+
+  .drawer-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--line);
+  }
+  .drawer-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .drawer-close {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: transparent;
+    border: 1px solid var(--line);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
+  }
+  .drawer-close:hover { background: var(--card-hover); border-color: var(--line-strong); }
+  .drawer-close:active { transform: scale(0.92); }
+  .drawer-close svg {
+    width: 14px; height: 14px;
+    stroke: var(--text);
+    fill: none;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .drawer-nav {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    overflow-y: auto;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: background 0.25s ease,
+                color 0.25s ease,
+                transform 0.2s ease;
+  }
+  .nav-item:hover {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+  .nav-item.active {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+  .nav-item:active { transform: scale(0.98); }
+
+  .nav-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.25s ease, border-color 0.25s ease;
+  }
+  .nav-item:hover .nav-icon,
+  .nav-item.active .nav-icon {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .nav-icon svg {
+    width: 18px; height: 18px;
+    stroke: var(--sub);
+    fill: none;
+    stroke-width: 1.9;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: stroke 0.25s ease;
+  }
+  .nav-item:hover .nav-icon svg,
+  .nav-item.active .nav-icon svg { stroke: #fff; }
+
+  .nav-arrow {
+    margin-left: auto;
+    width: 14px; height: 14px;
+    stroke: var(--muted);
+    fill: none;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0.6;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+  }
+  .nav-item:hover .nav-arrow { transform: translateX(3px); opacity: 1; }
+
+  .drawer-foot {
+    margin-top: auto;
+    padding: 16px 20px;
+    border-top: 1px solid var(--line);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  /* ===== Main ===== */
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  .hero {
+    margin-bottom: 40px;
+    animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: 100px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+  }
+  .badge-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .hero h1 {
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin-bottom: 14px;
+    color: var(--text);
+  }
+  .hero h1 .accent {
+    background: linear-gradient(135deg, var(--accent) 0%, #7ab3ff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero p {
+    font-size: 15px;
+    color: var(--sub);
+    max-width: 520px;
+    line-height: 1.6;
+    font-weight: 450;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== Section ===== */
+  .section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
+  }
+  .section-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--sub);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .section-count {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+    padding: 4px 10px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 100px;
+  }
+
+  /* ===== Mining Cards Stack ===== */
+  .mining-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* Long slim card */
+  .mining-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 16px 20px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    overflow: hidden;
+    isolation: isolate;
+    animation: fadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+    transition:
+      transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 0.3s ease,
+      background 0.3s ease,
+      box-shadow 0.35s ease;
+  }
+  .mining-card:nth-child(1) { animation-delay: 0.10s; }
+  .mining-card:nth-child(2) { animation-delay: 0.18s; }
+  .mining-card:nth-child(3) { animation-delay: 0.26s; }
+
+  .mining-card::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 0;
+    width: 40%; height: 100%;
+    background: radial-gradient(circle at left center, var(--accent-glow), transparent 65%);
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: -1;
+  }
+  .mining-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--line-strong);
+    background: var(--card-hover);
+    box-shadow: var(--shadow-lg);
+  }
+  .mining-card:hover::after {
+    opacity: 0.5;
+    transform: translate(0, -50%);
+  }
+  .mining-card:active { transform: translateY(-1px) scale(0.998); }
+
+  .mining-logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 14px;
+    object-fit: cover;
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    flex-shrink: 0;
+    display: block;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.3s ease;
+  }
+  .mining-card:hover .mining-logo {
+    transform: scale(1.04);
+    border-color: var(--line-strong);
+  }
+
+  .mining-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .mining-label {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .mining-name {
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    transition: color 0.25s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .mining-card:hover .mining-name { color: var(--accent); }
+
+  .mining-sub {
+    font-size: 12.5px;
+    color: var(--sub);
+    font-weight: 450;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Start button */
+  .start-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 20px;
+    border-radius: 100px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 13.5px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    flex-shrink: 0;
+    box-shadow: 0 6px 18px var(--accent-glow);
+    transition:
+      transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.35s ease,
+      filter 0.3s ease;
+  }
+  .start-btn svg {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .mining-card:hover .start-btn {
+    transform: translateX(3px);
+    box-shadow: 0 8px 22px var(--accent-glow);
+    filter: brightness(1.08);
+  }
+  .mining-card:hover .start-btn svg { transform: translateX(2px); }
+
+  /* ===== Footer ===== */
+  footer {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 24px 40px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    text-align: center;
+    animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+  }
+  .copy {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .powered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .powered-label {
+    font-size: 10.5px;
+    color: var(--muted);
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+  .powered-name {
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text);
+    text-decoration: none;
+    position: relative;
+    padding-bottom: 4px;
+    transition: color 0.3s ease, letter-spacing 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .powered-name::after {
+    content: '';
+    position: absolute;
+    left: 50%; bottom: 0;
+    width: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--accent), #7ab3ff);
+    transform: translateX(-50%);
+    transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .powered-name:hover {
+    color: var(--accent);
+    letter-spacing: 0.18em;
+  }
+  .powered-name:hover::after { width: 100%; }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 640px) {
+    .header-inner { padding: 12px 18px; gap: 10px; }
+    .logo { font-size: 17px; }
+    .menu-btn { width: 38px; height: 38px; border-radius: 10px; }
+    main { padding: 32px 18px 60px; }
+    .hero h1 { font-size: 30px; }
+    .hero p { font-size: 14px; }
+    .hero { margin-bottom: 32px; }
+    body::after { background-size: 40px 40px; }
+    footer { padding: 26px 18px 32px; }
+
+    .mining-card {
+      padding: 14px;
+      gap: 14px;
+      border-radius: 14px;
+      flex-wrap: wrap;
+    }
+    .mining-logo { width: 52px; height: 52px; border-radius: 12px; }
+    .mining-name { font-size: 15px; }
+    .mining-sub { font-size: 11.5px; }
+    .start-btn {
+      width: 100%;
+      justify-content: center;
+      padding: 12px 16px;
+      font-size: 13px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.12s !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-left">
+      <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="logo">
+        <span class="logo-mark"></span>
+        ADSY
+      </div>
+    </div>
+
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+      <svg class="toggle-icon icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="toggle-icon icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <div class="toggle-thumb">
+        <svg viewBox="0 0 24 24" id="thumbIcon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </div>
+    </button>
+  </div>
+</header>
+
+<!-- ===== Drawer ===== -->
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-head">
+    <div class="drawer-title">Sections</div>
+    <button class="drawer-close" id="drawerClose" aria-label="Close menu">
+      <svg viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+    </button>
+  </div>
+
+  <nav class="drawer-nav">
+    <a class="nav-item" href="index.html">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M3 11.5 12 4l9 7.5"/>
+          <path d="M5.5 10v10.5h13V10"/>
+          <path d="M10 20.5v-6h4v6"/>
+        </svg>
+      </div>
+      <span>Home</span>
+      <svg class="nav-arrow" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+    </a>
+
+    <a class="nav-item active" href="mining.html">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M14.5 3.5c-3 0-5.6 1.6-7.1 4"/>
+          <path d="M3.5 14.5c0-3 1.6-5.6 4-7.1"/>
+          <path d="M21 3l-2.2.4.4-2.2"/>
+          <path d="M14.6 3.6 21 10"/>
+          <path d="M4.4 10.4 10.8 16.8"/>
+          <path d="M9.5 15 4 20.5"/>
+          <path d="M15 9.5 20.5 4"/>
+        </svg>
+      </div>
+      <span>Mining</span>
+      <svg class="nav-arrow" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+    </a>
+  </nav>
+
+  <div class="drawer-foot">ADSY</div>
+</aside>
+
+<main>
+  <section class="hero">
+    <div class="badge">
+      <span class="badge-dot"></span>
+      Mining platforms
+    </div>
+    <h1><span class="accent">Mining</span></h1>
+    <p>Choose a mining platform below and tap Start to begin mining digital coins instantly.</p>
+  </section>
+
+  <div class="section-head">
+    <div class="section-title">Mining Platforms</div>
+    <div class="section-count" id="count">0</div>
+  </div>
+
+  <div class="mining-list" id="miningList"></div>
+</main>
+
+<footer>
+  <div class="copy"> 2026 ©</div>
+
+  <div class="powered">
+    <div class="powered-label">By Powered</div>
+    <a class="powered-name" href="https://abdalkadraltrkh.github.io/turkah/" target="_blank" rel="noopener noreferrer">TURKAH</a>
+  </div>
+</footer>
+
+<script>
+  /* ===== Mining data ===== */
+  const miningItems = [
+    {
+      label: "Mining",
+      name: "BTTC",
+      img: "logobttc.png",
+      link: "bttc.html",
+      sub: "BitTorrent mining platform"
+    }
+  ];
+
+  const startSVG = `
+    <svg viewBox="0 0 24 24">
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+      <polyline points="12 5 19 12 12 19"></polyline>
+    </svg>`;
+
+  const fallbackImg = "data:image/svg+xml;utf8," + encodeURIComponent(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+      <defs>
+        <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#0066ff"/>
+          <stop offset="100%" stop-color="#7ab3ff"/>
+        </linearGradient>
+      </defs>
+      <rect width="100" height="100" rx="22" fill="url(#g)"/>
+      <text x="50" y="64" font-size="42" font-family="Arial,sans-serif" font-weight="bold" fill="#fff" text-anchor="middle">M</text>
+    </svg>
+  `);
+
+  const list = document.getElementById('miningList');
+  const frag = document.createDocumentFragment();
+
+  miningItems.forEach(item => {
+    const a = document.createElement('a');
+    a.className = 'mining-card';
+    a.href = item.link;
+    a.innerHTML = `
+      <img class="mining-logo" src="${item.img}" alt="${item.name}" loading="lazy"
+           onerror="this.onerror=null;this.src='${fallbackImg}'">
+      <div class="mining-info">
+        <div class="mining-label">${item.label}</div>
+        <div class="mining-name">${item.name}</div>
+        <div class="mining-sub">${item.sub}</div>
+      </div>
+      <div class="start-btn">
+        Start
+        ${startSVG}
+      </div>
+    `;
+    frag.appendChild(a);
+  });
+
+  list.appendChild(frag);
+  document.getElementById('count').textContent = miningItems.length + ' platform' + (miningItems.length > 1 ? 's' : '');
+
+  /* ===== Drawer menu ===== */
+  const menuBtn = document.getElementById('menuBtn');
+  const drawer = document.getElementById('drawer');
+  const overlay = document.getElementById('overlay');
+  const drawerClose = document.getElementById('drawerClose');
+
+  function openDrawer() {
+    drawer.classList.add('open');
+    overlay.classList.add('open');
+    drawer.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('no-scroll');
+  }
+  function closeDrawer() {
+    drawer.classList.remove('open');
+    overlay.classList.remove('open');
+    drawer.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('no-scroll');
+  }
+
+  menuBtn.addEventListener('click', openDrawer);
+  drawerClose.addEventListener('click', closeDrawer);
+  overlay.addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDrawer(); });
+
+  /* ===== Theme toggle ===== */
+  const toggle = document.getElementById('themeToggle');
+  const body = document.body;
+  const thumbIcon = document.getElementById('thumbIcon');
+
+  const moonIcon = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  const sunIcon = `
+    <circle cx="12" cy="12" r="4"/>
+    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+  `;
+
+  function setTheme(dark) {
+    if (dark) {
+      body.classList.add('dark');
+      thumbIcon.innerHTML = sunIcon;
+    } else {
+      body.classList.remove('dark');
+      thumbIcon.innerHTML = moonIcon;
+    }
+  }
+
+  const saved = localStorage.getItem('adsy-theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  if (saved === 'dark' || (!saved && prefersDark)) setTheme(true);
+
+  let lock = false;
+  toggle.addEventListener('click', () => {
+    if (lock) return;
+    lock = true;
+    const isDark = !body.classList.contains('dark');
+    requestAnimationFrame(() => setTheme(isDark));
+    try { localStorage.setItem('adsy-theme', isDark ? 'dark' : 'light'); } catch (e) {}
+    setTimeout(() => { lock = false; }, 280);
+  });
+</script>
+
+</body>
+</html>
