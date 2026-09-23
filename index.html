@@ -25,6 +25,7 @@
     --shadow-md: 0 4px 16px rgba(11,15,20,0.06);
     --shadow-lg: 0 20px 48px rgba(11,15,20,0.12);
     --header-bg: rgba(247,248,250,0.72);
+    --overlay: rgba(11,15,20,0.35);
   }
   body.dark {
     --bg: #08090c;
@@ -46,6 +47,7 @@
     --shadow-md: 0 4px 16px rgba(0,0,0,0.5);
     --shadow-lg: 0 20px 48px rgba(0,0,0,0.6);
     --header-bg: rgba(8,9,12,0.72);
+    --overlay: rgba(0,0,0,0.55);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -62,6 +64,7 @@
     -moz-osx-font-smoothing: grayscale;
     transition: background 0.35s ease, color 0.35s ease;
   }
+  body.no-scroll { overflow: hidden; }
 
   body::before {
     content: '';
@@ -112,7 +115,55 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 14px;
   }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+  }
+
+  /* Menu button */
+  .menu-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 0;
+    transition: background 0.3s ease,
+                border-color 0.3s ease,
+                transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    flex-shrink: 0;
+    box-shadow: var(--shadow-sm);
+  }
+  .menu-btn:hover {
+    border-color: var(--line-strong);
+    background: var(--card-hover);
+  }
+  .menu-btn:active { transform: scale(0.93); }
+
+  .menu-btn span {
+    display: block;
+    width: 16px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--text);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.25s ease,
+                width 0.3s ease;
+    transform-origin: center;
+  }
+  .menu-btn span:nth-child(2) { width: 11px; }
+  .menu-btn:hover span:nth-child(2) { width: 16px; }
 
   .logo {
     display: flex;
@@ -153,6 +204,7 @@
                 transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     overflow: hidden;
     box-shadow: var(--shadow-sm);
+    flex-shrink: 0;
   }
   .theme-toggle:hover { border-color: var(--line-strong); }
   .theme-toggle:active { transform: scale(0.94); }
@@ -199,6 +251,167 @@
   .icon-sun  { right: 10px; }
   body:not(.dark) .icon-moon { opacity: 0; }
   body.dark .icon-sun { opacity: 0; }
+
+  /* ===== Drawer / Menu ===== */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--overlay);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 200;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+  }
+  .overlay.open { opacity: 1; visibility: visible; }
+
+  .drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 300px;
+    max-width: 84vw;
+    background: var(--card);
+    border-right: 1px solid var(--line);
+    z-index: 201;
+    transform: translateX(-105%);
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    will-change: transform;
+  }
+  .drawer.open { transform: translateX(0); }
+
+  .drawer-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--line);
+  }
+  .drawer-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .drawer-close {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: transparent;
+    border: 1px solid var(--line);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
+  }
+  .drawer-close:hover { background: var(--card-hover); border-color: var(--line-strong); }
+  .drawer-close:active { transform: scale(0.92); }
+  .drawer-close svg {
+    width: 14px; height: 14px;
+    stroke: var(--text);
+    fill: none;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .drawer-nav {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    overflow-y: auto;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: background 0.25s ease,
+                color 0.25s ease,
+                border-color 0.25s ease,
+                transform 0.2s ease;
+  }
+  .nav-item:hover {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+  .nav-item.active {
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-color: transparent;
+  }
+  .nav-item:active { transform: scale(0.98); }
+
+  .nav-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.25s ease, border-color 0.25s ease;
+  }
+  .nav-item:hover .nav-icon,
+  .nav-item.active .nav-icon {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .nav-icon svg {
+    width: 18px; height: 18px;
+    stroke: var(--sub);
+    fill: none;
+    stroke-width: 1.9;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: stroke 0.25s ease;
+  }
+  .nav-item:hover .nav-icon svg,
+  .nav-item.active .nav-icon svg { stroke: #fff; }
+
+  .nav-arrow {
+    margin-left: auto;
+    width: 14px; height: 14px;
+    stroke: var(--muted);
+    fill: none;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0.6;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+  }
+  .nav-item:hover .nav-arrow { transform: translateX(3px); opacity: 1; }
+
+  .drawer-foot {
+    margin-top: auto;
+    padding: 16px 20px;
+    border-top: 1px solid var(--line);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 600;
+    text-align: center;
+  }
 
   /* ===== Main ===== */
   main {
@@ -308,6 +521,7 @@
   .card:nth-child(3) { animation-delay: 0.22s; }
   .card:nth-child(4) { animation-delay: 0.28s; }
   .card:nth-child(5) { animation-delay: 0.34s; }
+  .card:nth-child(6) { animation-delay: 0.40s; }
 
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(20px); }
@@ -627,8 +841,9 @@
 
   /* ===== Responsive ===== */
   @media (max-width: 640px) {
-    .header-inner { padding: 12px 18px; }
+    .header-inner { padding: 12px 18px; gap: 10px; }
     .logo { font-size: 17px; }
+    .menu-btn { width: 38px; height: 38px; border-radius: 10px; }
     main { padding: 32px 18px 60px; }
     .hero h1 { font-size: 30px; }
     .hero { margin-bottom: 32px; }
@@ -674,9 +889,16 @@
 
 <header>
   <div class="header-inner">
-    <div class="logo">
-      <span class="logo-mark"></span>
-      ADSY
+    <div class="header-left">
+      <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="logo">
+        <span class="logo-mark"></span>
+        ADSY
+      </div>
     </div>
 
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
@@ -689,8 +911,55 @@
   </div>
 </header>
 
+<!-- ===== Drawer Menu ===== -->
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-head">
+    <div class="drawer-title">Sections</div>
+    <button class="drawer-close" id="drawerClose" aria-label="Close menu">
+      <svg viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+    </button>
+  </div>
+
+  <nav class="drawer-nav">
+    <!-- Home -->
+    <a class="nav-item active" href="index.html" data-nav="home">
+      <div class="nav-icon">
+        <!-- Home icon (proper house) -->
+        <svg viewBox="0 0 24 24">
+          <path d="M3 11.5 12 4l9 7.5"/>
+          <path d="M5.5 10v10.5h13V10"/>
+          <path d="M10 20.5v-6h4v6"/>
+        </svg>
+      </div>
+      <span>Home</span>
+      <svg class="nav-arrow" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+    </a>
+
+    <!-- Mining -->
+    <a class="nav-item" href="mining.html" data-nav="mining">
+      <div class="nav-icon">
+        <!-- Pickaxe / mining icon -->
+        <svg viewBox="0 0 24 24">
+          <path d="M14.5 3.5c-3 0-5.6 1.6-7.1 4"/>
+          <path d="M3.5 14.5c0-3 1.6-5.6 4-7.1"/>
+          <path d="M21 3l-2.2.4.4-2.2"/>
+          <path d="M14.6 3.6 21 10"/>
+          <path d="M4.4 10.4 10.8 16.8"/>
+          <path d="M9.5 15 4 20.5"/>
+          <path d="M15 9.5 20.5 4"/>
+        </svg>
+      </div>
+      <span>Mining</span>
+      <svg class="nav-arrow" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+    </a>
+  </nav>
+
+  <div class="drawer-foot">ADSY</div>
+</aside>
+
 <main>
-  <section class="hero">
+  <section class="hero" id="home">
     <div class="badge">
       <span class="badge-dot"></span>
       Mining bots online
@@ -698,7 +967,7 @@
     <h1>Digital Coin <span class="accent">Mining</span></h1>
   </section>
 
-  <div class="section-head">
+  <div class="section-head" id="mining">
     <div class="section-title">Mining Bots</div>
     <div class="section-count" id="count">0</div>
   </div>
@@ -739,17 +1008,8 @@
 </footer>
 
 <script>
-  /* ===== Bot data — mining only ===== */
+  /* ===== Bot data — mining only (5 bots) ===== */
   const bots = [
-
-    {
-      name: "CRYPTSON",
-      img: "a4.jpg",
-      link: "https://t.me/cryptson2_bot?startapp=97249",
-      desc: "Mining coins through birds"
-    },
-
-    
     {
       name: "EARNING GRAM",
       img: "a0.jpg",
@@ -773,6 +1033,12 @@
       img: "a3.jpg",
       link: "https://t.me/flymage_bot?startapp=295200",
       desc: "Mine Flymage tokens with AI power"
+    },
+    {
+      name: "CRYPTSON",
+      img: "a5.jpg",
+      link: "https://t.me/cryptson2_bot?startapp=97249",
+      desc: "Mining coins through birds"
     }
   ];
 
@@ -824,6 +1090,58 @@
   grid.appendChild(frag);
 
   document.getElementById('count').textContent = bots.length + ' bots';
+
+  /* ===== Drawer menu ===== */
+  const menuBtn = document.getElementById('menuBtn');
+  const drawer = document.getElementById('drawer');
+  const overlay = document.getElementById('overlay');
+  const drawerClose = document.getElementById('drawerClose');
+  const navItems = document.querySelectorAll('.nav-item');
+
+  function openDrawer() {
+    drawer.classList.add('open');
+    overlay.classList.add('open');
+    drawer.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('no-scroll');
+  }
+  function closeDrawer() {
+    drawer.classList.remove('open');
+    overlay.classList.remove('open');
+    drawer.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('no-scroll');
+  }
+
+  menuBtn.addEventListener('click', openDrawer);
+  drawerClose.addEventListener('click', closeDrawer);
+  overlay.addEventListener('click', closeDrawer);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeDrawer();
+  });
+
+  navItems.forEach(item => {
+    item.addEventListener('click', (e) => {
+      navItems.forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+
+      const nav = item.getAttribute('data-nav');
+
+      // Home → navigate to index.html
+      if (nav === 'home') {
+        e.preventDefault();
+        closeDrawer();
+        setTimeout(() => { window.location.href = 'index.html'; }, 220);
+        return;
+      }
+
+      // Mining → let the browser navigate to mining.html normally
+      if (nav === 'mining') {
+        // allow default link navigation (no preventDefault)
+        // just close the drawer for a smooth feel
+        closeDrawer();
+      }
+    });
+  });
 
   /* ===== Theme toggle ===== */
   const toggle = document.getElementById('themeToggle');
