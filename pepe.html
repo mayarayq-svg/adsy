@@ -436,38 +436,23 @@
     gap: 10px;
     position: relative;
     overflow: hidden;
+    text-decoration: none;
   }
 
   .action-btn svg { width: 16px; height: 16px; }
 
-  .withdraw-btn {
+  .wallet-btn {
     background: linear-gradient(135deg, rgba(0,255,136,0.15), rgba(34,197,94,0.04));
     color: var(--green-neon);
     border-color: rgba(0,255,136,0.4);
     box-shadow: 0 0 20px rgba(34,197,94,0.15);
   }
 
-  .withdraw-btn:not(:disabled):hover {
+  .wallet-btn:hover {
     background: linear-gradient(135deg, rgba(0,255,136,0.3), rgba(34,197,94,0.1));
     transform: translateY(-2px);
     box-shadow: 0 10px 30px rgba(0,255,136,0.35);
     border-color: rgba(0,255,136,0.6);
-  }
-
-  .withdraw-btn:disabled {
-    border-color: rgba(100,116,139,0.2);
-    color: #334155;
-    background: rgba(100,116,139,0.05);
-    cursor: not-allowed;
-    box-shadow: none;
-  }
-
-  .withdraw-btn.locked {
-    border-color: rgba(251,191,36,0.4);
-    color: #fbbf24;
-    background: linear-gradient(135deg, rgba(251,191,36,0.18), rgba(251,191,36,0.06));
-    cursor: not-allowed;
-    box-shadow: 0 0 20px rgba(251,191,36,0.15);
   }
 
   .float-reward {
@@ -528,230 +513,6 @@
   .toast.success { border-color: rgba(0,255,136,0.7); color: var(--green-neon); }
   .toast.warning { border-color: rgba(251,191,36,0.6); color: #fbbf24; }
 
-  .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.95);
-    backdrop-filter: blur(15px);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 400;
-    padding: 20px;
-    overflow-y: auto;
-  }
-
-  .modal-overlay.show { display: flex; animation: fadeIn 0.3s; }
-
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-  .modal {
-    background: linear-gradient(160deg, #071410, #030806);
-    border: 1px solid rgba(34,197,94,0.35);
-    border-radius: 26px;
-    padding: 30px 26px;
-    width: 100%;
-    max-width: 410px;
-    box-shadow: 
-      0 30px 80px rgba(0,0,0,0.9),
-      0 0 40px rgba(34,197,94,0.15),
-      inset 0 1px 0 rgba(0,255,136,0.08);
-    animation: slideUp 0.4s;
-    color: #fff;
-    max-height: calc(100vh - 40px);
-    overflow-y: auto;
-  }
-
-  @keyframes slideUp {
-    from { transform: translateY(40px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-  }
-
-  .binance-logo {
-    width: 74px;
-    height: 74px;
-    margin: 0 auto 20px;
-    background: #000;
-    border-radius: 20px;
-    padding: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 0 0 3px rgba(240,185,11,0.3);
-    border: 2px solid rgba(240,185,11,0.4);
-  }
-
-  .binance-logo img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
-
-  .modal-title {
-    font-size: 1.3rem;
-    font-weight: 900;
-    text-align: center;
-    margin-bottom: 8px;
-    background: linear-gradient(135deg, #ffffff, #4ade80);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-
-  .modal-sub {
-    font-size: 0.82rem;
-    color: var(--text-dim);
-    text-align: center;
-    margin-bottom: 18px;
-    line-height: 1.7;
-  }
-
-  .kyc-notice {
-    background: linear-gradient(135deg, rgba(240,185,11,0.12), rgba(240,185,11,0.04));
-    border: 1px solid rgba(240,185,11,0.35);
-    border-radius: 14px;
-    padding: 12px 14px;
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
-    margin-bottom: 18px;
-  }
-  .kyc-notice svg {
-    width: 18px;
-    height: 18px;
-    flex-shrink: 0;
-    stroke: #f0b90b;
-    fill: none;
-    stroke-width: 2.2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    margin-top: 1px;
-  }
-  .kyc-notice-text {
-    font-size: 11.5px;
-    line-height: 1.55;
-    color: #f5d67b;
-    font-weight: 600;
-    text-align: left;
-  }
-  .kyc-notice-text b { color: #fcd535; font-weight: 800; }
-
-  .kyc-notice.purple-notice {
-    background: linear-gradient(135deg, rgba(0,255,136,0.1), rgba(0,255,136,0.03));
-    border-color: rgba(0,255,136,0.35);
-  }
-  .kyc-notice.purple-notice .kyc-notice-text { color: #a7f3d0; }
-  .kyc-notice.purple-notice .kyc-notice-text b { color: var(--green-neon); }
-  .kyc-notice.purple-notice svg { stroke: var(--green-neon); }
-
-  .modal-balance {
-    background: linear-gradient(135deg, rgba(34,197,94,0.15), rgba(34,197,94,0.03));
-    border: 2px solid rgba(34,197,94,0.4);
-    border-radius: 16px;
-    padding: 16px;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-
-  .modal-balance-label {
-    font-size: 11px;
-    color: var(--text-dim);
-    font-weight: 700;
-    margin-bottom: 6px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-
-  .modal-balance-value {
-    font-size: 28px;
-    font-weight: 900;
-    color: #ffffff;
-    direction: ltr;
-    line-height: 1;
-    text-shadow: 0 0 15px rgba(0,255,136,0.6);
-  }
-
-  .modal-balance-value small { font-size: 14px; opacity: 0.85; color: var(--green-bright); }
-
-  .form-group { margin-bottom: 14px; }
-
-  .form-group label {
-    display: block;
-    font-size: 12px;
-    font-weight: 800;
-    margin-bottom: 8px;
-    color: #fff;
-  }
-
-  .form-group label::after {
-    content: ' *';
-    color: #ef4444;
-  }
-
-  .form-group input {
-    width: 100%;
-    padding: 14px;
-    background: rgba(34,197,94,0.04);
-    border: 2px solid rgba(34,197,94,0.2);
-    border-radius: 14px;
-    color: var(--text);
-    font-family: 'Inter', sans-serif;
-    font-size: 0.95rem;
-    text-align: left;
-    letter-spacing: 0.5px;
-    outline: none;
-    transition: border-color 0.3s;
-  }
-
-  .form-group input:focus {
-    border-color: var(--green-bright);
-    box-shadow: 0 0 0 4px rgba(34,197,94,0.15);
-  }
-
-  .form-group input::placeholder {
-    color: rgba(209,250,229,0.3);
-    font-size: 0.85rem;
-  }
-
-  .modal-actions {
-    display: flex;
-    gap: 12px;
-    margin-top: 20px;
-  }
-
-  .btn {
-    flex: 1;
-    padding: 14px;
-    border: none;
-    border-radius: 14px;
-    font-weight: 800;
-    font-size: 0.85rem;
-    letter-spacing: 1px;
-    cursor: pointer;
-    transition: all 0.25s;
-    font-family: 'Inter', sans-serif;
-  }
-
-  .btn-cancel {
-    background: rgba(100,116,139,0.15);
-    color: #94a3b8;
-  }
-
-  .btn-cancel:hover { background: rgba(100,116,139,0.3); }
-
-  .btn-confirm {
-    background: linear-gradient(135deg, #22c55e, #00ff88);
-    color: #030806;
-    box-shadow: 0 5px 20px rgba(0,255,136,0.4);
-  }
-
-  .btn-confirm:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0,255,136,0.6);
-  }
-
-  .btn-confirm:disabled { opacity: 0.6; cursor: not-allowed; }
-
   @media (max-width: 420px) {
     .counter { font-size: 2.2rem; }
     .balance-value { font-size: 1.9rem; }
@@ -761,7 +522,6 @@
     .ring-1 { width: 158px; height: 158px; }
     .ring-2 { width: 188px; height: 188px; }
     .ring-3 { width: 218px; height: 218px; }
-    .modal { padding: 24px 20px; }
     .balance-value { font-size: 1.9rem; }
   }
 </style>
@@ -819,107 +579,19 @@
 
   <div class="actions-bottom">
 
-    <button class="action-btn withdraw-btn" id="withdrawBtn" disabled>
+    <a href="wallet.html" class="action-btn wallet-btn">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="3" y="11" width="18" height="11" rx="2"/>
-        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        <path d="M21 12V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5"/>
+        <path d="M16 12h6v4h-6a2 2 0 1 1 0-4z"/>
       </svg>
-      <span id="withdrawText">Withdraw · Min 500 PEPE</span>
-    </button>
+      Open Wallet to Withdraw
+    </a>
 
-  </div>
-
-  <!-- ===== WITHDRAW MODAL ===== -->
-  <div class="modal-overlay" id="modalOverlay">
-    <div class="modal" id="modalContent">
-      
-      <div class="binance-logo">
-        <img src="Binance_Logo.png" alt="Binance" onerror="this.style.display='none'">
-      </div>
-
-      <div class="modal-title">Withdraw to Binance</div>
-      <div class="modal-sub">Enter your details to proceed</div>
-
-      <div class="kyc-notice">
-        <svg viewBox="0 0 24 24">
-          <path d="M12 9v4"/>
-          <path d="M12 17h.01"/>
-          <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-        </svg>
-        <div class="kyc-notice-text">
-          Your Binance account must be <b>fully KYC verified</b> (Identity Verified) before requesting a withdrawal. Unverified accounts will not receive rewards.
-        </div>
-      </div>
-
-      <div class="kyc-notice purple-notice">
-        <svg viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="10"/>
-          <polyline points="12 6 12 12 16 14"/>
-        </svg>
-        <div class="kyc-notice-text">
-          <b>Withdrawal cooldown:</b> After each withdrawal request, you must wait <b>12 hours</b> before submitting a new one.
-        </div>
-      </div>
-
-      <div class="modal-balance">
-        <div class="modal-balance-label">Available to Withdraw</div>
-        <div class="modal-balance-value"><span id="modalBalance">0</span> <small>PEPE</small></div>
-      </div>
-
-      <form id="withdrawForm" onsubmit="submitWithdraw(event)">
-        <input type="hidden" name="subject" value="PEPE Withdrawal Request - PEPE Miner" />
-        <input type="hidden" name="amount" id="fieldAmount" value="" />
-        <input type="hidden" name="withdraw_date" id="fieldDate" value="" />
-        <input type="hidden" name="game" value="PEPE Miner" />
-
-        <div class="form-group">
-          <label>Full Name</label>
-          <input type="text" name="full_name" placeholder="Enter your full name" required autocomplete="name" />
-        </div>
-
-        <div class="form-group">
-          <label>Email Address</label>
-          <input type="email" name="user_email" placeholder="Enter your email" required autocomplete="email" inputmode="email" />
-        </div>
-
-        <div class="form-group">
-          <label>Binance ID</label>
-          <input type="text" name="binance_id" placeholder="Enter Binance ID" inputmode="numeric" pattern="[0-9]*" required autocomplete="off" />
-        </div>
-
-        <div class="modal-actions">
-          <button type="button" class="btn btn-cancel" onclick="closeWithdraw()">Cancel</button>
-          <button type="submit" class="btn btn-confirm" id="confirmBtn">Submit Request</button>
-        </div>
-      </form>
-    </div>
   </div>
 
   <div class="toast" id="toast"></div>
 
 <script>
-  /* ============================================
-     ENCRYPTED KEYS
-  ============================================ */
-  const _K1 = [115, 102, 95, 100, 98, 49, 50, 48, 102, 98, 98];
-  const _K2 = [99, 101, 97, 53, 48, 48, 49, 97, 56, 54, 100, 98];
-  const _K3 = [53, 99, 52, 56];
-  const _EM = [109, 97, 121, 97, 114, 97, 113, 64, 103, 109, 97, 105, 108, 46, 99, 111, 109];
-
-  function _dk() {
-    let s = '';
-    for (let i = 0; i < _K1.length; i++) s += String.fromCharCode(_K1[i]);
-    for (let i = 0; i < _K2.length; i++) s += String.fromCharCode(_K2[i]);
-    for (let i = 0; i < _K3.length; i++) s += String.fromCharCode(_K3[i]);
-    return s;
-  }
-
-  function _de() {
-    let s = '';
-    for (let i = 0; i < _EM.length; i++) s += String.fromCharCode(_EM[i]);
-    return s;
-  }
-
   /* ============================================
      CONFIG
   ============================================ */
@@ -928,12 +600,9 @@
   const BURST_DURATION     = 10000;
   const CYCLE_REWARD       = 40;
   const CYCLE_MS           = 30 * 60 * 1000;
-  const MIN_WITHDRAW       = 500;
-  const MAX_OFFLINE_CYCLES = 48;
   const SAVE_THROTTLE_MS   = 3000;
   const CLOCK_TOLERANCE    = 60000;
   const MAX_BALANCE        = 100000000;
-  const WITHDRAW_COOLDOWN  = 12 * 60 * 60 * 1000;
 
   /* ============================================
      SAFE STORAGE
@@ -976,7 +645,6 @@
   let burstActive     = S.get('burstActive', '0') === '1';
   let cycleActive     = S.get('cycleActive', '0') === '1';
   let lastSaveTime    = S.int('lastUpdate', 0);
-  let lastWithdrawAt  = S.int('lastWithdrawAt', 0);
   let burstInterval   = null;
   let lastSaveAt      = 0;
   let isRestoring     = true;
@@ -997,12 +665,6 @@
   const statusEl     = document.getElementById('statusEl');
   const rateEl       = document.getElementById('rateEl');
   const sysStatusEl  = document.getElementById('sysStatusEl');
-  const withdrawBtn  = document.getElementById('withdrawBtn');
-  const withdrawText = document.getElementById('withdrawText');
-  const modalOverlay = document.getElementById('modalOverlay');
-  const modalContent = document.getElementById('modalContent');
-  const modalBalance = document.getElementById('modalBalance');
-  const confirmBtn   = document.getElementById('confirmBtn');
   const toastEl      = document.getElementById('toast');
 
   /* ============================================
@@ -1038,20 +700,6 @@
     S.set('burstStartBal',   burstStartBal);
     S.set('burstActive',     burstActive ? '1' : '0');
     S.set('lastUpdate',      now);
-    S.set('lastWithdrawAt',  lastWithdrawAt);
-  }
-
-  /* ============================================
-     WITHDRAW COOLDOWN
-  ============================================ */
-  function getWithdrawCooldownRemaining() {
-    if (!lastWithdrawAt) return 0;
-    const elapsed = Date.now() - lastWithdrawAt;
-    return Math.max(0, WITHDRAW_COOLDOWN - elapsed);
-  }
-
-  function isWithdrawLocked() {
-    return getWithdrawCooldownRemaining() > 0;
   }
 
   /* ============================================
@@ -1066,31 +714,7 @@
       void balanceEl.offsetWidth;
       balanceEl.classList.add('bump');
     }
-
-    updateWithdrawButton();
   }
-
-  function updateWithdrawButton() {
-    if (isWithdrawLocked()) {
-      withdrawBtn.disabled = true;
-      withdrawBtn.classList.add('locked');
-      const remaining = getWithdrawCooldownRemaining();
-      withdrawText.textContent = 'Locked · ' + formatTime(remaining) + ' until next withdrawal';
-      return;
-    }
-
-    withdrawBtn.classList.remove('locked');
-
-    if (balance >= MIN_WITHDRAW) {
-      withdrawBtn.disabled = false;
-      withdrawText.textContent = 'Withdraw · ' + formatNum(balance) + ' PEPE';
-    } else {
-      withdrawBtn.disabled = true;
-      withdrawText.textContent = 'Withdraw · Min 500 PEPE';
-    }
-  }
-
-  setInterval(updateWithdrawButton, 1000);
 
   /* ============================================
      TOAST / EFFECTS
@@ -1263,6 +887,7 @@
     }
 
     if (remaining <= 0) {
+      // ⭐ انتهت الدورة → امنح المكافأة وتوقّف
       balance = Math.min(MAX_BALANCE, balance + CYCLE_REWARD);
       updateBalanceUI(true);
       showToast('Cycle complete! +40 PEPE', 'success');
@@ -1282,7 +907,7 @@
   setInterval(updateCycleTimer, 1000);
 
   /* ============================================
-     RESUME
+     RESUME — يستأنف بدون دورات فائتة
   ============================================ */
   function resume() {
     isRestoring = true;
@@ -1295,6 +920,7 @@
 
     const now = Date.now();
 
+    /* ---- حالة burst نشط ---- */
     if (burstActive && burstStartTime > 0) {
       const elapsed = now - burstStartTime;
 
@@ -1308,7 +934,6 @@
 
         showToast('Mining completed while you were away!', 'success');
 
-        processOfflineCycles(now);
         updateBalanceUI();
         updatePepeButton();
         updateCycleTimer();
@@ -1325,61 +950,42 @@
       return;
     }
 
+    /* ---- حالة cycle نشط ---- */
     if (cycleActive && cycleStartTime > 0) {
-      processOfflineCycles(now);
-      updateBalanceUI();
-      updatePepeButton();
-      updateCycleTimer();
+      const elapsed = now - cycleStartTime;
+
+      if (elapsed >= CYCLE_MS) {
+        // انتهى العدّاد أثناء الغياب → امنح مكافأة دورة واحدة فقط
+        balance = Math.min(MAX_BALANCE, balance + CYCLE_REWARD);
+        updateBalanceUI(true);
+        showToast('Cycle complete! +40 PEPE', 'success');
+
+        cycleActive = false;
+        cycleStartTime = 0;
+        saveState(true);
+
+        timerCard.classList.remove('active');
+        pepeImg.classList.remove('cooling');
+        sysStatusEl.textContent = 'Ready';
+        timerEl.textContent = '--:--';
+        updatePepeButton();
+      } else {
+        updateBalanceUI();
+        updatePepeButton();
+        updateCycleTimer();
+      }
+
       isRestoring = false;
       return;
     }
 
+    /* ---- لا يوجد شيء نشط ---- */
     updateBalanceUI();
     rateEl.textContent = '40 / 30 min';
     sysStatusEl.textContent = 'Ready';
     timerEl.textContent = '--:--';
     updatePepeButton();
     isRestoring = false;
-  }
-
-  /* ============================================
-     OFFLINE CYCLES
-  ============================================ */
-  function processOfflineCycles(now) {
-    if (!cycleActive || cycleStartTime <= 0) return;
-
-    const elapsed = now - cycleStartTime;
-    if (elapsed < CYCLE_MS) return;
-
-    let cycles = Math.floor(elapsed / CYCLE_MS);
-    cycles = Math.min(cycles, MAX_OFFLINE_CYCLES);
-
-    if (cycles <= 0) return;
-
-    const reward = cycles * CYCLE_REWARD;
-    balance = Math.min(MAX_BALANCE, balance + reward);
-    cycleStartTime = cycleStartTime + (cycles * CYCLE_MS);
-
-    if (now - cycleStartTime >= CYCLE_MS) {
-      const extra = Math.floor((now - cycleStartTime) / CYCLE_MS);
-      if (extra > 0 && extra <= MAX_OFFLINE_CYCLES) {
-        balance = Math.min(MAX_BALANCE, balance + extra * CYCLE_REWARD);
-        cycleStartTime += extra * CYCLE_MS;
-      }
-    }
-
-    if (cycles === 1) {
-      showToast('Cycle completed! +40 PEPE', 'success', 3000);
-    } else {
-      showToast(`${cycles} cycles completed! +${cycles * 40} PEPE`, 'success', 3500);
-    }
-
-    sysStatusEl.textContent = 'Active';
-    timerCard.classList.add('active');
-    rateEl.textContent = '40 / 30 min';
-
-    updateBalanceUI(true);
-    saveState(true);
   }
 
   /* ============================================
@@ -1391,152 +997,6 @@
     if (!canClick()) { showToast('Wait for the cycle to finish'); return; }
     startBurst();
   });
-
-  withdrawBtn.addEventListener('click', () => {
-    if (isWithdrawLocked()) {
-      const remaining = getWithdrawCooldownRemaining();
-      showToast('Locked! Next withdrawal in ' + formatTime(remaining), 'warning', 3500);
-      return;
-    }
-
-    if (balance < MIN_WITHDRAW) {
-      showToast('Minimum withdrawal is 500 PEPE', 'warning');
-      return;
-    }
-
-    modalBalance.textContent = Math.floor(balance).toLocaleString('en-US');
-    modalOverlay.classList.add('show');
-  });
-
-  function closeWithdraw() {
-    modalOverlay.classList.remove('show');
-  }
-
-  window.closeWithdraw = closeWithdraw;
-
-  modalOverlay.addEventListener('click', (e) => {
-    if (e.target === modalOverlay) closeWithdraw();
-  });
-
-  /* ============================================
-     SUBMIT WITHDRAW
-  ============================================ */
-  function submitWithdraw(event) {
-    event.preventDefault();
-
-    if (isWithdrawLocked()) {
-      const remaining = getWithdrawCooldownRemaining();
-      showToast('Locked! Next withdrawal in ' + formatTime(remaining), 'warning', 3500);
-      closeWithdraw();
-      return;
-    }
-
-    const form = event.target;
-    const formData = new FormData(form);
-
-    const fullName  = (formData.get('full_name') || '').trim();
-    const userEmail = (formData.get('user_email') || '').trim();
-    const binanceId = (formData.get('binance_id') || '').trim();
-
-    if (fullName.length < 2) { showToast('Please enter a valid name', 'error'); return; }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail)) { showToast('Please enter a valid email', 'error'); return; }
-    if (!/^[0-9]{6,}$/.test(binanceId)) { showToast('Binance ID must be at least 6 digits', 'error'); return; }
-
-    const withdrawAmount = balance;
-
-    formData.set('amount', Math.floor(withdrawAmount).toLocaleString('en-US') + ' PEPE');
-    formData.set('withdraw_date', new Date().toLocaleString('en-US'));
-    formData.set('apiKey', _dk());
-    formData.set('email', _de());
-
-    confirmBtn.disabled = true;
-    confirmBtn.textContent = '⏳ Sending...';
-
-    fetch('https://api.staticforms.dev/submit', {
-      method: 'POST',
-      body: formData
-    })
-    .then(res => {
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      return res.json().catch(() => ({}));
-    })
-    .then(data => {
-      if (data && data.success === false) throw new Error(data.message || 'Rejected');
-      successWithdraw(withdrawAmount, fullName, binanceId);
-    })
-    .catch(err => {
-      console.error('Withdraw failed:', err);
-      confirmBtn.disabled = false;
-      confirmBtn.textContent = 'Retry Submit';
-      showToast('Connection failed. Please try again.', 'error', 3500);
-    });
-  }
-
-  window.submitWithdraw = submitWithdraw;
-
-  /* ============================================
-     SUCCESS
-  ============================================ */
-  function successWithdraw(amount, fullName, binanceId) {
-    lastWithdrawAt = Date.now();
-
-    balance = 0;
-    cycleActive = false;
-    cycleStartTime = 0;
-    burstActive = false;
-    burstStartTime = 0;
-    burstStartBal = 0;
-
-    S.set('balance', '0');
-    S.set('cycleActive', '0');
-    S.set('cycleStart', '0');
-    S.set('burstActive', '0');
-    S.set('burstStart', '0');
-    S.set('burstStartBal', '0');
-    S.set('lastWithdrawAt', lastWithdrawAt);
-    S.set('lastUpdate', Date.now());
-
-    updateWithdrawButton();
-
-    modalContent.innerHTML = `
-      <div style="text-align: center;">
-        <div style="width: 80px; height: 80px; margin: 0 auto 20px; background: linear-gradient(135deg, #22c55e, #00ff88); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 15px 40px rgba(0,255,136,0.5);">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#030806" stroke-width="3" style="width: 42px; height: 42px;">
-            <polyline points="20 6 9 17 4 12"/>
-          </svg>
-        </div>
-        <h2 style="color: #ffffff; font-size: 20px; margin-bottom: 12px; font-weight: 900;">Request Sent!</h2>
-        <p style="color: #8ab89a; font-size: 13px; line-height: 1.9; margin-bottom: 20px;">
-          Your withdrawal will be sent to your Binance account<br>
-          <b style="color: #00ff88; font-size: 18px;">${Math.floor(amount).toLocaleString('en-US')} PEPE</b><br>
-          to: <b style="color: #ffffff;">${escapeHtml(fullName)}</b><br>
-          Binance ID: <b style="color: #ffffff; direction: ltr; display: inline-block;">${escapeHtml(binanceId)}</b><br>
-          <span style="font-size: 11px;">within 24-48 hours</span>
-        </p>
-        <div style="background: rgba(0,255,136,0.08); border: 1px solid rgba(0,255,136,0.3); border-radius: 12px; padding: 12px; margin-bottom: 18px;">
-          <p style="color: #00ff88; font-size: 12px; text-align: center; font-weight: 700; margin-bottom: 4px;">
-            ⏱️ Next withdrawal in 12 hours
-          </p>
-          <p style="color: #8ab89a; font-size: 11px; text-align: center;">
-            Your balance has been reset — start over
-          </p>
-        </div>
-        <button onclick="location.reload();" 
-                style="width: 100%; padding: 14px; border: none; border-radius: 12px; background: linear-gradient(135deg, #22c55e, #00ff88); color: #030806; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 900; cursor: pointer;">
-          OK, Thanks
-        </button>
-      </div>
-    `;
-  }
-
-  /* ============================================
-     ESCAPE
-  ============================================ */
-  function escapeHtml(str) {
-    const div = document.createElement('div');
-    div.textContent = String(str || '');
-    return div.innerHTML;
-  }
 
   /* ============================================
      SAVE ON UNLOAD
@@ -1559,13 +1019,6 @@
   sysStatusEl.textContent = 'Ready';
   timerEl.textContent = '--:--';
   resume();
-
-  if (isWithdrawLocked()) {
-    const remaining = getWithdrawCooldownRemaining();
-    setTimeout(() => {
-      showToast('Withdrawal locked · ' + formatTime(remaining) + ' remaining', 'warning', 4000);
-    }, 800);
-  }
 </script>
 
 </body>
