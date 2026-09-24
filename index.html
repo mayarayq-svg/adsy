@@ -125,7 +125,6 @@
     min-width: 0;
   }
 
-  /* Menu button */
   .menu-btn {
     width: 40px;
     height: 40px;
@@ -139,9 +138,7 @@
     justify-content: center;
     gap: 4px;
     padding: 0;
-    transition: background 0.3s ease,
-                border-color 0.3s ease,
-                transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: background 0.3s ease, border-color 0.3s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     flex-shrink: 0;
     box-shadow: var(--shadow-sm);
   }
@@ -157,9 +154,7 @@
     height: 2px;
     border-radius: 2px;
     background: var(--text);
-    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-                opacity 0.25s ease,
-                width 0.3s ease;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, width 0.3s ease;
     transform-origin: center;
   }
   .menu-btn span:nth-child(2) { width: 11px; }
@@ -188,7 +183,6 @@
     50% { box-shadow: 0 0 0 8px transparent; }
   }
 
-  /* Theme toggle */
   .theme-toggle {
     position: relative;
     width: 60px; height: 32px;
@@ -199,9 +193,7 @@
     padding: 0;
     display: flex;
     align-items: center;
-    transition: background 0.3s ease,
-                border-color 0.3s ease,
-                transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: background 0.3s ease, border-color 0.3s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     overflow: hidden;
     box-shadow: var(--shadow-sm);
     flex-shrink: 0;
@@ -252,7 +244,7 @@
   body:not(.dark) .icon-moon { opacity: 0; }
   body.dark .icon-sun { opacity: 0; }
 
-  /* ===== Drawer / Menu ===== */
+  /* ===== Drawer ===== */
   .overlay {
     position: fixed;
     inset: 0;
@@ -343,10 +335,7 @@
     letter-spacing: -0.01em;
     cursor: pointer;
     border: 1px solid transparent;
-    transition: background 0.25s ease,
-                color 0.25s ease,
-                border-color 0.25s ease,
-                transform 0.2s ease;
+    transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease;
   }
   .nav-item:hover {
     background: var(--accent-soft);
@@ -355,7 +344,6 @@
   .nav-item.active {
     background: var(--accent-soft);
     color: var(--accent);
-    border-color: transparent;
   }
   .nav-item:active { transform: scale(0.98); }
 
@@ -462,7 +450,6 @@
     -webkit-text-fill-color: transparent;
   }
 
-  /* ===== Section ===== */
   .section-head {
     display: flex;
     align-items: center;
@@ -487,14 +474,12 @@
     border-radius: 100px;
   }
 
-  /* ===== Grid ===== */
   .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 14px;
   }
 
-  /* ===== Card ===== */
   .card {
     position: relative;
     display: flex;
@@ -510,11 +495,7 @@
     overflow: hidden;
     isolation: isolate;
     animation: fadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
-    transition:
-      transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-      border-color 0.3s ease,
-      background 0.3s ease,
-      box-shadow 0.35s ease;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, background 0.3s ease, box-shadow 0.35s ease;
   }
   .card:nth-child(1) { animation-delay: 0.10s; }
   .card:nth-child(2) { animation-delay: 0.16s; }
@@ -567,8 +548,7 @@
     background: var(--bg-soft);
     border: 1px solid var(--line);
     display: block;
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                border-color 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
   }
   .card:hover .avatar {
     transform: scale(1.04);
@@ -614,10 +594,7 @@
     background: transparent;
     border: 1px solid transparent;
     flex-shrink: 0;
-    transition:
-      background 0.3s ease,
-      border-color 0.3s ease,
-      transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: background 0.3s ease, border-color 0.3s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     will-change: transform;
   }
   .arrow svg {
@@ -659,11 +636,7 @@
     color: inherit;
     overflow: hidden;
     isolation: isolate;
-    transition:
-      transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-      border-color 0.3s ease,
-      background 0.3s ease,
-      box-shadow 0.4s ease;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, background 0.3s ease, box-shadow 0.4s ease;
   }
   .yt-card::after {
     content: '';
@@ -753,11 +726,7 @@
     font-weight: 700;
     letter-spacing: 0.02em;
     flex-shrink: 0;
-    transition:
-      background 0.3s ease,
-      color 0.3s ease,
-      transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-      box-shadow 0.35s ease;
+    transition: background 0.3s ease, color 0.3s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
   }
   .yt-cta svg {
     width: 14px;
@@ -791,13 +760,11 @@
     text-align: center;
     animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
   }
-
   .copy {
     font-size: 13px;
     color: var(--muted);
     font-weight: 500;
   }
-
   .powered {
     display: flex;
     flex-direction: column;
@@ -858,22 +825,12 @@
     footer { padding: 26px 18px 32px; }
 
     .yt-section { margin-top: 36px; }
-    .yt-card {
-      padding: 16px;
-      gap: 14px;
-      border-radius: 16px;
-      flex-wrap: wrap;
-    }
+    .yt-card { padding: 16px; gap: 14px; border-radius: 16px; flex-wrap: wrap; }
     .yt-icon-wrap { width: 52px; height: 52px; border-radius: 14px; }
     .yt-icon-wrap svg { width: 24px; height: 24px; }
     .yt-name { font-size: 15px; }
     .yt-sub { font-size: 11.5px; }
-    .yt-cta {
-      width: 100%;
-      justify-content: center;
-      padding: 11px 16px;
-      font-size: 12.5px;
-    }
+    .yt-cta { width: 100%; justify-content: center; padding: 11px 16px; font-size: 12.5px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -911,7 +868,7 @@
   </div>
 </header>
 
-<!-- ===== Drawer Menu ===== -->
+<!-- ===== Drawer ===== -->
 <div class="overlay" id="overlay"></div>
 <aside class="drawer" id="drawer" aria-hidden="true">
   <div class="drawer-head">
@@ -923,9 +880,8 @@
 
   <nav class="drawer-nav">
     <!-- Home -->
-    <a class="nav-item active" href="index.html" data-nav="home">
+    <a class="nav-item active" href="index.html">
       <div class="nav-icon">
-        <!-- Home icon (proper house) -->
         <svg viewBox="0 0 24 24">
           <path d="M3 11.5 12 4l9 7.5"/>
           <path d="M5.5 10v10.5h13V10"/>
@@ -937,9 +893,8 @@
     </a>
 
     <!-- Mining -->
-    <a class="nav-item" href="mining.html" data-nav="mining">
+    <a class="nav-item" href="mining.html">
       <div class="nav-icon">
-        <!-- Pickaxe / mining icon -->
         <svg viewBox="0 0 24 24">
           <path d="M14.5 3.5c-3 0-5.6 1.6-7.1 4"/>
           <path d="M3.5 14.5c0-3 1.6-5.6 4-7.1"/>
@@ -953,13 +908,25 @@
       <span>Mining</span>
       <svg class="nav-arrow" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
     </a>
+
+    <!-- Wallet -->
+    <a class="nav-item" href="wallet.html">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M21 12V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5"/>
+          <path d="M16 12h6v4h-6a2 2 0 1 1 0-4z"/>
+        </svg>
+      </div>
+      <span>Wallet</span>
+      <svg class="nav-arrow" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+    </a>
   </nav>
 
   <div class="drawer-foot">ADSY</div>
 </aside>
 
 <main>
-  <section class="hero" id="home">
+  <section class="hero">
     <div class="badge">
       <span class="badge-dot"></span>
       Mining bots online
@@ -967,7 +934,7 @@
     <h1>Digital Coin <span class="accent">Mining</span></h1>
   </section>
 
-  <div class="section-head" id="mining">
+  <div class="section-head">
     <div class="section-title">Mining Bots</div>
     <div class="section-count" id="count">0</div>
   </div>
@@ -1008,7 +975,7 @@
 </footer>
 
 <script>
-  /* ===== Bot data — mining only (5 bots) ===== */
+  /* ===== Bot data ===== */
   const bots = [
     {
       name: "EARNING GRAM",
@@ -1028,17 +995,22 @@
       link: "https://t.me/DogsPtsbot?start=7931994096",
       desc: "Mine Dog coins and rise ranks"
     },
+
+
+     {
+      name: "CRYPTSON",
+      img: "a4.jpg",
+      link: "https://t.me/cryptson2_bot?startapp=97249",
+      desc: "Mine cryptson coins and rise ranks"
+    },
+
+
+    
     {
       name: "FLYMAGE",
       img: "a3.jpg",
       link: "https://t.me/flymage_bot?startapp=295200",
       desc: "Mine Flymage tokens with AI power"
-    },
-    {
-      name: "CRYPTSON",
-      img: "a4.jpg",
-      link: "https://t.me/cryptson2_bot?startapp=97249",
-      desc: "Mining coins through birds"
     }
   ];
 
@@ -1065,7 +1037,6 @@
     </svg>
   `);
 
-  /* Build grid */
   const grid = document.getElementById('botsGrid');
   const frag = document.createDocumentFragment();
   bots.forEach(bot => {
@@ -1096,7 +1067,6 @@
   const drawer = document.getElementById('drawer');
   const overlay = document.getElementById('overlay');
   const drawerClose = document.getElementById('drawerClose');
-  const navItems = document.querySelectorAll('.nav-item');
 
   function openDrawer() {
     drawer.classList.add('open');
@@ -1114,34 +1084,7 @@
   menuBtn.addEventListener('click', openDrawer);
   drawerClose.addEventListener('click', closeDrawer);
   overlay.addEventListener('click', closeDrawer);
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeDrawer();
-  });
-
-  navItems.forEach(item => {
-    item.addEventListener('click', (e) => {
-      navItems.forEach(i => i.classList.remove('active'));
-      item.classList.add('active');
-
-      const nav = item.getAttribute('data-nav');
-
-      // Home → navigate to index.html
-      if (nav === 'home') {
-        e.preventDefault();
-        closeDrawer();
-        setTimeout(() => { window.location.href = 'index.html'; }, 220);
-        return;
-      }
-
-      // Mining → let the browser navigate to mining.html normally
-      if (nav === 'mining') {
-        // allow default link navigation (no preventDefault)
-        // just close the drawer for a smooth feel
-        closeDrawer();
-      }
-    });
-  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDrawer(); });
 
   /* ===== Theme toggle ===== */
   const toggle = document.getElementById('themeToggle');
