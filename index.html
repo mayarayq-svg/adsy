@@ -3,11 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ADSY — Bot Network</title>
+<title>ADSY — Digital Coin Mining</title>
 <style>
   :root {
     --bg: #f7f8fa;
-    --bg-soft: #ffffff;
     --card: #ffffff;
     --card-hover: #ffffff;
     --text: #0b0f14;
@@ -16,8 +15,12 @@
     --line: #e8ecf0;
     --line-strong: #d8dee5;
     --accent: #0066ff;
+    --accent-2: #7ab3ff;
     --accent-soft: rgba(0,102,255,0.08);
     --accent-glow: rgba(0,102,255,0.25);
+    --purple: #8b3dff;
+    --purple-soft: rgba(139,61,255,0.1);
+    --purple-glow: rgba(139,61,255,0.3);
     --yt: #ff0033;
     --yt-soft: rgba(255,0,51,0.08);
     --yt-glow: rgba(255,0,51,0.25);
@@ -29,7 +32,6 @@
   }
   body.dark {
     --bg: #08090c;
-    --bg-soft: #0e1014;
     --card: #101318;
     --card-hover: #14181f;
     --text: #f2f4f7;
@@ -38,8 +40,12 @@
     --line: #1c2027;
     --line-strong: #262b33;
     --accent: #3d8bff;
+    --accent-2: #7ab3ff;
     --accent-soft: rgba(61,139,255,0.12);
     --accent-glow: rgba(61,139,255,0.35);
+    --purple: #b47cff;
+    --purple-soft: rgba(180,124,255,0.15);
+    --purple-glow: rgba(180,124,255,0.4);
     --yt: #ff3355;
     --yt-soft: rgba(255,51,85,0.12);
     --yt-glow: rgba(255,51,85,0.35);
@@ -51,17 +57,14 @@
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
-
+  html { scroll-behavior: smooth; }
   body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
     transition: background 0.35s ease, color 0.35s ease;
   }
   body.no-scroll { overflow: hidden; }
@@ -76,7 +79,6 @@
       radial-gradient(1000px circle at 15% 0%, var(--accent-soft), transparent 45%),
       radial-gradient(800px circle at 85% 100%, var(--accent-soft), transparent 50%);
   }
-
   body::after {
     content: '';
     position: fixed;
@@ -101,13 +103,7 @@
     backdrop-filter: blur(24px) saturate(180%);
     -webkit-backdrop-filter: blur(24px) saturate(180%);
     border-bottom: 1px solid var(--line);
-    animation: headerIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  @keyframes headerIn {
-    from { opacity: 0; transform: translateY(-16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
   .header-inner {
     max-width: 1200px;
     margin: 0 auto;
@@ -117,17 +113,10 @@
     justify-content: space-between;
     gap: 14px;
   }
-
-  .header-left {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    min-width: 0;
-  }
+  .header-left { display: flex; align-items: center; gap: 14px; }
 
   .menu-btn {
-    width: 40px;
-    height: 40px;
+    width: 40px; height: 40px;
     border-radius: 12px;
     background: var(--card);
     border: 1px solid var(--line);
@@ -138,24 +127,17 @@
     justify-content: center;
     gap: 4px;
     padding: 0;
-    transition: background 0.3s ease, border-color 0.3s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-    flex-shrink: 0;
+    transition: 0.3s ease;
     box-shadow: var(--shadow-sm);
   }
-  .menu-btn:hover {
-    border-color: var(--line-strong);
-    background: var(--card-hover);
-  }
+  .menu-btn:hover { border-color: var(--line-strong); background: var(--card-hover); }
   .menu-btn:active { transform: scale(0.93); }
-
   .menu-btn span {
     display: block;
-    width: 16px;
-    height: 2px;
+    width: 16px; height: 2px;
     border-radius: 2px;
     background: var(--text);
-    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, width 0.3s ease;
-    transform-origin: center;
+    transition: width 0.3s ease;
   }
   .menu-btn span:nth-child(2) { width: 11px; }
   .menu-btn:hover span:nth-child(2) { width: 16px; }
@@ -168,7 +150,6 @@
     font-size: 20px;
     letter-spacing: -0.02em;
     color: var(--text);
-    user-select: none;
   }
   .logo-mark {
     width: 8px; height: 8px;
@@ -193,14 +174,12 @@
     padding: 0;
     display: flex;
     align-items: center;
-    transition: background 0.3s ease, border-color 0.3s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     overflow: hidden;
     box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease;
     flex-shrink: 0;
   }
-  .theme-toggle:hover { border-color: var(--line-strong); }
   .theme-toggle:active { transform: scale(0.94); }
-
   .toggle-thumb {
     position: absolute;
     top: 3px; left: 3px;
@@ -212,31 +191,14 @@
     justify-content: center;
     z-index: 2;
     transition: transform 0.4s cubic-bezier(0.34, 1.4, 0.64, 1);
-    will-change: transform;
   }
   body.dark .toggle-thumb { transform: translateX(28px); }
-
-  .toggle-thumb svg {
-    width: 13px; height: 13px;
-    stroke: var(--bg);
-    fill: none;
-    stroke-width: 2.2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    transition: transform 0.5s cubic-bezier(0.34, 1.4, 0.64, 1);
-  }
-  body.dark .toggle-thumb svg { transform: rotate(180deg); }
-
+  .toggle-thumb svg { width: 13px; height: 13px; stroke: var(--bg); fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
   .toggle-icon {
     position: absolute;
     top: 50%; transform: translateY(-50%);
     width: 13px; height: 13px;
-    stroke: var(--muted);
-    fill: none;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    transition: opacity 0.3s ease;
+    stroke: var(--muted); fill: none; stroke-width: 2;
     pointer-events: none;
   }
   .icon-moon { left: 10px; }
@@ -254,15 +216,13 @@
     z-index: 200;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.35s ease, visibility 0.35s ease;
+    transition: 0.35s ease;
   }
   .overlay.open { opacity: 1; visibility: visible; }
 
   .drawer {
     position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
+    top: 0; left: 0; bottom: 0;
     width: 300px;
     max-width: 84vw;
     background: var(--card);
@@ -273,10 +233,8 @@
     display: flex;
     flex-direction: column;
     box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-    will-change: transform;
   }
   .drawer.open { transform: translateX(0); }
-
   .drawer-head {
     display: flex;
     align-items: center;
@@ -292,8 +250,7 @@
     color: var(--muted);
   }
   .drawer-close {
-    width: 34px;
-    height: 34px;
+    width: 34px; height: 34px;
     border-radius: 10px;
     background: transparent;
     border: 1px solid var(--line);
@@ -301,18 +258,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
+    transition: 0.25s;
   }
   .drawer-close:hover { background: var(--card-hover); border-color: var(--line-strong); }
-  .drawer-close:active { transform: scale(0.92); }
-  .drawer-close svg {
-    width: 14px; height: 14px;
-    stroke: var(--text);
-    fill: none;
-    stroke-width: 2.4;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
+  .drawer-close svg { width: 14px; height: 14px; stroke: var(--text); fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
 
   .drawer-nav {
     padding: 12px;
@@ -321,7 +270,6 @@
     gap: 4px;
     overflow-y: auto;
   }
-
   .nav-item {
     display: flex;
     align-items: center;
@@ -332,32 +280,21 @@
     color: var(--text);
     font-size: 14px;
     font-weight: 600;
-    letter-spacing: -0.01em;
     cursor: pointer;
-    border: 1px solid transparent;
-    transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease;
+    transition: 0.25s;
   }
-  .nav-item:hover {
-    background: var(--accent-soft);
-    color: var(--accent);
-  }
-  .nav-item.active {
-    background: var(--accent-soft);
-    color: var(--accent);
-  }
-  .nav-item:active { transform: scale(0.98); }
+  .nav-item:hover { background: var(--accent-soft); color: var(--accent); }
+  .nav-item.active { background: var(--accent-soft); color: var(--accent); }
 
   .nav-icon {
-    width: 36px;
-    height: 36px;
+    width: 36px; height: 36px;
     border-radius: 10px;
-    background: var(--bg-soft);
+    background: var(--bg);
     border: 1px solid var(--line);
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
-    transition: background 0.25s ease, border-color 0.25s ease;
+    transition: 0.25s;
   }
   .nav-item:hover .nav-icon,
   .nav-item.active .nav-icon {
@@ -366,11 +303,8 @@
   }
   .nav-icon svg {
     width: 18px; height: 18px;
-    stroke: var(--sub);
-    fill: none;
-    stroke-width: 1.9;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+    stroke: var(--sub); fill: none;
+    stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round;
     transition: stroke 0.25s ease;
   }
   .nav-item:hover .nav-icon svg,
@@ -379,13 +313,9 @@
   .nav-arrow {
     margin-left: auto;
     width: 14px; height: 14px;
-    stroke: var(--muted);
-    fill: none;
-    stroke-width: 2.2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+    stroke: var(--muted); fill: none; stroke-width: 2.2;
     opacity: 0.6;
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+    transition: transform 0.3s ease;
   }
   .nav-item:hover .nav-arrow { transform: translateX(3px); opacity: 1; }
 
@@ -403,59 +333,190 @@
 
   /* ===== Main ===== */
   main {
-    position: relative;
-    z-index: 1;
     max-width: 1200px;
     margin: 0 auto;
     padding: 48px 24px 80px;
   }
 
+  /* ===== Hero ===== */
   .hero {
-    margin-bottom: 40px;
-    animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+    text-align: center;
+    margin-bottom: 60px;
+    animation: fadeUp 0.7s ease;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
   }
   .badge {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 6px 12px;
+    padding: 8px 16px;
     border-radius: 100px;
     background: var(--accent-soft);
     color: var(--accent);
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
-    letter-spacing: 0.02em;
-    margin-bottom: 20px;
-    border: 1px solid transparent;
+    margin-bottom: 22px;
   }
   .badge-dot {
-    width: 6px; height: 6px;
+    width: 7px; height: 7px;
     border-radius: 50%;
     background: var(--accent);
     animation: pulse 2s ease-in-out infinite;
   }
-
   .hero h1 {
-    font-size: clamp(32px, 5vw, 48px);
-    font-weight: 800;
-    letter-spacing: -0.03em;
+    font-size: clamp(34px, 6vw, 64px);
+    font-weight: 900;
+    letter-spacing: -0.035em;
     line-height: 1.05;
-    margin-bottom: 14px;
+    margin-bottom: 16px;
     color: var(--text);
   }
   .hero h1 .accent {
-    background: linear-gradient(135deg, var(--accent) 0%, #7ab3ff 100%);
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
   }
+  .hero p {
+    font-size: 16px;
+    color: var(--sub);
+    max-width: 520px;
+    margin: 0 auto 32px;
+    line-height: 1.6;
+  }
 
+  /* ===== Main Action Buttons ===== */
+  .main-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 480px;
+    margin: 0 auto 70px;
+  }
+
+  .cta-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 22px 26px;
+    border-radius: 20px;
+    text-decoration: none;
+    cursor: pointer;
+    overflow: hidden;
+    isolation: isolate;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+    box-shadow: var(--shadow-md);
+  }
+
+  .cta-btn:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .cta-btn:active { transform: translateY(-1px); }
+
+  .cta-btn-icon {
+    width: 52px; height: 52px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform 0.4s ease;
+  }
+  .cta-btn:hover .cta-btn-icon { transform: scale(1.08); }
+
+  .cta-btn-icon svg {
+    width: 24px; height: 24px;
+    stroke: currentColor; fill: none;
+    stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;
+  }
+
+  .cta-btn-content {
+    flex: 1;
+    min-width: 0;
+  }
+  .cta-btn-title {
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    margin-bottom: 3px;
+    line-height: 1.2;
+  }
+  .cta-btn-sub {
+    font-size: 12.5px;
+    font-weight: 500;
+    opacity: 0.8;
+    line-height: 1.3;
+  }
+
+  .cta-btn-arrow {
+    width: 32px; height: 32px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.18);
+    flex-shrink: 0;
+    transition: transform 0.4s ease;
+  }
+  .cta-btn:hover .cta-btn-arrow { transform: translateX(4px); }
+  .cta-btn-arrow svg {
+    width: 15px; height: 15px;
+    stroke: currentColor; fill: none;
+    stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round;
+  }
+
+  /* Start Mining — أزرق */
+  .cta-mining {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+    color: #ffffff;
+    box-shadow: 0 12px 32px var(--accent-glow);
+  }
+  .cta-mining::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.4), transparent),
+      radial-gradient(1px 1px at 60% 70%, rgba(255,255,255,0.3), transparent),
+      radial-gradient(1.5px 1.5px at 80% 15%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1.5px 1.5px at 40% 90%, rgba(255,255,255,0.35), transparent);
+    pointer-events: none;
+    z-index: -1;
+  }
+  .cta-mining .cta-btn-icon { background: rgba(255,255,255,0.18); color: #fff; }
+
+  /* Wallet — بنفسجي */
+  .cta-wallet {
+    background: linear-gradient(135deg, var(--purple) 0%, #b47cff 100%);
+    color: #ffffff;
+    box-shadow: 0 12px 32px var(--purple-glow);
+  }
+  .cta-wallet::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 25% 40%, rgba(255,255,255,0.4), transparent),
+      radial-gradient(1px 1px at 70% 20%, rgba(255,255,255,0.3), transparent),
+      radial-gradient(1.5px 1.5px at 85% 70%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1.5px 1.5px at 30% 85%, rgba(255,255,255,0.35), transparent);
+    pointer-events: none;
+    z-index: -1;
+  }
+  .cta-wallet .cta-btn-icon { background: rgba(255,255,255,0.18); color: #fff; }
+
+  /* ===== Section ===== */
   .section-head {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 20px;
-    animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
   }
   .section-title {
     font-size: 13px;
@@ -474,12 +535,12 @@
     border-radius: 100px;
   }
 
+  /* ===== Bots ===== */
   .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 14px;
   }
-
   .card {
     position: relative;
     display: flex;
@@ -494,29 +555,14 @@
     cursor: pointer;
     overflow: hidden;
     isolation: isolate;
-    animation: fadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
-    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, background 0.3s ease, box-shadow 0.35s ease;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.35s ease, border-color 0.3s ease, box-shadow 0.35s ease;
   }
-  .card:nth-child(1) { animation-delay: 0.10s; }
-  .card:nth-child(2) { animation-delay: 0.16s; }
-  .card:nth-child(3) { animation-delay: 0.22s; }
-  .card:nth-child(4) { animation-delay: 0.28s; }
-  .card:nth-child(5) { animation-delay: 0.34s; }
-  .card:nth-child(6) { animation-delay: 0.40s; }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
   .card:hover {
     transform: translateY(-3px);
     border-color: var(--line-strong);
-    background: var(--card-hover);
     box-shadow: var(--shadow-lg);
   }
-  .card:active { transform: translateY(-1px) scale(0.997); }
-
   .card::after {
     content: '';
     position: absolute;
@@ -526,85 +572,57 @@
     transform: translate(-50%, -50%);
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 0.4s ease, transform 0.5s ease;
     z-index: -1;
   }
-  .card:hover::after {
-    opacity: 0.5;
-    transform: translate(0, -50%);
-  }
+  .card:hover::after { opacity: 0.5; transform: translate(0, -50%); }
 
-  .avatar-wrap {
-    position: relative;
-    width: 56px;
-    height: 56px;
-    flex-shrink: 0;
-  }
   .avatar {
-    width: 56px;
-    height: 56px;
+    width: 56px; height: 56px;
     border-radius: 12px;
     object-fit: cover;
-    background: var(--bg-soft);
+    background: var(--bg);
     border: 1px solid var(--line);
+    flex-shrink: 0;
     display: block;
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+    transition: transform 0.4s ease;
   }
-  .card:hover .avatar {
-    transform: scale(1.04);
-    border-color: var(--line-strong);
-  }
+  .card:hover .avatar { transform: scale(1.04); }
 
-  .info {
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-  }
+  .info { flex: 1; min-width: 0; }
   .bot-name {
     font-size: 14.5px;
     font-weight: 700;
-    letter-spacing: -0.01em;
     color: var(--text);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    margin-bottom: 3px;
     transition: color 0.25s ease;
   }
   .card:hover .bot-name { color: var(--accent); }
-
   .bot-desc {
     font-size: 12.5px;
     color: var(--sub);
-    font-weight: 450;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    line-height: 1.4;
   }
 
   .arrow {
-    width: 32px;
-    height: 32px;
+    width: 32px; height: 32px;
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: transparent;
     border: 1px solid transparent;
     flex-shrink: 0;
-    transition: background 0.3s ease, border-color 0.3s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    will-change: transform;
+    transition: 0.35s ease;
   }
   .arrow svg {
-    width: 15px;
-    height: 15px;
-    stroke: var(--muted);
-    fill: none;
-    stroke-width: 2.2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+    width: 15px; height: 15px;
+    stroke: var(--muted); fill: none;
+    stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;
     transition: stroke 0.25s ease;
   }
   .card:hover .arrow {
@@ -613,16 +631,12 @@
     transform: translateX(2px);
     box-shadow: 0 4px 12px var(--accent-glow);
   }
-  .card:hover .arrow svg {
-    stroke: #fff;
-  }
+  .card:hover .arrow svg { stroke: #fff; }
 
-  /* ===== YouTube Section ===== */
+  /* ===== YouTube ===== */
   .yt-section {
     margin-top: 48px;
-    animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
   }
-
   .yt-card {
     position: relative;
     display: flex;
@@ -635,85 +649,49 @@
     text-decoration: none;
     color: inherit;
     overflow: hidden;
-    isolation: isolate;
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, background 0.3s ease, box-shadow 0.4s ease;
-  }
-  .yt-card::after {
-    content: '';
-    position: absolute;
-    top: 50%; left: 0;
-    width: 45%; height: 100%;
-    background: radial-gradient(circle at left center, var(--yt-glow), transparent 65%);
-    transform: translate(-60%, -50%);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    z-index: -1;
+    box-shadow: var(--shadow-sm);
+    transition: 0.4s ease;
   }
   .yt-card:hover {
     transform: translateY(-3px);
     border-color: var(--line-strong);
-    background: var(--card-hover);
     box-shadow: var(--shadow-lg);
   }
-  .yt-card:hover::after {
-    opacity: 0.55;
-    transform: translate(0, -50%);
-  }
-
   .yt-icon-wrap {
-    position: relative;
-    width: 60px;
-    height: 60px;
+    width: 60px; height: 60px;
     border-radius: 16px;
     background: var(--yt-soft);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    transition: background 0.3s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: 0.3s ease;
   }
-  .yt-card:hover .yt-icon-wrap {
-    background: var(--yt);
-    transform: scale(1.05);
-  }
-  .yt-icon-wrap svg {
-    width: 28px;
-    height: 28px;
-    fill: var(--yt);
-    transition: fill 0.3s ease;
-  }
+  .yt-card:hover .yt-icon-wrap { background: var(--yt); }
+  .yt-icon-wrap svg { width: 28px; height: 28px; fill: var(--yt); transition: fill 0.3s ease; }
   .yt-card:hover .yt-icon-wrap svg { fill: #fff; }
 
-  .yt-info {
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
+  .yt-info { flex: 1; min-width: 0; }
   .yt-label {
     font-size: 11px;
     color: var(--muted);
     font-weight: 600;
     letter-spacing: 0.16em;
     text-transform: uppercase;
+    margin-bottom: 4px;
   }
   .yt-name {
     font-size: 17px;
     font-weight: 800;
-    letter-spacing: 0.02em;
     color: var(--text);
     transition: color 0.3s ease;
   }
   .yt-card:hover .yt-name { color: var(--yt); }
-
   .yt-sub {
     font-size: 12.5px;
     color: var(--sub);
-    font-weight: 450;
+    margin-top: 3px;
   }
-
   .yt-cta {
     display: flex;
     align-items: center;
@@ -724,31 +702,18 @@
     color: var(--yt);
     font-size: 13px;
     font-weight: 700;
-    letter-spacing: 0.02em;
     flex-shrink: 0;
-    transition: background 0.3s ease, color 0.3s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
-  }
-  .yt-cta svg {
-    width: 14px;
-    height: 14px;
-    stroke: currentColor;
-    fill: none;
-    stroke-width: 2.4;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: 0.3s ease;
   }
   .yt-card:hover .yt-cta {
     background: var(--yt);
     color: #fff;
     box-shadow: 0 6px 18px var(--yt-glow);
   }
-  .yt-card:hover .yt-cta svg { transform: translateX(2px); }
+  .yt-cta svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
 
   /* ===== Footer ===== */
   footer {
-    position: relative;
-    z-index: 1;
     max-width: 1200px;
     margin: 0 auto;
     padding: 32px 24px 40px;
@@ -758,19 +723,9 @@
     align-items: center;
     gap: 14px;
     text-align: center;
-    animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
   }
-  .copy {
-    font-size: 13px;
-    color: var(--muted);
-    font-weight: 500;
-  }
-  .powered {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-  }
+  .copy { font-size: 13px; color: var(--muted); font-weight: 500; }
+  .powered { display: flex; flex-direction: column; align-items: center; gap: 6px; }
   .powered-label {
     font-size: 10.5px;
     color: var(--muted);
@@ -787,37 +742,40 @@
     text-decoration: none;
     position: relative;
     padding-bottom: 4px;
-    transition: color 0.3s ease, letter-spacing 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: color 0.3s ease, letter-spacing 0.3s ease;
   }
   .powered-name::after {
     content: '';
     position: absolute;
     left: 50%; bottom: 0;
-    width: 0;
-    height: 2px;
+    width: 0; height: 2px;
     border-radius: 2px;
-    background: linear-gradient(90deg, var(--accent), #7ab3ff);
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
     transform: translateX(-50%);
-    transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: width 0.35s ease;
   }
-  .powered-name:hover {
-    color: var(--accent);
-    letter-spacing: 0.18em;
-  }
+  .powered-name:hover { color: var(--accent); letter-spacing: 0.18em; }
   .powered-name:hover::after { width: 100%; }
 
   /* ===== Responsive ===== */
   @media (max-width: 640px) {
-    .header-inner { padding: 12px 18px; gap: 10px; }
+    .header-inner { padding: 12px 18px; }
     .logo { font-size: 17px; }
     .menu-btn { width: 38px; height: 38px; border-radius: 10px; }
     main { padding: 32px 18px 60px; }
-    .hero h1 { font-size: 30px; }
-    .hero { margin-bottom: 32px; }
+    .hero h1 { font-size: 32px; }
+    .hero { margin-bottom: 44px; }
+    .main-actions { margin-bottom: 50px; }
+    .cta-btn { padding: 18px 20px; border-radius: 18px; }
+    .cta-btn-icon { width: 46px; height: 46px; border-radius: 13px; }
+    .cta-btn-icon svg { width: 22px; height: 22px; }
+    .cta-btn-title { font-size: 15.5px; }
+    .cta-btn-sub { font-size: 12px; }
+    .cta-btn-arrow { width: 30px; height: 30px; }
+
     .grid { grid-template-columns: 1fr; gap: 10px; }
     .card { padding: 12px; gap: 12px; border-radius: 14px; }
-    .avatar-wrap, .avatar { width: 50px; height: 50px; }
-    .avatar { border-radius: 10px; }
+    .avatar { width: 50px; height: 50px; border-radius: 10px; }
     .bot-name { font-size: 13.5px; }
     .bot-desc { font-size: 11.5px; }
     .arrow { width: 30px; height: 30px; }
@@ -829,14 +787,12 @@
     .yt-icon-wrap { width: 52px; height: 52px; border-radius: 14px; }
     .yt-icon-wrap svg { width: 24px; height: 24px; }
     .yt-name { font-size: 15px; }
-    .yt-sub { font-size: 11.5px; }
     .yt-cta { width: 100%; justify-content: center; padding: 11px 16px; font-size: 12.5px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
       animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
       transition-duration: 0.12s !important;
     }
   }
@@ -879,7 +835,6 @@
   </div>
 
   <nav class="drawer-nav">
-    <!-- Home -->
     <a class="nav-item active" href="index.html">
       <div class="nav-icon">
         <svg viewBox="0 0 24 24">
@@ -892,7 +847,6 @@
       <svg class="nav-arrow" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
     </a>
 
-    <!-- Mining -->
     <a class="nav-item" href="mining.html">
       <div class="nav-icon">
         <svg viewBox="0 0 24 24">
@@ -909,7 +863,6 @@
       <svg class="nav-arrow" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
     </a>
 
-    <!-- Wallet -->
     <a class="nav-item" href="wallet.html">
       <div class="nav-icon">
         <svg viewBox="0 0 24 24">
@@ -926,14 +879,62 @@
 </aside>
 
 <main>
+
+  <!-- ===== HERO ===== -->
   <section class="hero">
     <div class="badge">
       <span class="badge-dot"></span>
-      Mining bots online
+      6 Mining Platforms Live
     </div>
     <h1>Digital Coin <span class="accent">Mining</span></h1>
+    <p>Start mining free crypto in seconds. No signup, no investment — just tap, mine, and withdraw to your Binance account.</p>
   </section>
 
+  <!-- ===== MAIN ACTIONS ===== -->
+  <section class="main-actions">
+
+    <!-- زر Start Mining -->
+    <a href="mining.html" class="cta-btn cta-mining">
+      <div class="cta-btn-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M14.5 3.5c-3 0-5.6 1.6-7.1 4"/>
+          <path d="M3.5 14.5c0-3 1.6-5.6 4-7.1"/>
+          <path d="M21 3l-2.2.4.4-2.2"/>
+          <path d="M14.6 3.6 21 10"/>
+          <path d="M4.4 10.4 10.8 16.8"/>
+          <path d="M9.5 15 4 20.5"/>
+          <path d="M15 9.5 20.5 4"/>
+        </svg>
+      </div>
+      <div class="cta-btn-content">
+        <div class="cta-btn-title">Start Mining</div>
+        <div class="cta-btn-sub">Begin mining digital coins instantly</div>
+      </div>
+      <div class="cta-btn-arrow">
+        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </div>
+    </a>
+
+    <!-- زر Wallet -->
+    <a href="wallet.html" class="cta-btn cta-wallet">
+      <div class="cta-btn-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M21 12V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5"/>
+          <path d="M16 12h6v4h-6a2 2 0 1 1 0-4z"/>
+        </svg>
+      </div>
+      <div class="cta-btn-content">
+        <div class="cta-btn-title">Open Wallet</div>
+        <div class="cta-btn-sub">Manage balances & withdraw to Binance</div>
+      </div>
+      <div class="cta-btn-arrow">
+        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </div>
+    </a>
+
+  </section>
+
+  <!-- ===== MINING BOTS ===== -->
   <div class="section-head">
     <div class="section-title">Mining Bots</div>
     <div class="section-count" id="count">0</div>
@@ -941,7 +942,7 @@
 
   <div class="grid" id="botsGrid"></div>
 
-  <!-- YouTube Channel -->
+  <!-- ===== YouTube ===== -->
   <section class="yt-section">
     <div class="section-head" style="margin-bottom: 14px;">
       <div class="section-title">Watch & Follow</div>
@@ -963,11 +964,11 @@
       </div>
     </a>
   </section>
+
 </main>
 
 <footer>
   <div class="copy"> 2026 ©</div>
-
   <div class="powered">
     <div class="powered-label">By Powered</div>
     <a class="powered-name" href="https://abdalkadraltrkh.github.io/turkah/" target="_blank" rel="noopener noreferrer">TURKAH</a>
@@ -977,48 +978,14 @@
 <script>
   /* ===== Bot data ===== */
   const bots = [
-    {
-      name: "EARNING GRAM",
-      img: "a0.jpg",
-      link: "https://t.me/EarningGram_bot?start=7931994096",
-      desc: "Mine Gram coins around the clock"
-    },
-    {
-      name: "GRAM PIRATE",
-      img: "a1.jpg",
-      link: "https://t.me/GramPirateBot?start=7931994096",
-      desc: "Mine & plunder Gram treasures"
-    },
-    {
-      name: "DOGS PIRATE",
-      img: "a2.jpg",
-      link: "https://t.me/DogsPtsbot?start=7931994096",
-      desc: "Mine Dog coins and rise ranks"
-    },
-
-
-     {
-      name: "CRYPTSON",
-      img: "a4.jpg",
-      link: "https://t.me/cryptson2_bot?startapp=97249",
-      desc: "Mine cryptson coins and rise ranks"
-    },
-
-
-    
-    {
-      name: "FLYMAGE",
-      img: "a3.jpg",
-      link: "https://t.me/flymage_bot?startapp=295200",
-      desc: "Mine Flymage tokens with AI power"
-    }
+    { name: "EARNING GRAM", img: "a0.jpg", link: "https://t.me/EarningGram_bot?start=7931994096", desc: "Mine Gram coins around the clock" },
+    { name: "GRAM PIRATE",  img: "a1.jpg", link: "https://t.me/GramPirateBot?start=7931994096",  desc: "Mine & plunder Gram treasures" },
+    { name: "DOGS PIRATE",  img: "a2.jpg", link: "https://t.me/DogsPtsbot?start=7931994096",      desc: "Mine Dog coins and rise ranks" },
+    { name: "FLYMAGE",      img: "a3.jpg", link: "https://t.me/flymage_bot?startapp=295200",      desc: "Mine Flymage tokens with AI power" },
+    { name: "CRYPTSON",     img: "a4.jpg", link: "https://t.me/cryptson2_bot?startapp=97249",     desc: "Mining coins through birds" }
   ];
 
-  const arrowSVG = `
-    <svg viewBox="0 0 24 24">
-      <line x1="5" y1="12" x2="19" y2="12"></line>
-      <polyline points="12 5 19 12 12 19"></polyline>
-    </svg>`;
+  const arrowSVG = `<svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>`;
 
   const fallbackAvatar = "data:image/svg+xml;utf8," + encodeURIComponent(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
@@ -1032,13 +999,10 @@
       <rect x="28" y="34" width="44" height="34" rx="10" fill="#fff" opacity="0.95"/>
       <circle cx="40" cy="50" r="4" fill="#0066ff"/>
       <circle cx="60" cy="50" r="4" fill="#0066ff"/>
-      <rect x="48" y="24" width="4" height="12" rx="2" fill="#fff"/>
-      <circle cx="50" cy="22" r="4" fill="#fff"/>
     </svg>
   `);
 
   const grid = document.getElementById('botsGrid');
-  const frag = document.createDocumentFragment();
   bots.forEach(bot => {
     const a = document.createElement('a');
     a.className = 'card';
@@ -1046,23 +1010,20 @@
     a.target = '_blank';
     a.rel = 'noopener noreferrer';
     a.innerHTML = `
-      <div class="avatar-wrap">
-        <img class="avatar" src="${bot.img}" alt="${bot.name}" loading="lazy"
-             onerror="this.onerror=null;this.src='${fallbackAvatar}'">
-      </div>
+      <img class="avatar" src="${bot.img}" alt="${bot.name}" loading="lazy"
+           onerror="this.onerror=null;this.src='${fallbackAvatar}'">
       <div class="info">
         <div class="bot-name">${bot.name}</div>
         <div class="bot-desc">${bot.desc}</div>
       </div>
       <div class="arrow">${arrowSVG}</div>
     `;
-    frag.appendChild(a);
+    grid.appendChild(a);
   });
-  grid.appendChild(frag);
 
   document.getElementById('count').textContent = bots.length + ' bots';
 
-  /* ===== Drawer menu ===== */
+  /* ===== Drawer ===== */
   const menuBtn = document.getElementById('menuBtn');
   const drawer = document.getElementById('drawer');
   const overlay = document.getElementById('overlay');
@@ -1071,13 +1032,11 @@
   function openDrawer() {
     drawer.classList.add('open');
     overlay.classList.add('open');
-    drawer.setAttribute('aria-hidden', 'false');
     document.body.classList.add('no-scroll');
   }
   function closeDrawer() {
     drawer.classList.remove('open');
     overlay.classList.remove('open');
-    drawer.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('no-scroll');
   }
 
@@ -1092,10 +1051,7 @@
   const thumbIcon = document.getElementById('thumbIcon');
 
   const moonIcon = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
-  const sunIcon = `
-    <circle cx="12" cy="12" r="4"/>
-    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
-  `;
+  const sunIcon = `<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>`;
 
   function setTheme(dark) {
     if (dark) {
@@ -1111,14 +1067,14 @@
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   if (saved === 'dark' || (!saved && prefersDark)) setTheme(true);
 
-  let lock = false;
   toggle.addEventListener('click', () => {
-    if (lock) return;
-    lock = true;
     const isDark = !body.classList.contains('dark');
-    requestAnimationFrame(() => setTheme(isDark));
+    setTheme(isDark);
     try { localStorage.setItem('adsy-theme', isDark ? 'dark' : 'light'); } catch (e) {}
-    setTimeout(() => { lock = false; }, 280);
+  });
+
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'adsy-theme') setTheme(e.newValue === 'dark');
   });
 </script>
 
