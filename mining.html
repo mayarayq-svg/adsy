@@ -55,7 +55,6 @@
     min-height: 100vh;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
     transition: background 0.35s ease, color 0.35s ease;
   }
   body.no-scroll { overflow: hidden; }
@@ -119,7 +118,6 @@
     min-width: 0;
   }
 
-  /* Menu button */
   .menu-btn {
     width: 40px;
     height: 40px;
@@ -133,9 +131,7 @@
     justify-content: center;
     gap: 4px;
     padding: 0;
-    transition: background 0.3s ease,
-                border-color 0.3s ease,
-                transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: background 0.3s ease, border-color 0.3s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     flex-shrink: 0;
     box-shadow: var(--shadow-sm);
   }
@@ -151,9 +147,7 @@
     height: 2px;
     border-radius: 2px;
     background: var(--text);
-    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-                opacity 0.25s ease,
-                width 0.3s ease;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, width 0.3s ease;
     transform-origin: center;
   }
   .menu-btn span:nth-child(2) { width: 11px; }
@@ -182,7 +176,6 @@
     50% { box-shadow: 0 0 0 8px transparent; }
   }
 
-  /* Theme toggle */
   .theme-toggle {
     position: relative;
     width: 60px; height: 32px;
@@ -193,9 +186,7 @@
     padding: 0;
     display: flex;
     align-items: center;
-    transition: background 0.3s ease,
-                border-color 0.3s ease,
-                transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: background 0.3s ease, border-color 0.3s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     overflow: hidden;
     box-shadow: var(--shadow-sm);
     flex-shrink: 0;
@@ -337,9 +328,7 @@
     letter-spacing: -0.01em;
     cursor: pointer;
     border: 1px solid transparent;
-    transition: background 0.25s ease,
-                color 0.25s ease,
-                transform 0.2s ease;
+    transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease;
   }
   .nav-item:hover {
     background: var(--accent-soft);
@@ -466,7 +455,6 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
-  /* ===== Section ===== */
   .section-head {
     display: flex;
     align-items: center;
@@ -491,14 +479,12 @@
     border-radius: 100px;
   }
 
-  /* ===== Mining Cards Stack ===== */
   .mining-list {
     display: flex;
     flex-direction: column;
     gap: 12px;
   }
 
-  /* Long slim card */
   .mining-card {
     position: relative;
     display: flex;
@@ -514,15 +500,14 @@
     overflow: hidden;
     isolation: isolate;
     animation: fadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
-    transition:
-      transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-      border-color 0.3s ease,
-      background 0.3s ease,
-      box-shadow 0.35s ease;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, background 0.3s ease, box-shadow 0.35s ease;
   }
   .mining-card:nth-child(1) { animation-delay: 0.10s; }
-  .mining-card:nth-child(2) { animation-delay: 0.18s; }
-  .mining-card:nth-child(3) { animation-delay: 0.26s; }
+  .mining-card:nth-child(2) { animation-delay: 0.16s; }
+  .mining-card:nth-child(3) { animation-delay: 0.22s; }
+  .mining-card:nth-child(4) { animation-delay: 0.28s; }
+  .mining-card:nth-child(5) { animation-delay: 0.34s; }
+  .mining-card:nth-child(6) { animation-delay: 0.40s; }
 
   .mining-card::after {
     content: '';
@@ -557,8 +542,7 @@
     border: 1px solid var(--line);
     flex-shrink: 0;
     display: block;
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                border-color 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
   }
   .mining-card:hover .mining-logo {
     transform: scale(1.04);
@@ -600,7 +584,6 @@
     text-overflow: ellipsis;
   }
 
-  /* Start button */
   .start-btn {
     display: flex;
     align-items: center;
@@ -614,10 +597,7 @@
     letter-spacing: 0.02em;
     flex-shrink: 0;
     box-shadow: 0 6px 18px var(--accent-glow);
-    transition:
-      transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-      box-shadow 0.35s ease,
-      filter 0.3s ease;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, filter 0.3s ease;
   }
   .start-btn svg {
     width: 14px;
@@ -709,21 +689,11 @@
     body::after { background-size: 40px 40px; }
     footer { padding: 26px 18px 32px; }
 
-    .mining-card {
-      padding: 14px;
-      gap: 14px;
-      border-radius: 14px;
-      flex-wrap: wrap;
-    }
-    .mining-logo { width: 52px; height: 52px; border-radius: 50%; }
+    .mining-card { padding: 14px; gap: 14px; border-radius: 14px; flex-wrap: wrap; }
+    .mining-logo { width: 52px; height: 52px; }
     .mining-name { font-size: 15px; }
     .mining-sub { font-size: 11.5px; }
-    .start-btn {
-      width: 100%;
-      justify-content: center;
-      padding: 12px 16px;
-      font-size: 13px;
-    }
+    .start-btn { width: 100%; justify-content: center; padding: 12px 16px; font-size: 13px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -772,6 +742,7 @@
   </div>
 
   <nav class="drawer-nav">
+    <!-- Home -->
     <a class="nav-item" href="index.html">
       <div class="nav-icon">
         <svg viewBox="0 0 24 24">
@@ -784,6 +755,7 @@
       <svg class="nav-arrow" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
     </a>
 
+    <!-- Mining (Active) -->
     <a class="nav-item active" href="mining.html">
       <div class="nav-icon">
         <svg viewBox="0 0 24 24">
@@ -797,6 +769,18 @@
         </svg>
       </div>
       <span>Mining</span>
+      <svg class="nav-arrow" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+    </a>
+
+    <!-- Wallet -->
+    <a class="nav-item" href="wallet.html">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M21 12V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5"/>
+          <path d="M16 12h6v4h-6a2 2 0 1 1 0-4z"/>
+        </svg>
+      </div>
+      <span>Wallet</span>
       <svg class="nav-arrow" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
     </a>
   </nav>
@@ -841,51 +825,42 @@
       link: "bttc.html",
       sub: "BitTorrent mining platform"
     },
-
-   {
+    {
       label: "Mining",
-      name: "pepe",
+      name: "PEPE",
       img: "pepe.png",
       link: "pepe.html",
       sub: "Pepe mining platform"
     },
-
     {
       label: "Mining",
-      name: "dogs",
+      name: "DOGS",
       img: "dogs.png",
       link: "dogs.html",
       sub: "Dogs mining platform"
     },
-
     {
       label: "Mining",
-      name: "vtho",
+      name: "VTHO",
       img: "vtho.png",
       link: "vtho.html",
-      sub: "Vtho mining platform"
+      sub: "VeThor mining platform"
     },
-
-
     {
       label: "Mining",
-      name: "solv",
+      name: "SOLV",
       img: "solv.png",
       link: "solv.html",
       sub: "Solv mining platform"
     },
-
     {
       label: "Mining",
-      name: "quick",
+      name: "QUICK",
       img: "QUICK.png",
       link: "quick.html",
-      sub: "Quick mining platform"
-    },
-
-    
+      sub: "QuickSwap mining platform"
+    }
   ];
-  
 
   const startSVG = `
     <svg viewBox="0 0 24 24">
@@ -901,7 +876,7 @@
           <stop offset="100%" stop-color="#7ab3ff"/>
         </linearGradient>
       </defs>
-      <rect width="100" height="100" rx="22" fill="url(#g)"/>
+      <rect width="100" height="100" rx="50" fill="url(#g)"/>
       <text x="50" y="64" font-size="42" font-family="Arial,sans-serif" font-weight="bold" fill="#fff" text-anchor="middle">M</text>
     </svg>
   `);
@@ -989,6 +964,13 @@
     requestAnimationFrame(() => setTheme(isDark));
     try { localStorage.setItem('adsy-theme', isDark ? 'dark' : 'light'); } catch (e) {}
     setTimeout(() => { lock = false; }, 280);
+  });
+
+  // مزامنة الوضع بين التبويبات
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'adsy-theme') {
+      setTheme(e.newValue === 'dark');
+    }
   });
 </script>
 
