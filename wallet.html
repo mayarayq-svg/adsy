@@ -381,17 +381,17 @@
   .coins-list {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
   }
 
   .coin-row {
     display: flex;
     align-items: center;
     gap: 14px;
-    padding: 14px;
+    padding: 16px;
     background: var(--bg-soft);
     border: 1px solid var(--line);
-    border-radius: 16px;
+    border-radius: 18px;
     cursor: pointer;
     position: relative;
     overflow: hidden;
@@ -415,17 +415,17 @@
   }
 
   .coin-icon {
-    width: 48px; height: 48px;
+    width: 50px; height: 50px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
     font-weight: 900;
-    font-size: 16px;
+    font-size: 17px;
     color: #fff;
     overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.18);
     background: var(--bg);
   }
   .coin-icon img {
@@ -441,19 +441,48 @@
   .coin-solv  { background: linear-gradient(135deg, #8b3dff, #b47cff); }
   .coin-quick { background: linear-gradient(135deg, #4a90d9, #7ec4ff); }
 
-  .coin-info {
+  .coin-body {
     flex: 1;
     min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 6px;
   }
+
+  .coin-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
   .coin-name {
-    font-size: 14.5px;
+    font-size: 15px;
     font-weight: 800;
     color: var(--text);
     letter-spacing: 0.02em;
   }
+
+  .coin-amount-badge {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    padding: 3px 9px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+  }
+
+  .coin-body-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
   .coin-sub {
     font-size: 11.5px;
     color: var(--muted);
@@ -464,31 +493,16 @@
     font-weight: 700;
   }
 
-  .coin-amounts {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 2px;
-    flex-shrink: 0;
-  }
-  .coin-amount {
-    font-size: 15px;
-    font-weight: 800;
-    color: var(--text);
-    font-variant-numeric: tabular-nums;
-    letter-spacing: -0.01em;
-    white-space: nowrap;
-  }
-  .coin-amount.big {
-    font-size: 13.5px;
-  }
   .coin-usd {
-    font-size: 11px;
-    color: var(--muted);
-    font-weight: 600;
+    font-size: 12.5px;
+    color: var(--accent);
+    font-weight: 800;
     font-variant-numeric: tabular-nums;
     letter-spacing: 0.01em;
     white-space: nowrap;
+    padding: 2px 8px;
+    background: var(--accent-soft);
+    border-radius: 6px;
   }
 
   .coin-cta {
@@ -912,11 +926,10 @@
   @media (max-width: 420px) {
     body { padding: 14px; }
     .balance-hero-value { font-size: 1.85rem; }
-    .coin-icon { width: 42px; height: 42px; font-size: 14px; }
-    .coin-name { font-size: 13.5px; }
-    .coin-amount { font-size: 13.5px; }
-    .coin-amount.big { font-size: 12px; }
-    .coin-usd { font-size: 10.5px; }
+    .coin-icon { width: 44px; height: 44px; font-size: 15px; }
+    .coin-name { font-size: 14px; }
+    .coin-amount-badge { font-size: 13px; }
+    .coin-usd { font-size: 11.5px; }
     .modal { padding: 24px 18px; }
     .amount-display-value { font-size: 24px; }
   }
@@ -952,7 +965,7 @@
       </div>
       <div class="balance-hero-label">Total Value</div>
       <div class="balance-hero-value">
-        <span class="currency">$</span><span id="totalUsd">0.00</span>
+        <span class="currency">$</span><span id="totalUsd">0.000</span>
       </div>
       <div class="balance-hero-unit">
         <span class="live-dot"></span>
@@ -1029,17 +1042,16 @@
      COINS DEFINITIONS
   ============================================ */
   const COINS = [
-    { code: 'BTTC',  name: 'BitTorrent', img: 'logobttc.png', cls: 'coin-bttc',  fallback: 'B', storageKey: 'bttc_balance',  cooldownKey: 'bttc_lastWithdrawAt',  minWithdraw: 5000, decimals: 0, geckoId: 'bittorrent' },
-    { code: 'PEPE',  name: 'Pepe',       img: 'pepe.png',     cls: 'coin-pepe',  fallback: 'P', storageKey: 'pepe_balance',  cooldownKey: 'pepe_lastWithdrawAt',  minWithdraw: 500,  decimals: 0, geckoId: 'pepe' },
-    { code: 'DOGS',  name: 'Dogs',       img: 'dogs.png',     cls: 'coin-dogs',  fallback: 'D', storageKey: 'dogs_balance',  cooldownKey: 'dogs_lastWithdrawAt',  minWithdraw: 150,  decimals: 0, geckoId: 'dogs-2' },
-    { code: 'VTHO',  name: 'VeThor',     img: 'vtho.png',     cls: 'coin-vtho',  fallback: 'V', storageKey: 'vtho_balance',  cooldownKey: 'vtho_lastWithdrawAt',  minWithdraw: 10,   decimals: 2, geckoId: 'vethor-token' },
-    { code: 'SOLV',  name: 'Solv',       img: 'solv.png',     cls: 'coin-solv',  fallback: 'S', storageKey: 'solv_balance',  cooldownKey: 'solv_lastWithdrawAt',  minWithdraw: 1,    decimals: 3, geckoId: 'solv-protocol' },
-    { code: 'QUICK', name: 'QuickSwap',  img: 'QUICK.png',    cls: 'coin-quick', fallback: 'Q', storageKey: 'quick_balance', cooldownKey: 'quick_lastWithdrawAt', minWithdraw: 1,    decimals: 2, geckoId: 'quickswap' }
+    { code: 'BTTC',  name: 'BitTorrent', img: 'logobttc.png', cls: 'coin-bttc',  fallback: 'B', storageKey: 'bttc_balance',  cooldownKey: 'bttc_lastWithdrawAt',  minWithdraw: 5000, geckoId: 'bittorrent' },
+    { code: 'PEPE',  name: 'Pepe',       img: 'pepe.png',     cls: 'coin-pepe',  fallback: 'P', storageKey: 'pepe_balance',  cooldownKey: 'pepe_lastWithdrawAt',  minWithdraw: 500,  geckoId: 'pepe' },
+    { code: 'DOGS',  name: 'Dogs',       img: 'dogs.png',     cls: 'coin-dogs',  fallback: 'D', storageKey: 'dogs_balance',  cooldownKey: 'dogs_lastWithdrawAt',  minWithdraw: 150,  geckoId: 'dogs-2' },
+    { code: 'VTHO',  name: 'VeThor',     img: 'vtho.png',     cls: 'coin-vtho',  fallback: 'V', storageKey: 'vtho_balance',  cooldownKey: 'vtho_lastWithdrawAt',  minWithdraw: 10,   geckoId: 'vethor-token' },
+    { code: 'SOLV',  name: 'Solv',       img: 'solv.png',     cls: 'coin-solv',  fallback: 'S', storageKey: 'solv_balance',  cooldownKey: 'solv_lastWithdrawAt',  minWithdraw: 1,    geckoId: 'solv-protocol' },
+    { code: 'QUICK', name: 'QuickSwap',  img: 'QUICK.png',    cls: 'coin-quick', fallback: 'Q', storageKey: 'quick_balance', cooldownKey: 'quick_lastWithdrawAt', minWithdraw: 1,    geckoId: 'quickswap' }
   ];
 
   /* ============================================
-     🛡️ SAFE PRICE LIMITS
-     إذا خرج السعر عن هذه الحدود → نتجاهل سعر API
+     SAFE PRICE LIMITS
   ============================================ */
   const SAFE_LIMITS = {
     BTTC:  { min: 0.0000001, max: 0.0001 },
@@ -1051,7 +1063,7 @@
   };
 
   /* ============================================
-     DEFAULT PRICES (fallback)
+     DEFAULT PRICES
   ============================================ */
   let PRICES = {
     BTTC: 0.00000055,
@@ -1091,10 +1103,21 @@
     return Math.max(0, WITHDRAW_COOLDOWN - (Date.now() - last));
   }
 
-  function formatBalance(v, dec) {
+  /* ⭐ دائماً 3 منازل عشرية */
+  function formatBalance(v) {
     if (!isFinite(v) || v < 0) v = 0;
-    if (dec === 0) return Math.floor(v).toLocaleString('en-US');
-    return v.toFixed(dec);
+    return v.toFixed(3);
+  }
+
+  /* ⭐ سعر كل عملة بـ 6 منازل عشرية إذا كان صغيراً جداً، وإلا 3 */
+  function formatPrice(v) {
+    if (!isFinite(v) || v < 0) v = 0;
+    if (v === 0) return '0.000';
+    if (v < 0.001) {
+      // أعرض 6 منازل عشرية للأسعار الصغيرة جداً
+      return v.toFixed(6);
+    }
+    return v.toFixed(3);
   }
 
   function formatTime(ms) {
@@ -1109,10 +1132,7 @@
 
   function formatUsd(v) {
     if (!isFinite(v) || v < 0) v = 0;
-    if (v === 0) return '$0.00';
-    if (v < 0.01) return '<$0.01';
-    if (v < 1000) return '$' + v.toFixed(2);
-    return '$' + v.toLocaleString('en-US', { maximumFractionDigits: 2 });
+    return v.toFixed(3);
   }
 
   function usdValueOf(coin, amount) {
@@ -1137,7 +1157,7 @@
   }
 
   /* ============================================
-     🛡️ VALIDATE PRICE
+     VALIDATE PRICE
   ============================================ */
   function isValidPrice(code, price) {
     if (!isFinite(price) || price <= 0) return false;
@@ -1150,13 +1170,11 @@
      PRICE FETCHING (CoinGecko)
   ============================================ */
   async function fetchPrices(force = false) {
-    // 1. الكاش
     if (!force) {
       try {
         const cached = JSON.parse(localStorage.getItem(PRICE_CACHE_KEY) || '{}');
         if (cached.timestamp && (Date.now() - cached.timestamp) < PRICE_CACHE_TTL) {
           if (cached.prices) {
-            // تحقق من صحة الأسعار المخزنة أيضاً
             const validCached = {};
             Object.keys(cached.prices).forEach(code => {
               if (isValidPrice(code, cached.prices[code])) {
@@ -1170,7 +1188,6 @@
       } catch (e) {}
     }
 
-    // 2. جلب من CoinGecko
     try {
       const ids = COINS.map(c => c.geckoId).join(',');
       const url = `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd`;
@@ -1183,11 +1200,10 @@
       COINS.forEach(coin => {
         const priceData = data[coin.geckoId];
         if (priceData && typeof priceData.usd === 'number') {
-          // 🛡️ فحص حدود الأمان
           if (isValidPrice(coin.code, priceData.usd)) {
             newPrices[coin.code] = priceData.usd;
           } else {
-            console.warn(`⚠️ ${coin.code} price out of range: $${priceData.usd} — using default`);
+            console.warn(`⚠️ ${coin.code} price out of range: $${priceData.usd}`);
           }
         }
       });
@@ -1239,9 +1255,7 @@
 
     COINS.forEach(coin => {
       const bal = getBalance(coin);
-      const isBig = coin.decimals === 0 && bal >= 100000;
-      const amountCls = isBig ? 'coin-amount big' : 'coin-amount';
-
+      const price = PRICES[coin.code] || 0;
       const usd = usdValueOf(coin, bal);
       totalUsd += usd;
 
@@ -1262,7 +1276,7 @@
         subClass = 'coin-sub warn';
         rowClass += ' globally-locked';
       } else if (!canSend && bal > 0) {
-        subLabel = 'Min ' + formatBalance(coin.minWithdraw, coin.decimals) + ' to send';
+        subLabel = 'Min ' + coin.minWithdraw + ' to send';
       } else if (bal === 0) {
         subLabel = 'No balance';
       } else {
@@ -1276,13 +1290,15 @@
           <img src="${coin.img}" alt="${coin.code}"
                onerror="this.style.display='none';this.parentElement.textContent='${coin.fallback}'">
         </div>
-        <div class="coin-info">
-          <div class="coin-name">${coin.code}</div>
-          <div class="${subClass}">${subLabel}</div>
-        </div>
-        <div class="coin-amounts">
-          <div class="${amountCls}">${formatBalance(bal, coin.decimals)}</div>
-          <div class="coin-usd">${formatUsd(usd)}</div>
+        <div class="coin-body">
+          <div class="coin-header-row">
+            <div class="coin-name">${coin.code}</div>
+            <div class="coin-amount-badge">${formatBalance(bal)}</div>
+          </div>
+          <div class="coin-body-row">
+            <div class="${subClass}">${subLabel}</div>
+            <div class="coin-usd">$${formatPrice(price)}</div>
+          </div>
         </div>
         <div class="coin-cta">
           <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
@@ -1300,7 +1316,7 @@
         }
         if (!canSend) {
           if (bal === 0) showToast('No ' + coin.code + ' balance', 'warning', 3000);
-          else showToast('Minimum ' + formatBalance(coin.minWithdraw, coin.decimals) + ' ' + coin.code, 'warning', 3000);
+          else showToast('Minimum ' + coin.minWithdraw + ' ' + coin.code, 'warning', 3000);
           return;
         }
         openSendModal(coin);
@@ -1309,7 +1325,7 @@
       list.appendChild(row);
     });
 
-    document.getElementById('totalUsd').textContent = totalUsd.toFixed(2);
+    document.getElementById('totalUsd').textContent = totalUsd.toFixed(3);
   }
 
   /* ============================================
@@ -1379,10 +1395,10 @@
       <div class="amount-display">
         <div class="amount-display-label">You Are Sending</div>
         <div class="amount-display-value">
-          ${formatBalance(bal, coin.decimals)}
+          ${formatBalance(bal)}
           <small>${coin.code}</small>
         </div>
-        <div class="amount-display-usd">≈ ${formatUsd(usd)} USD</div>
+        <div class="amount-display-usd">≈ $${formatUsd(usd)} USD</div>
       </div>
 
       <form id="sendForm">
@@ -1448,7 +1464,7 @@
 
     const currentBal = getBalance(coin);
     if (currentBal < coin.minWithdraw) {
-      showToast('Minimum ' + formatBalance(coin.minWithdraw, coin.decimals) + ' ' + coin.code, 'error', 3000);
+      showToast('Minimum ' + coin.minWithdraw + ' ' + coin.code, 'error', 3000);
       return;
     }
 
@@ -1469,8 +1485,8 @@
     sendData.set('binance_id', binanceId);
     sendData.set('coin', coin.code);
     sendData.set('coin_name', coin.name);
-    sendData.set('amount', formatBalance(amount, coin.decimals) + ' ' + coin.code);
-    sendData.set('amount_usd', formatUsd(usd));
+    sendData.set('amount', formatBalance(amount) + ' ' + coin.code);
+    sendData.set('amount_usd', '$' + formatUsd(usd));
     sendData.set('withdraw_date', new Date().toLocaleString('en-US'));
     sendData.set('source', 'ADSY Wallet');
 
@@ -1514,8 +1530,8 @@
         <div class="success-title">Request Sent!</div>
         <div class="success-desc">
           Your <b>${coin.code}</b> will be sent to your Binance account<br>
-          <b style="font-size: 18px;">${formatBalance(amount, coin.decimals)} ${coin.code}</b><br>
-          <span style="color: var(--accent); font-weight: 800;">≈ ${formatUsd(usd)} USD</span><br>
+          <b style="font-size: 18px;">${formatBalance(amount)} ${coin.code}</b><br>
+          <span style="color: var(--accent); font-weight: 800;">≈ $${formatUsd(usd)} USD</span><br>
           to: <b>${escapeHtml(fullName)}</b><br>
           Binance ID: <b style="direction: ltr; display: inline-block;">${escapeHtml(binanceId)}</b><br>
           <span style="font-size: 11px; color: var(--muted);">within 24-48 hours</span>
