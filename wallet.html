@@ -1103,20 +1103,14 @@
     return Math.max(0, WITHDRAW_COOLDOWN - (Date.now() - last));
   }
 
-  /* ⭐ دائماً 3 منازل عشرية */
+  /* ⭐ كل الأرقام 3 منازل عشرية */
   function formatBalance(v) {
     if (!isFinite(v) || v < 0) v = 0;
     return v.toFixed(3);
   }
 
-  /* ⭐ سعر كل عملة بـ 6 منازل عشرية إذا كان صغيراً جداً، وإلا 3 */
-  function formatPrice(v) {
+  function formatUsd(v) {
     if (!isFinite(v) || v < 0) v = 0;
-    if (v === 0) return '0.000';
-    if (v < 0.001) {
-      // أعرض 6 منازل عشرية للأسعار الصغيرة جداً
-      return v.toFixed(6);
-    }
     return v.toFixed(3);
   }
 
@@ -1128,16 +1122,6 @@
     const s = totalSec % 60;
     if (h > 0) return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
     return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-  }
-
-  function formatUsd(v) {
-    if (!isFinite(v) || v < 0) v = 0;
-    return v.toFixed(3);
-  }
-
-  function usdValueOf(coin, amount) {
-    const price = PRICES[coin.code] || 0;
-    return amount * price;
   }
 
   function escapeHtml(str) {
@@ -1202,8 +1186,6 @@
         if (priceData && typeof priceData.usd === 'number') {
           if (isValidPrice(coin.code, priceData.usd)) {
             newPrices[coin.code] = priceData.usd;
-          } else {
-            console.warn(`⚠️ ${coin.code} price out of range: $${priceData.usd}`);
           }
         }
       });
@@ -1256,8 +1238,10 @@
     COINS.forEach(coin => {
       const bal = getBalance(coin);
       const price = PRICES[coin.code] || 0;
-      const usd = usdValueOf(coin, bal);
-      totalUsd += usd;
+
+      /* ⭐ القيمة الإجمالية = الرصيد × سعر الوحدة */
+      const totalValueUsd = bal * price;
+      totalUsd += totalValueUsd;
 
       const coinCooldown = getCooldownRemaining(coin);
       const coinLocked = coinCooldown > 0;
@@ -1297,7 +1281,7 @@
           </div>
           <div class="coin-body-row">
             <div class="${subClass}">${subLabel}</div>
-            <div class="coin-usd">$${formatPrice(price)}</div>
+            <div class="coin-usd">$${formatUsd(totalValueUsd)}</div>
           </div>
         </div>
         <div class="coin-cta">
@@ -1337,7 +1321,8 @@
     currentCoin = coin;
     const modalContent = document.getElementById('modalContent');
     const bal = getBalance(coin);
-    const usd = usdValueOf(coin, bal);
+    const price = PRICES[coin.code] || 0;
+    const totalUsd = bal * price;
 
     const otherCoinsWithBalance = COINS.filter(c => c.code !== coin.code && getBalance(c) > 0);
 
@@ -1398,7 +1383,7 @@
           ${formatBalance(bal)}
           <small>${coin.code}</small>
         </div>
-        <div class="amount-display-usd">≈ $${formatUsd(usd)} USD</div>
+        <div class="amount-display-usd">≈ $${formatUsd(totalUsd)} USD</div>
       </div>
 
       <form id="sendForm">
@@ -1474,7 +1459,8 @@
     }
 
     const amount = currentBal;
-    const usd = usdValueOf(coin, amount);
+    const price = PRICES[coin.code] || 0;
+    const totalUsd = amount * price;
 
     const sendData = new FormData();
     sendData.set('subject', `${coin.code} Wallet Withdrawal - ADSY`);
@@ -1486,7 +1472,7 @@
     sendData.set('coin', coin.code);
     sendData.set('coin_name', coin.name);
     sendData.set('amount', formatBalance(amount) + ' ' + coin.code);
-    sendData.set('amount_usd', '$' + formatUsd(usd));
+    sendData.set('amount_usd', '$' + formatUsd(totalUsd));
     sendData.set('withdraw_date', new Date().toLocaleString('en-US'));
     sendData.set('source', 'ADSY Wallet');
 
@@ -1504,7 +1490,7 @@
     })
     .then(data => {
       if (data && data.success === false) throw new Error(data.message || 'Rejected');
-      successSend(coin, amount, usd, fullName, binanceId);
+      successSend(coin, amount, totalUsd, fullName, binanceId);
     })
     .catch(err => {
       console.error('Send failed:', err);
@@ -1517,7 +1503,7 @@
     });
   }
 
-  function successSend(coin, amount, usd, fullName, binanceId) {
+  function successSend(coin, amount, totalUsd, fullName, binanceId) {
     localStorage.setItem(coin.storageKey, '0');
     localStorage.setItem(coin.cooldownKey, Date.now());
 
@@ -1531,7 +1517,7 @@
         <div class="success-desc">
           Your <b>${coin.code}</b> will be sent to your Binance account<br>
           <b style="font-size: 18px;">${formatBalance(amount)} ${coin.code}</b><br>
-          <span style="color: var(--accent); font-weight: 800;">≈ $${formatUsd(usd)} USD</span><br>
+          <span style="color: var(--accent); font-weight: 800;">≈ $${formatUsd(totalUsd)} USD</span><br>
           to: <b>${escapeHtml(fullName)}</b><br>
           Binance ID: <b style="direction: ltr; display: inline-block;">${escapeHtml(binanceId)}</b><br>
           <span style="font-size: 11px; color: var(--muted);">within 24-48 hours</span>
