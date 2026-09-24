@@ -158,7 +158,6 @@
   .back-btn:active { transform: scale(0.94); }
   .back-btn svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
 
-  /* Theme toggle */
   .theme-toggle {
     position: relative;
     width: 56px; height: 30px;
@@ -220,7 +219,6 @@
   body:not(.dark) .icon-moon { opacity: 0; }
   body.dark .icon-sun { opacity: 0; }
 
-  /* Main card */
   .main-card {
     width: 100%;
     max-width: 460px;
@@ -237,7 +235,6 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
-  /* Hero */
   .balance-hero {
     text-align: center;
     padding: 8px 0 22px;
@@ -261,16 +258,6 @@
     stroke: #fff; fill: none;
     stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;
   }
-  .balance-hero-icon.loading::after {
-    content: '';
-    position: absolute;
-    inset: -4px;
-    border-radius: 22px;
-    border: 2px solid transparent;
-    border-top-color: var(--accent);
-    animation: spin 1s linear infinite;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
 
   .balance-hero-label {
     font-size: 11px;
@@ -319,7 +306,6 @@
     50% { opacity: 0.4; }
   }
 
-  /* One-coin warning */
   .one-coin-notice {
     background: var(--gold-soft);
     border: 1px solid rgba(245,158,11,0.4);
@@ -352,7 +338,6 @@
   }
   .one-coin-notice-text b { font-weight: 800; }
 
-  /* Section title */
   .section-title {
     font-size: 12px;
     font-weight: 700;
@@ -379,6 +364,7 @@
     padding: 4px 8px;
     border-radius: 8px;
     transition: 0.2s;
+    font-family: inherit;
   }
   .section-title .refresh-btn:hover { background: var(--accent-soft); color: var(--accent); }
   .section-title .refresh-btn svg {
@@ -390,8 +376,8 @@
     stroke-linejoin: round;
   }
   .section-title .refresh-btn.spinning svg { animation: spin 0.6s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* Coins list */
   .coins-list {
     display: flex;
     flex-direction: column;
@@ -536,7 +522,6 @@
     stroke: #fff;
   }
 
-  /* Footer */
   .footer-note {
     width: 100%;
     max-width: 460px;
@@ -959,7 +944,7 @@
   <div class="main-card">
 
     <div class="balance-hero">
-      <div class="balance-hero-icon" id="heroIcon">
+      <div class="balance-hero-icon">
         <svg viewBox="0 0 24 24">
           <path d="M21 12V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5"/>
           <path d="M16 12h6v4h-6a2 2 0 1 1 0-4z"/>
@@ -1038,7 +1023,7 @@
   ============================================ */
   const WITHDRAW_COOLDOWN = 12 * 60 * 60 * 1000;
   const PRICE_CACHE_KEY = 'adsy_price_cache';
-  const PRICE_CACHE_TTL = 5 * 60 * 1000; // 5 دقائق
+  const PRICE_CACHE_TTL = 5 * 60 * 1000;
 
   /* ============================================
      COINS DEFINITIONS
@@ -1046,14 +1031,27 @@
   const COINS = [
     { code: 'BTTC',  name: 'BitTorrent', img: 'logobttc.png', cls: 'coin-bttc',  fallback: 'B', storageKey: 'bttc_balance',  cooldownKey: 'bttc_lastWithdrawAt',  minWithdraw: 5000, decimals: 0, geckoId: 'bittorrent' },
     { code: 'PEPE',  name: 'Pepe',       img: 'pepe.png',     cls: 'coin-pepe',  fallback: 'P', storageKey: 'pepe_balance',  cooldownKey: 'pepe_lastWithdrawAt',  minWithdraw: 500,  decimals: 0, geckoId: 'pepe' },
-    { code: 'DOGS',  name: 'Dogs',       img: 'dogs.png',     cls: 'coin-dogs',  fallback: 'D', storageKey: 'dogs_balance',  cooldownKey: 'dogs_lastWithdrawAt',  minWithdraw: 150,  decimals: 0, geckoId: 'dogs' },
+    { code: 'DOGS',  name: 'Dogs',       img: 'dogs.png',     cls: 'coin-dogs',  fallback: 'D', storageKey: 'dogs_balance',  cooldownKey: 'dogs_lastWithdrawAt',  minWithdraw: 150,  decimals: 0, geckoId: 'dogs-2' },
     { code: 'VTHO',  name: 'VeThor',     img: 'vtho.png',     cls: 'coin-vtho',  fallback: 'V', storageKey: 'vtho_balance',  cooldownKey: 'vtho_lastWithdrawAt',  minWithdraw: 10,   decimals: 2, geckoId: 'vethor-token' },
     { code: 'SOLV',  name: 'Solv',       img: 'solv.png',     cls: 'coin-solv',  fallback: 'S', storageKey: 'solv_balance',  cooldownKey: 'solv_lastWithdrawAt',  minWithdraw: 1,    decimals: 3, geckoId: 'solv-protocol' },
     { code: 'QUICK', name: 'QuickSwap',  img: 'QUICK.png',    cls: 'coin-quick', fallback: 'Q', storageKey: 'quick_balance', cooldownKey: 'quick_lastWithdrawAt', minWithdraw: 1,    decimals: 2, geckoId: 'quickswap' }
   ];
 
   /* ============================================
-     PRICES (default values if API fails)
+     🛡️ SAFE PRICE LIMITS
+     إذا خرج السعر عن هذه الحدود → نتجاهل سعر API
+  ============================================ */
+  const SAFE_LIMITS = {
+    BTTC:  { min: 0.0000001, max: 0.0001 },
+    PEPE:  { min: 0.000001,  max: 0.001 },
+    DOGS:  { min: 0.00001,   max: 0.01 },
+    VTHO:  { min: 0.0005,    max: 0.05 },
+    SOLV:  { min: 0.001,     max: 1 },
+    QUICK: { min: 0.001,     max: 1 }
+  };
+
+  /* ============================================
+     DEFAULT PRICES (fallback)
   ============================================ */
   let PRICES = {
     BTTC: 0.00000055,
@@ -1139,27 +1137,44 @@
   }
 
   /* ============================================
+     🛡️ VALIDATE PRICE
+  ============================================ */
+  function isValidPrice(code, price) {
+    if (!isFinite(price) || price <= 0) return false;
+    const lim = SAFE_LIMITS[code];
+    if (!lim) return true;
+    return price >= lim.min && price <= lim.max;
+  }
+
+  /* ============================================
      PRICE FETCHING (CoinGecko)
   ============================================ */
   async function fetchPrices(force = false) {
-    // 1. جرب الكاش أولاً
+    // 1. الكاش
     if (!force) {
       try {
         const cached = JSON.parse(localStorage.getItem(PRICE_CACHE_KEY) || '{}');
         if (cached.timestamp && (Date.now() - cached.timestamp) < PRICE_CACHE_TTL) {
           if (cached.prices) {
-            PRICES = { ...PRICES, ...cached.prices };
+            // تحقق من صحة الأسعار المخزنة أيضاً
+            const validCached = {};
+            Object.keys(cached.prices).forEach(code => {
+              if (isValidPrice(code, cached.prices[code])) {
+                validCached[code] = cached.prices[code];
+              }
+            });
+            PRICES = { ...PRICES, ...validCached };
             return true;
           }
         }
       } catch (e) {}
     }
 
-    // 2. اجلب من CoinGecko
+    // 2. جلب من CoinGecko
     try {
       const ids = COINS.map(c => c.geckoId).join(',');
       const url = `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd`;
-      
+
       const res = await fetch(url);
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
@@ -1168,7 +1183,12 @@
       COINS.forEach(coin => {
         const priceData = data[coin.geckoId];
         if (priceData && typeof priceData.usd === 'number') {
-          newPrices[coin.code] = priceData.usd;
+          // 🛡️ فحص حدود الأمان
+          if (isValidPrice(coin.code, priceData.usd)) {
+            newPrices[coin.code] = priceData.usd;
+          } else {
+            console.warn(`⚠️ ${coin.code} price out of range: $${priceData.usd} — using default`);
+          }
         }
       });
 
@@ -1534,7 +1554,6 @@
     }
   }
 
-  // تحميل الوضع من localStorage (نفس مفتاح باقي الموقع)
   const saved = localStorage.getItem('adsy-theme');
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   if (saved === 'dark' || (!saved && prefersDark)) setTheme(true);
@@ -1549,7 +1568,6 @@
     setTimeout(() => { themeLock = false; }, 280);
   });
 
-  // مزامنة الوضع بين التبويبات
   window.addEventListener('storage', (e) => {
     if (e.key === 'adsy-theme') {
       setTheme(e.newValue === 'dark');
@@ -1557,7 +1575,7 @@
   });
 
   /* ============================================
-     MODAL CLOSE EVENTS
+     MODAL CLOSE
   ============================================ */
   document.getElementById('modalOverlay').addEventListener('click', (e) => {
     if (e.target.id === 'modalOverlay') closeModal();
@@ -1581,21 +1599,15 @@
   /* ============================================
      INIT
   ============================================ */
-  // 1. اعرض الصفحة فوراً بالأسعار الافتراضية
   renderCoins();
-
-  // 2. اجلب الأسعار في الخلفية
   fetchPrices();
 
-  // 3. تحديث كل ثانية (للعدّادات)
   setInterval(renderCoins, 1000);
 
-  // 4. تحديث الأسعار كل 5 دقائق
   setInterval(() => {
     fetchPrices(true).then(() => renderCoins());
   }, 5 * 60 * 1000);
 
-  // 5. مزامنة عند العودة
   window.addEventListener('storage', renderCoins);
   window.addEventListener('focus', () => {
     fetchPrices().then(() => renderCoins());
