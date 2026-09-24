@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
@@ -540,7 +541,7 @@
 
     <div class="balance-card">
       <div class="balance-label">Total Balance</div>
-      <div class="balance-value" id="balanceEl">0</div>
+      <div class="balance-value" id="balanceEl">0.000</div>
       <div class="balance-unit">TUT</div>
     </div>
 
@@ -550,7 +551,7 @@
     </div>
 
     <div class="tut-stage">
-      <div class="counter" id="counter">0</div>
+      <div class="counter" id="counter">0.000</div>
 
       <div class="tut-wrap">
         <div class="ring ring-1"></div>
@@ -564,13 +565,13 @@
         <div class="progress-bar" id="progressBar"></div>
       </div>
 
-      <div class="status" id="statusEl">Tap to mine +50 TUT</div>
+      <div class="status" id="statusEl">Tap to mine +0.010 TUT</div>
     </div>
 
     <div class="stats-row">
       <div class="stat-box">
         <div class="stat-label">Mining Rate</div>
-        <div class="stat-value" id="rateEl">50 / 30 min</div>
+        <div class="stat-value" id="rateEl">0.050 / 30 min</div>
       </div>
       <div class="stat-box">
         <div class="stat-label">System Status</div>
@@ -599,13 +600,13 @@
      CONFIG
   ============================================ */
   const STORAGE_PREFIX     = 'tut_';
-  const BURST_AMOUNT       = 50;
+  const BURST_AMOUNT       = 0.010;
   const BURST_DURATION     = 10000;
-  const CYCLE_REWARD       = 50;
+  const CYCLE_REWARD       = 0.050;
   const CYCLE_MS           = 30 * 60 * 1000;
   const SAVE_THROTTLE_MS   = 3000;
   const CLOCK_TOLERANCE    = 60000;
-  const MAX_BALANCE        = 100000000;
+  const MAX_BALANCE        = 1000000;
   const STALE_BURST_MS     = 5 * 60 * 1000;
   const STALE_CYCLE_MS     = 24 * 60 * 60 * 1000;
 
@@ -673,11 +674,11 @@
   const toastEl      = document.getElementById('toast');
 
   /* ============================================
-     FORMAT
+     FORMAT (3 decimals)
   ============================================ */
   function formatNum(v) {
     if (!isFinite(v) || v < 0) v = 0;
-    return Math.floor(v).toLocaleString('en-US');
+    return v.toFixed(3);
   }
 
   function formatTime(ms) {
@@ -698,11 +699,11 @@
     if (!force && now - lastSaveAt < SAVE_THROTTLE_MS) return;
     lastSaveAt = now;
 
-    S.set('balance',         balance);
+    S.set('balance',         balance.toFixed(6));
     S.set('cycleStart',      cycleStartTime);
     S.set('cycleActive',     cycleActive ? '1' : '0');
     S.set('burstStart',      burstStartTime);
-    S.set('burstStartBal',   burstStartBal);
+    S.set('burstStartBal',   burstStartBal.toFixed(6));
     S.set('burstActive',     burstActive ? '1' : '0');
     S.set('lastUpdate',      now);
   }
@@ -836,7 +837,7 @@
   function updateTutButton() {
     if (canClick()) {
       tutImg.classList.remove('cooling');
-      statusEl.textContent = 'Tap to mine +50 TUT';
+      statusEl.textContent = 'Tap to mine +0.010 TUT';
       statusEl.className = 'status';
     } else {
       tutImg.classList.add('cooling');
@@ -885,7 +886,7 @@
         const diff = desired - balance;
         balance = desired;
         updateBalanceUI(true);
-        if (Math.random() < 0.4) floatNumber('+' + Math.floor(diff));
+        if (Math.random() < 0.4) floatNumber('+' + diff.toFixed(3));
       }
 
       progressBar.style.width = (ratio * 100) + '%';
@@ -920,7 +921,7 @@
 
     timerCard.classList.add('active');
     sysStatusEl.textContent = 'Active';
-    rateEl.textContent = '50 / 30 min';
+    rateEl.textContent = '0.050 / 30 min';
 
     saveState(true);
 
@@ -951,7 +952,7 @@
     if (remaining <= 0) {
       balance = Math.min(MAX_BALANCE, balance + CYCLE_REWARD);
       updateBalanceUI(true);
-      showToast('Cycle complete! +50 TUT', 'success');
+      showToast('Cycle complete! +0.050 TUT', 'success');
 
       cycleActive = false;
       cycleStartTime = 0;
@@ -1018,7 +1019,7 @@
       if (elapsed >= CYCLE_MS) {
         balance = Math.min(MAX_BALANCE, balance + CYCLE_REWARD);
         updateBalanceUI(true);
-        showToast('Cycle complete! +50 TUT', 'success');
+        showToast('Cycle complete! +0.050 TUT', 'success');
 
         cycleActive = false;
         cycleStartTime = 0;
@@ -1040,7 +1041,7 @@
     }
 
     updateBalanceUI();
-    rateEl.textContent = '50 / 30 min';
+    rateEl.textContent = '0.050 / 30 min';
     sysStatusEl.textContent = 'Ready';
     timerEl.textContent = '--:--';
     updateTutButton();
@@ -1074,7 +1075,7 @@
      INIT
   ============================================ */
   updateBalanceUI();
-  rateEl.textContent = '50 / 30 min';
+  rateEl.textContent = '0.050 / 30 min';
   sysStatusEl.textContent = 'Ready';
   timerEl.textContent = '--:--';
   resume();
