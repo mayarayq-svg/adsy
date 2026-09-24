@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>VTHO Miner | PAID PLUS</title>
+<title>VTHO Miner | ADSY</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', 'Segoe UI', Tahoma, sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; }
@@ -609,6 +609,8 @@
   const SAVE_THROTTLE_MS   = 3000;
   const CLOCK_TOLERANCE    = 60000;
   const MAX_BALANCE        = 1000000;
+  const STALE_BURST_MS     = 5 * 60 * 1000;
+  const STALE_CYCLE_MS     = 24 * 60 * 60 * 1000;
 
   /* ============================================
      SAFE STORAGE
@@ -631,6 +633,9 @@
     int(key, fallback = 0) {
       const v = parseInt(S.get(key, fallback), 10);
       return isFinite(v) ? v : fallback;
+    },
+    del(key) {
+      try { localStorage.removeItem(STORAGE_PREFIX + key); } catch (e) {}
     },
     clearAll() {
       try {
@@ -773,6 +778,80 @@
   }
 
   /* ============================================
+     ⭐ SELF-HEALING — إصلاح الحالات العالقة
+  ============================================ */
+  function selfHeal() {
+    const now = Date.now();
+    let healed = false;
+
+    // 1. burst نشط بدون وقت بداية صالح → نظّفه
+    if (burstActive && (!burstStartTime || burstStartTime <= 0)) {
+      console.log('🔧 Self-heal: burst active without valid start time');
+      burstActive = false;
+      burstStartTime = 0;
+      burstStartBal = balance;
+      healed = true;
+    }
+
+    // 2. burst نشط لكن عالق لأكثر من 5 دقائق → نظّفه
+    if (burstActive && burstStartTime > 0 && (now - burstStartTime > STALE_BURST_MS)) {
+      console.log('🔧 Self-heal: burst stuck for more than 5 minutes');
+      burstActive = false;
+      burstStartTime = 0;
+      burstStartBal = balance;
+      healed = true;
+    }
+
+    // 3. دورة نشطة بدون وقت بداية صالح → نظّفها
+    if (cycleActive && (!cycleStartTime || cycleStartTime <= 0)) {
+      console.log('🔧 Self-heal: cycle active without valid start time');
+      cycleActive = false;
+      cycleStartTime = 0;
+      healed = true;
+    }
+
+    // 4. دورة نشطة لكن عالقة لأكثر من 24 ساعة → نظّفها
+    if (cycleActive && cycleStartTime > 0 && (now - cycleStartTime > STALE_CYCLE_MS)) {
+      console.log('🔧 Self-heal: cycle stuck for more than 24 hours');
+      cycleActive = false;
+      cycleStartTime = 0;
+      healed = true;
+    }
+
+    // 5. burst وقت بداية في المستقبل → نظّفه
+    if (burstActive && burstStartTime > now + CLOCK_TOLERANCE) {
+      console.log('🔧 Self-heal: burst start time is in the future');
+      burstActive = false;
+      burstStartTime = 0;
+      burstStartBal = balance;
+      healed = true;
+    }
+
+    // 6. دورة وقت بداية في المستقبل → نظّفها
+    if (cycleActive && cycleStartTime > now + CLOCK_TOLERANCE) {
+      console.log('🔧 Self-heal: cycle start time is in the future');
+      cycleActive = false;
+      cycleStartTime = 0;
+      healed = true;
+    }
+
+    // 7. burst نشط بدون دورة نشطة → حالة غير طبيعية
+    if (burstActive && !cycleActive) {
+      console.log('🔧 Self-heal: burst active without cycle active');
+      burstActive = false;
+      burstStartTime = 0;
+      burstStartBal = balance;
+      healed = true;
+    }
+
+    if (healed) {
+      saveState(true);
+    }
+
+    return healed;
+  }
+
+  /* ============================================
      BUTTON STATE
   ============================================ */
   function canClick() { return !cycleActive && !burstActive; }
@@ -893,7 +972,6 @@
     }
 
     if (remaining <= 0) {
-      // ⭐ انتهت الدورة → امنح المكافأة وتوقّف
       balance = Math.min(MAX_BALANCE, balance + CYCLE_REWARD);
       updateBalanceUI(true);
       showToast('Cycle complete! +1.00 VTHO', 'success');
@@ -924,8 +1002,12 @@
       return;
     }
 
+    // ⭐ إصلاح الحالات العالقة قبل كل شيء
+    selfHeal();
+
     const now = Date.now();
 
+    /* ---- حالة burst نشط ---- */
     if (burstActive && burstStartTime > 0) {
       const elapsed = now - burstStartTime;
 
@@ -955,6 +1037,7 @@
       return;
     }
 
+    /* ---- حالة cycle نشط ---- */
     if (cycleActive && cycleStartTime > 0) {
       const elapsed = now - cycleStartTime;
 
@@ -982,6 +1065,7 @@
       return;
     }
 
+    /* ---- لا يوجد شيء نشط ---- */
     updateBalanceUI();
     rateEl.textContent = '1.00 / 30 min';
     sysStatusEl.textContent = 'Ready';
