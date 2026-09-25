@@ -235,9 +235,7 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
-  /* ⭐ HERO — نسبة 15:6 (width:height)
-     في الموبايل: العرض 100% من البطاقة (حوالي 416px)
-     الارتفاع = 416 × 6 / 15 = 166px */
+  /* HERO 15:6 */
   .balance-hero {
     position: relative;
     overflow: hidden;
@@ -256,7 +254,6 @@
     padding: 16px 18px;
   }
 
-  /* تموجات متحركة */
   .hero-wave {
     position: absolute;
     inset: -50%;
@@ -292,7 +289,6 @@
     50%      { transform: translate(-6%, 8%) rotate(-10deg) scale(1.1); }
   }
 
-  /* شبكة خفيفة */
   .hero-grid {
     position: absolute;
     inset: 0;
@@ -306,7 +302,6 @@
     -webkit-mask-image: radial-gradient(circle at 50% 50%, black 0%, transparent 85%);
   }
 
-  /* ⭐ الصف العلوي: أيقونة + ADSY على اليسار */
   .hero-top {
     position: relative;
     z-index: 2;
@@ -347,7 +342,6 @@
     text-shadow: 0 0 20px rgba(122,179,255,0.5);
   }
 
-  /* ⭐ المنتصف: الرصيد بحجم كبير */
   .hero-balance {
     position: relative;
     z-index: 2;
@@ -385,7 +379,6 @@
     100% { transform: scale(1); }
   }
 
-  /* ⭐ الأسفل: شريط الحالة */
   .hero-status {
     position: relative;
     z-index: 2;
@@ -547,6 +540,7 @@
   .coin-solv  { background: linear-gradient(135deg, #8b3dff, #b47cff); }
   .coin-quick { background: linear-gradient(135deg, #4a90d9, #7ec4ff); }
   .coin-tut   { background: linear-gradient(135deg, #f5a623, #ffcc66); color: #0d0906; }
+  .coin-chz   { background: linear-gradient(135deg, #ec1e5c, #ff5c92); }
 
   .coin-body {
     flex: 1;
@@ -1068,13 +1062,11 @@
 
   <div class="main-card">
 
-    <!-- ⭐ HERO — نسبة 15:6 -->
     <div class="balance-hero">
       <div class="hero-wave"></div>
       <div class="hero-wave-2"></div>
       <div class="hero-grid"></div>
 
-      <!-- الصف العلوي: أيقونة + ADSY على اليسار -->
       <div class="hero-top">
         <div class="hero-icon">
           <svg viewBox="0 0 24 24">
@@ -1085,13 +1077,11 @@
         <div class="hero-brand">ADSY</div>
       </div>
 
-      <!-- الوسط: الرصيد كبير -->
       <div class="hero-balance">
         <span class="currency">$</span>
         <span class="value" id="totalUsd">0.000</span>
       </div>
 
-      <!-- الأسفل: شريط الحالة -->
       <div class="hero-status">
         <span class="live-dot"></span>
         <span id="priceStatus">Live Prices · CoinGecko</span>
@@ -1173,7 +1163,8 @@
     { code: 'VTHO',  name: 'VeThor',     img: 'vtho.png',     cls: 'coin-vtho',  fallback: 'V', storageKey: 'vtho_balance',  cooldownKey: 'vtho_lastWithdrawAt',  minWithdraw: 10,   geckoId: 'vethor-token' },
     { code: 'SOLV',  name: 'Solv',       img: 'solv.png',     cls: 'coin-solv',  fallback: 'S', storageKey: 'solv_balance',  cooldownKey: 'solv_lastWithdrawAt',  minWithdraw: 1,    geckoId: 'solv-protocol' },
     { code: 'QUICK', name: 'QuickSwap',  img: 'QUICK.png',    cls: 'coin-quick', fallback: 'Q', storageKey: 'quick_balance', cooldownKey: 'quick_lastWithdrawAt', minWithdraw: 1,    geckoId: 'quickswap' },
-    { code: 'TUT',   name: 'TUT Token',  img: 'TUT.png',      cls: 'coin-tut',   fallback: 'T', storageKey: 'tut_balance',   cooldownKey: 'tut_lastWithdrawAt',   minWithdraw: 1,    geckoId: '' }
+    { code: 'TUT',   name: 'TUT Token',  img: 'TUT.png',      cls: 'coin-tut',   fallback: 'T', storageKey: 'tut_balance',   cooldownKey: 'tut_lastWithdrawAt',   minWithdraw: 1,    geckoId: '' },
+    { code: 'CHZ',   name: 'Chiliz',     img: 'CHZ.png',      cls: 'coin-chz',   fallback: 'C', storageKey: 'chz_balance',   cooldownKey: 'chz_lastWithdrawAt',   minWithdraw: 1,    geckoId: 'chiliz' }
   ];
 
   const SAFE_LIMITS = {
@@ -1183,7 +1174,8 @@
     VTHO:  { min: 0.0005,    max: 0.05 },
     SOLV:  { min: 0.001,     max: 1 },
     QUICK: { min: 0.001,     max: 1 },
-    TUT:   { min: 0.001,     max: 10 }
+    TUT:   { min: 0.001,     max: 10 },
+    CHZ:   { min: 0.001,     max: 5 }
   };
 
   let PRICES = {
@@ -1193,7 +1185,8 @@
     VTHO: 0.0024,
     SOLV: 0.045,
     QUICK: 0.028,
-    TUT: 0.02725
+    TUT: 0.02725,
+    CHZ: 0.075
   };
 
   /* ============================================
