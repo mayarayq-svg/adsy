@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Tasks & Rewards | ADSY</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; }
+
+  :root {
+    --bg: #f7f8fa;
+    --bg-gradient: radial-gradient(ellipse at 20% 0%, rgba(139,61,255,0.08), transparent 50%),
+                   radial-gradient(ellipse at 80% 100%, rgba(0,212,255,0.08), transparent 50%);
+    --card: #ffffff;
+    --text: #0b0f14;
+    --sub: #6b7681;
+    --muted: #9aa4ad;
+    --line: #e8ecf0;
+    --line-strong: #d8dee5;
+    --header-bg: rgba(247,248,250,0.72);
+    --gold: #f59e0b;
+    --gold-2: #fbbf24;
+    --gold-soft: rgba(245,158,11,0.1);
+    --green: #22c55e;
+    --green-soft: rgba(34,197,94,0.1);
+    --red: #ef4444;
+    --purple: #8b3dff;
+    --purple-2: #b47cff;
+    --purple-soft: rgba(139,61,255,0.08);
+    --blue: #00d4ff;
+    --shadow-sm: 0 1px 2px rgba(11,15,20,0.04);
+    --shadow-lg: 0 20px 48px rgba(11,15,20,0.12);
+    --overlay: rgba(11,15,20,0.85);
+  }
+  body.dark {
+    --bg: #06070d;
+    --bg-gradient: radial-gradient(ellipse at 20% 0%, rgba(139,61,255,0.25), transparent 50%),
+                   radial-gradient(ellipse at 80% 100%, rgba(0,212,255,0.2), transparent 50%);
+    --card: #101318;
+    --text: #f2f4f7;
+    --sub: #8b95a1;
+    --muted: #5a636e;
+    --line: #1c2027;
+    --line-strong: #262b33;
+    --header-bg: rgba(6,7,13,0.72);
+    --gold: #fbbf24;
+    --gold-2: #ffd666;
+    --gold-soft: rgba(251,191,36,0.15);
+    --green-soft: rgba(34,197,94,0.15);
+    --purple: #b47cff;
+    --purple-2: #d4b8ff;
+    --purple-soft: rgba(180,124,255,0.12);
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
+    --shadow-lg: 0 20px 48px rgba(0,0,0,0.6);
+    --overlay: rgba(0,0,0,0.95);
+  }
+
+  html, body { width: 100%; min-height: 100vh; }
+
+  body {
+    background: var(--bg);
+    background-image: var(--bg-gradient);
+    background-attachment: fixed;
+    color: var(--text);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    transition: background 0.4s ease, color 0.4s ease;
+  }
+  body.no-scroll { overflow: hidden; }
+
+  /* ===== Header ===== */
+  .header {
+    width: 100%;
+    max-width: 480px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    background: var(--header-bg);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    margin-bottom: 22px;
+    box-shadow: var(--shadow-sm);
+    gap: 10px;
+    animation: headerIn 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @keyframes headerIn {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .logo {
+    font-size: 1.15rem;
+    font-weight: 900;
+    letter-spacing: 3px;
+    background: linear-gradient(135deg, var(--text), var(--purple), var(--blue));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .header-actions { display: flex; align-items: center; gap: 8px; }
+  .back-btn {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 8px 14px;
+    background: var(--card);
+    border-radius: 20px;
+    border: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: 0.3s;
+  }
+  .back-btn:hover { border-color: var(--purple); color: var(--purple); }
+  .back-btn svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* Theme Toggle */
+  .theme-toggle {
+    position: relative;
+    width: 56px; height: 30px;
+    border-radius: 100px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+  }
+  .theme-toggle:active { transform: scale(0.94); }
+  .toggle-thumb {
+    position: absolute;
+    top: 3px; left: 3px;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    transition: transform 0.4s cubic-bezier(0.34, 1.4, 0.64, 1);
+  }
+  body.dark .toggle-thumb { transform: translateX(26px); }
+  .toggle-thumb svg {
+    width: 12px; height: 12px;
+    stroke: var(--bg);
+    fill: none;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 0.5s cubic-bezier(0.34, 1.4, 0.64, 1);
+  }
+  body.dark .toggle-thumb svg { transform: rotate(180deg); }
+  .toggle-icon {
+    position: absolute;
+    top: 50%; transform: translateY(-50%);
+    width: 12px; height: 12px;
+    stroke: var(--muted);
+    fill: none;
+    stroke-width: 2;
+    pointer-events: none;
+  }
+  .icon-moon { left: 9px; }
+  .icon-sun  { right: 9px; }
+  body:not(.dark) .icon-moon { opacity: 0; }
+  body.dark .icon-sun { opacity: 0; }
+
+  /* ===== Title ===== */
+  .title-wrap {
+    text-align: center;
+    margin-bottom: 22px;
+    animation: fadeUp 0.7s ease 0.05s both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 100px;
+    background: var(--purple-soft);
+    color: var(--purple);
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    border: 1px solid rgba(139,61,255,0.25);
+  }
+  .badge svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+  .title-wrap h1 {
+    font-size: 32px;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, var(--text) 0%, var(--purple) 60%, var(--blue) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .title-wrap p { font-size: 13.5px; color: var(--sub); line-height: 1.55; max-width: 340px; margin: 0 auto; }
+
+  /* ===== Balance ===== */
+  .balance-card {
+    width: 100%;
+    max-width: 480px;
+    padding: 24px;
+    background: linear-gradient(135deg, rgba(139,61,255,0.15), rgba(0,212,255,0.1));
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1.5px solid rgba(139,61,255,0.35);
+    border-radius: 24px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(139,61,255,0.25), inset 0 1px 0 rgba(255,255,255,0.15);
+    animation: fadeUp 0.7s ease 0.1s both;
+  }
+  .balance-card::before {
+    content: '';
+    position: absolute;
+    top: -50%; right: -50%;
+    width: 200%; height: 200%;
+    background: conic-gradient(from 0deg, transparent, rgba(139,61,255,0.15), transparent 30%);
+    animation: spin 10s linear infinite;
+    pointer-events: none;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .balance-inner { position: relative; z-index: 2; display: flex; align-items: center; gap: 14px; }
+  .balance-icon {
+    width: 56px; height: 56px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-2));
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 10px 30px rgba(251,191,36,0.4), inset 0 2px 0 rgba(255,255,255,0.4);
+    flex-shrink: 0;
+  }
+  .balance-icon svg { width: 28px; height: 28px; stroke: #0d0906; fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+  .balance-info { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .balance-label { font-size: 10.5px; font-weight: 800; color: var(--sub); letter-spacing: 0.16em; text-transform: uppercase; }
+  .balance-value {
+    font-size: 32px; font-weight: 900; color: var(--text);
+    letter-spacing: -0.03em; font-variant-numeric: tabular-nums; line-height: 1;
+  }
+  .balance-value.bump { animation: balanceBump 0.4s cubic-bezier(0.34, 1.4, 0.64, 1); }
+  @keyframes balanceBump {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+
+  /* ===== Tabs ===== */
+  .tabs {
+    width: 100%; max-width: 480px;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 6px; padding: 6px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    margin-bottom: 20px;
+    animation: fadeUp 0.7s ease 0.15s both;
+  }
+  .tab-btn {
+    padding: 13px 16px;
+    border: none; background: transparent;
+    color: var(--sub); font-family: inherit;
+    font-size: 13.5px; font-weight: 800;
+    letter-spacing: 0.02em;
+    border-radius: 13px; cursor: pointer;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .tab-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+  .tab-btn.active {
+    background: linear-gradient(135deg, var(--purple), var(--blue));
+    color: #fff;
+    box-shadow: 0 8px 24px rgba(139,61,255,0.4);
+  }
+
+  .tab-content { width: 100%; max-width: 480px; display: none; }
+  .tab-content.active { display: block; animation: tabFade 0.4s ease; }
+  @keyframes tabFade {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== TASKS ===== */
+  .tasks-list { display: flex; flex-direction: column; gap: 12px; }
+
+  .task-card {
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 16px;
+    display: flex; align-items: center; gap: 14px;
+    text-decoration: none; color: inherit; cursor: pointer;
+    overflow: hidden; isolation: isolate;
+    animation: cardIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.4s ease;
+  }
+  .task-card:nth-child(1) { animation-delay: 0.20s; }
+  .task-card:nth-child(2) { animation-delay: 0.26s; }
+  .task-card:nth-child(3) { animation-delay: 0.32s; }
+  .task-card:nth-child(4) { animation-delay: 0.38s; }
+
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(20px) scale(0.96); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .task-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    border-radius: 20px; padding: 1.5px;
+    background: linear-gradient(135deg, var(--task-accent, #8b3dff), var(--task-accent-2, #00d4ff), transparent 70%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0; transition: opacity 0.4s ease; pointer-events: none;
+  }
+
+  .task-card::after {
+    content: '';
+    position: absolute; top: 50%; left: 0;
+    width: 60%; height: 200%;
+    background: radial-gradient(circle, var(--task-glow, rgba(139,61,255,0.3)) 0%, transparent 60%);
+    transform: translate(-60%, -50%); opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: -1;
+  }
+
+  .task-card:hover:not(.completed) {
+    transform: translateY(-4px);
+    border-color: transparent;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1), 0 0 40px var(--task-glow, rgba(139,61,255,0.2));
+  }
+  body.dark .task-card:hover:not(.completed) {
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 40px var(--task-glow, rgba(139,61,255,0.2));
+  }
+  .task-card:hover:not(.completed)::before { opacity: 1; }
+  .task-card:hover:not(.completed)::after { opacity: 0.5; transform: translate(0, -50%); }
+
+  .task-icon {
+    width: 54px; height: 54px;
+    border-radius: 15px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; position: relative; overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: inset 0 2px 0 rgba(255,255,255,0.25), 0 6px 16px rgba(0,0,0,0.15);
+  }
+  .task-icon svg {
+    width: 25px; height: 25px;
+    stroke: #fff; fill: none; stroke-width: 2.2;
+    stroke-linecap: round; stroke-linejoin: round;
+    z-index: 2;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+  }
+  .task-card:hover:not(.completed) .task-icon { transform: scale(1.08) rotate(-5deg); }
+  .task-icon::after {
+    content: '';
+    position: absolute; top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.4) 50%, transparent 70%);
+    animation: iconShine 3s linear infinite;
+    pointer-events: none;
+  }
+  @keyframes iconShine {
+    from { transform: translateX(-100%) rotate(45deg); }
+    to { transform: translateX(100%) rotate(45deg); }
+  }
+
+  .task-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .task-title {
+    font-size: 15px; font-weight: 800; color: var(--text);
+    letter-spacing: -0.01em;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .task-desc {
+    font-size: 12px; color: var(--sub); font-weight: 500;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .task-reward {
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-top: 5px; padding: 4px 10px;
+    border-radius: 100px;
+    background: var(--gold-soft);
+    border: 1px solid rgba(245,158,11,0.25);
+    color: var(--gold);
+    font-size: 11px; font-weight: 800; letter-spacing: 0.02em;
+    width: fit-content;
+  }
+  .task-reward svg { width: 11px; height: 11px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+  .task-cta {
+    width: 42px; height: 42px;
+    border-radius: 13px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, var(--task-accent, #8b3dff), var(--task-accent-2, #00d4ff));
+    box-shadow: 0 6px 18px var(--task-glow, rgba(139,61,255,0.4));
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .task-cta svg {
+    width: 17px; height: 17px;
+    stroke: #fff; fill: none; stroke-width: 2.6;
+    stroke-linecap: round; stroke-linejoin: round;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .task-card:hover:not(.completed) .task-cta {
+    transform: rotate(-45deg) scale(1.08);
+    box-shadow: 0 8px 28px var(--task-glow, rgba(139,61,255,0.6));
+  }
+
+  /* Completed */
+  .task-card.completed { opacity: 0.55; cursor: default; }
+  .task-card.completed .task-icon { filter: grayscale(1); }
+  .task-card.completed .task-icon::after { display: none; }
+  .task-card.completed .task-cta {
+    background: var(--green-soft);
+    border: 1.5px solid rgba(34,197,94,0.4);
+    box-shadow: none;
+    transform: none !important;
+  }
+  .task-card.completed .task-cta svg { stroke: var(--green); }
+  .task-card.completed .task-title { text-decoration: line-through; text-decoration-color: rgba(139,148,158,0.5); }
+
+  /* Empty state */
+  .empty-state {
+    padding: 40px 20px;
+    text-align: center;
+    background: var(--card);
+    border: 1px dashed var(--line-strong);
+    border-radius: 20px;
+    animation: fadeUp 0.5s ease both;
+  }
+  .empty-state svg {
+    width: 48px; height: 48px;
+    stroke: var(--muted); fill: none;
+    stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
+    margin-bottom: 14px;
+  }
+  .empty-state-title {
+    font-size: 15px; font-weight: 800; color: var(--text);
+    margin-bottom: 6px;
+  }
+  .empty-state-desc {
+    font-size: 12.5px; color: var(--sub); font-weight: 500;
+  }
+
+  /* ===== EXCHANGE ===== */
+  .exchange-info {
+    padding: 16px 18px;
+    background: var(--purple-soft);
+    border: 1px solid rgba(139,61,255,0.25);
+    border-radius: 16px;
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 16px;
+    animation: fadeUp 0.5s ease both;
+  }
+  .exchange-info svg { width: 20px; height: 20px; stroke: var(--purple); fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+  .exchange-info-text { font-size: 12.5px; color: var(--text); font-weight: 600; line-height: 1.5; }
+  .exchange-info-text b { color: var(--purple); font-weight: 800; }
+
+  .exchange-list { display: flex; flex-direction: column; gap: 12px; }
+
+  .exchange-card {
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 15px;
+    display: flex; align-items: center; gap: 14px;
+    overflow: hidden; isolation: isolate; cursor: pointer;
+    animation: cardIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.4s ease;
+  }
+  .exchange-card:nth-child(1) { animation-delay: 0.05s; }
+  .exchange-card:nth-child(2) { animation-delay: 0.10s; }
+  .exchange-card:nth-child(3) { animation-delay: 0.15s; }
+  .exchange-card:nth-child(4) { animation-delay: 0.20s; }
+  .exchange-card:nth-child(5) { animation-delay: 0.25s; }
+  .exchange-card:nth-child(6) { animation-delay: 0.30s; }
+  .exchange-card:nth-child(7) { animation-delay: 0.35s; }
+  .exchange-card:nth-child(8) { animation-delay: 0.40s; }
+
+  .exchange-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    border-radius: 20px; padding: 1.5px;
+    background: linear-gradient(135deg, var(--coin-color, #8b3dff), var(--coin-color-2, #00d4ff), transparent 70%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0; transition: opacity 0.4s ease; pointer-events: none;
+  }
+  .exchange-card:hover:not(.disabled) {
+    transform: translateY(-4px);
+    border-color: transparent;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1), 0 0 40px var(--coin-glow, rgba(139,61,255,0.25));
+  }
+  body.dark .exchange-card:hover:not(.disabled) {
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 40px var(--coin-glow, rgba(139,61,255,0.25));
+  }
+  .exchange-card:hover:not(.disabled)::before { opacity: 1; }
+  .exchange-card.disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .coin-icon {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px; font-weight: 900; color: #fff;
+    flex-shrink: 0; overflow: hidden;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15), inset 0 2px 0 rgba(255,255,255,0.2);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .coin-icon img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+  .exchange-card:hover:not(.disabled) .coin-icon { transform: scale(1.08) rotate(-5deg); }
+
+  .coin-bttc  { background: linear-gradient(135deg, #c0c0c0, #8a8a8a); color: #1a1a1a; }
+  .coin-pepe  { background: linear-gradient(135deg, #22c55e, #00ff88); color: #0a2a1a; }
+  .coin-dogs  { background: linear-gradient(135deg, #6da3d6, #7ec4ff); }
+  .coin-vtho  { background: linear-gradient(135deg, #8b73e8, #7c5cff); }
+  .coin-solv  { background: linear-gradient(135deg, #8b3dff, #b47cff); }
+  .coin-quick { background: linear-gradient(135deg, #4a90d9, #7ec4ff); }
+  .coin-tut   { background: linear-gradient(135deg, #f5a623, #ffcc66); color: #0d0906; }
+  .coin-chz   { background: linear-gradient(135deg, #ec1e5c, #ff5c92); }
+
+  .exchange-info-wrap { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .exchange-name { font-size: 14.5px; font-weight: 800; color: var(--text); letter-spacing: -0.01em; }
+  .exchange-rate { font-size: 11.5px; color: var(--sub); font-weight: 600; }
+  .exchange-rate b { color: var(--gold); font-weight: 800; }
+
+  .exchange-btn {
+    padding: 9px 14px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--coin-color, #8b3dff), var(--coin-color-2, #00d4ff));
+    color: #fff;
+    font-size: 11.5px; font-weight: 800; letter-spacing: 0.03em;
+    flex-shrink: 0;
+    box-shadow: 0 6px 18px var(--coin-glow, rgba(139,61,255,0.4));
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .exchange-btn svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+  .exchange-card:hover:not(.disabled) .exchange-btn { transform: translateX(3px); }
+  .exchange-card.disabled .exchange-btn {
+    background: var(--line);
+    border: 1px solid var(--line-strong);
+    color: var(--muted);
+    box-shadow: none;
+  }
+
+  /* ===== Toast ===== */
+  .toast {
+    position: fixed;
+    bottom: 30px; left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--card);
+    border: 1px solid var(--line-strong);
+    border-radius: 14px;
+    padding: 14px 24px;
+    color: var(--text);
+    font-size: 0.85rem;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 600;
+    box-shadow: var(--shadow-lg);
+    max-width: 90%;
+    text-align: center;
+    font-weight: 700;
+    backdrop-filter: blur(20px);
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.error { border-color: rgba(239,68,68,0.5); color: var(--red); }
+  .toast.success { border-color: rgba(34,197,94,0.5); color: var(--green); }
+
+  /* ===== Modal ===== */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: var(--overlay);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    display: none;
+    align-items: center; justify-content: center;
+    z-index: 500;
+    padding: 20px;
+  }
+  .modal-overlay.show { display: flex; animation: fadeIn 0.4s; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .modal {
+    background: var(--card);
+    border: 1px solid var(--line-strong);
+    border-radius: 28px;
+    padding: 40px 26px 30px;
+    width: 100%; max-width: 400px;
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+    animation: modalIn 0.6s cubic-bezier(0.34, 1.4, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  @keyframes modalIn {
+    from { transform: scale(0.6) translateY(40px); opacity: 0; }
+    to { transform: scale(1) translateY(0); opacity: 1; }
+  }
+  .modal-icon {
+    width: 90px; height: 90px;
+    margin: 0 auto 22px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--purple), var(--blue));
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 20px 50px rgba(139,61,255,0.5);
+    animation: iconPop 0.6s cubic-bezier(0.34, 1.4, 0.64, 1) 0.15s both;
+  }
+  @keyframes iconPop {
+    from { transform: scale(0) rotate(-180deg); opacity: 0; }
+    to { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+  .modal-icon svg { width: 42px; height: 42px; stroke: #fff; fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+  .modal-title { font-size: 1.4rem; font-weight: 900; color: var(--text); margin-bottom: 10px; letter-spacing: -0.02em; }
+  .modal-desc { font-size: 13.5px; color: var(--sub); line-height: 1.7; margin-bottom: 22px; }
+  .modal-desc b { color: var(--text); font-weight: 800; }
+  .modal-reward {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 20px;
+    background: var(--gold-soft);
+    border: 1.5px solid rgba(245,158,11,0.4);
+    border-radius: 100px;
+    color: var(--gold);
+    font-size: 15px; font-weight: 900;
+    margin-bottom: 24px;
+    animation: rewardPop 0.6s cubic-bezier(0.34, 1.4, 0.64, 1) 0.3s both;
+  }
+  @keyframes rewardPop {
+    from { transform: scale(0); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+  .modal-reward svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+  .modal-btn {
+    width: 100%; padding: 16px;
+    border: none; border-radius: 15px;
+    background: linear-gradient(135deg, var(--purple), var(--blue));
+    color: #fff;
+    font-size: 14px; font-weight: 900;
+    letter-spacing: 0.06em;
+    cursor: pointer; font-family: inherit;
+    text-transform: uppercase;
+    transition: 0.3s;
+    box-shadow: 0 12px 32px rgba(139,61,255,0.4);
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .modal-btn:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(139,61,255,0.6); }
+  .modal-btn svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2.8; stroke-linecap: round; stroke-linejoin: round; }
+
+  @media (max-width: 420px) {
+    body { padding: 14px; }
+    .title-wrap h1 { font-size: 26px; }
+    .balance-value { font-size: 26px; }
+    .balance-icon { width: 50px; height: 50px; }
+    .balance-icon svg { width: 24px; height: 24px; }
+    .task-card, .exchange-card { padding: 13px; gap: 12px; border-radius: 18px; }
+    .task-icon { width: 48px; height: 48px; border-radius: 13px; }
+    .task-icon svg { width: 22px; height: 22px; }
+    .task-title, .exchange-name { font-size: 14px; }
+    .task-desc, .exchange-rate { font-size: 11.5px; }
+    .task-cta { width: 38px; height: 38px; border-radius: 11px; }
+    .coin-icon { width: 46px; height: 46px; font-size: 15px; }
+    .exchange-btn { padding: 7px 11px; font-size: 10.5px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">TASKS</div>
+  <div class="header-actions">
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+      <svg class="toggle-icon icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="toggle-icon icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <div class="toggle-thumb">
+        <svg viewBox="0 0 24 24" id="thumbIcon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </div>
+    </button>
+    <a href="index.html" class="back-btn">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      BACK
+    </a>
+  </div>
+</header>
+
+<section class="title-wrap">
+  <div class="badge">
+    <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+    COMPLETE · EARN · EXCHANGE
+  </div>
+  <h1>Tasks & Rewards</h1>
+  <p>Complete tasks to earn points<br>Exchange them for real crypto coins</p>
+</section>
+
+<div class="balance-card">
+  <div class="balance-inner">
+    <div class="balance-icon">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M15 9H10a2 2 0 0 0 0 4h4a2 2 0 0 1 0 4h-5"/></svg>
+    </div>
+    <div class="balance-info">
+      <div class="balance-label">Your Points Balance</div>
+      <div class="balance-value" id="balanceValue">0</div>
+    </div>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab(event, 'tasks')">
+    <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+    Tasks
+  </button>
+  <button class="tab-btn" onclick="switchTab(event, 'exchange')">
+    <svg viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+    Exchange
+  </button>
+</div>
+
+<div class="tab-content active" id="tab-tasks">
+  <div class="tasks-list" id="tasksList"></div>
+</div>
+
+<div class="tab-content" id="tab-exchange">
+  <div class="exchange-info">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+    <div class="exchange-info-text">
+      Exchange your points for <b>real crypto</b>. Added instantly to your <b>wallet</b>.
+    </div>
+  </div>
+  <div class="exchange-list" id="exchangeList"></div>
+</div>
+
+<div class="modal-overlay" id="successModal">
+  <div class="modal">
+    <div class="modal-icon" id="modalIcon">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <div class="modal-title" id="modalTitle">Success!</div>
+    <div class="modal-desc" id="modalDesc"></div>
+    <div class="modal-reward" id="modalReward">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M15 9H10a2 2 0 0 0 0 4h4a2 2 0 0 1 0 4h-5"/></svg>
+      <span id="modalRewardText">+0 Points</span>
+    </div>
+    <button class="modal-btn" id="modalBtn" onclick="closeModal()">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      Continue
+    </button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   ⚙️  CONFIGURATION — EDIT ONLY THIS SECTION
+   ============================================================
+   لإضافة مهمة جديدة: أضف كائن جديد داخل مصفوفة TASKS
+   لحذف مهمة: احذف الكائن الخاص بها
+   ============================================================ */
+
+const TASKS = [
+  {
+    id: 'tg_bot',                                        // معرف فريد (لا يتكرر)
+    title: 'Join Bot',                                   // العنوان
+    desc: 'Subscribe to AdTubes Bot on Telegram',       // الوصف
+    reward: 500,                                         // عدد النقاط
+    link: 'https://t.me/AdTubesBot/AdTubes?startapp=r7931994096', // الرابط
+    icon: 'telegram',                                    // telegram | youtube | twitter | discord | website | share
+    color: '#0088cc',                                    // اللون الأساسي
+    color2: '#00d4ff'                                    // اللون الثانوي
+  },
+  {
+    id: 'yt_channel',
+    title: 'Subscribe to Channel',
+    desc: 'Subscribe to Paid Plus on YouTube',
+    reward: 400,
+    link: 'https://youtube.com/@paid_plus?si=w--S6_cfn7u3MTYm',
+    icon: 'youtube',
+    color: '#ff0033',
+    color2: '#ec1e5c'
+  }
+
+  // ✅ لإضافة مهمة جديدة، انسخ هذا القالب وألصقه هنا:
+  // {
+  //   id: 'unique_id_here',
+  //   title: 'Task Title',
+  //   desc: 'Task description here',
+  //   reward: 300,
+  //   link: 'https://example.com',
+  //   icon: 'twitter',       // telegram | youtube | twitter | discord | website | share
+  //   color: '#1da1f2',
+  //   color2: '#0066ff'
+  // }
+];
+
+/* ============================================================
+   💱  EXCHANGE RATES
+   ============================================================ */
+const EXCHANGE_COINS = [
+  { code: 'BTTC',  name: 'BitTorrent', img: 'logobttc.png', cls: 'coin-bttc',  pointsPerUnit: 5,     color: '#c0c0c0', color2: '#8a8a8a', glow: 'rgba(192,192,192,0.4)' },
+  { code: 'PEPE',  name: 'Pepe',       img: 'pepe.png',     cls: 'coin-pepe',  pointsPerUnit: 50,    color: '#22c55e', color2: '#00ff88', glow: 'rgba(34,197,94,0.4)' },
+  { code: 'DOGS',  name: 'Dogs',       img: 'dogs.png',     cls: 'coin-dogs',  pointsPerUnit: 200,   color: '#6da3d6', color2: '#7ec4ff', glow: 'rgba(109,163,214,0.4)' },
+  { code: 'VTHO',  name: 'VeThor',     img: 'vtho.png',     cls: 'coin-vtho',  pointsPerUnit: 5000,  color: '#8b73e8', color2: '#7c5cff', glow: 'rgba(139,115,232,0.4)' },
+  { code: 'SOLV',  name: 'Solv',       img: 'solv.png',     cls: 'coin-solv',  pointsPerUnit: 20000, color: '#8b3dff', color2: '#b47cff', glow: 'rgba(139,61,255,0.4)' },
+  { code: 'QUICK', name: 'QuickSwap',  img: 'QUICK.png',    cls: 'coin-quick', pointsPerUnit: 15000, color: '#4a90d9', color2: '#7ec4ff', glow: 'rgba(74,144,217,0.4)' },
+  { code: 'TUT',   name: 'TUT Token',  img: 'TUT.png',      cls: 'coin-tut',   pointsPerUnit: 10000, color: '#f5a623', color2: '#ffcc66', glow: 'rgba(245,166,35,0.4)' },
+  { code: 'CHZ',   name: 'Chiliz',     img: 'CHZ.png',      cls: 'coin-chz',   pointsPerUnit: 25000, color: '#ec1e5c', color2: '#ff5c92', glow: 'rgba(236,30,92,0.4)' }
+];
+
+/* ============================================================
+   🎨  ICON LIBRARY
+   ============================================================ */
+const ICONS_LIB = {
+  telegram: '<svg viewBox="0 0 24 24"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg>',
+  youtube:  '<svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg>',
+  twitter:  '<svg viewBox="0 0 24 24"><path d="M4 4h4l4.5 6L17 4h3l-6.5 8L20 20h-4l-4.5-6L7 20H4l6.5-8L4 4z"/></svg>',
+  discord:  '<svg viewBox="0 0 24 24"><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M7 17s1.5 1 5 1 5-1 5-1"/><path d="M3.5 9.5c1-2.5 4-5.5 8.5-5.5s7.5 3 8.5 5.5c1 2.5 1.5 4.5 1.5 6.5-1 1-2.5 1.5-3 1.5l-1-2c-1.5 1-3 1.5-6 1.5s-4.5-.5-6-1.5l-1 2c-.5 0-2-.5-3-1.5 0-2 .5-4 1.5-6.5z"/></svg>',
+  website:  '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>',
+  share:    '<svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>',
+  check:    '<polyline points="20 6 9 17 4 12"/>',
+  exchange: '<polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>'
+};
+
+/* ============================================================
+   💾  STORAGE
+   ============================================================ */
+const KEY_TASKS = 'adsy_tasks_state';
+const KEY_POINTS = 'adsy_task_points';
+const KEY_EXCHANGES = 'adsy_exchanges';
+
+function getTasksState() {
+  try { return JSON.parse(localStorage.getItem(KEY_TASKS) || '{}'); }
+  catch (e) { return {}; }
+}
+function saveTasksState(s) {
+  try { localStorage.setItem(KEY_TASKS, JSON.stringify(s)); } catch (e) {}
+}
+function getPoints() {
+  const v = parseInt(localStorage.getItem(KEY_POINTS) || '0', 10);
+  return isFinite(v) && v >= 0 ? v : 0;
+}
+function setPoints(v) {
+  try { localStorage.setItem(KEY_POINTS, Math.floor(v).toString()); } catch (e) {}
+}
+function addPoints(a) { setPoints(getPoints() + a); }
+function spendPoints(a) {
+  const c = getPoints();
+  if (c < a) return false;
+  setPoints(c - a);
+  return true;
+}
+function isTaskDone(id) { return !!getTasksState()[id]; }
+function markTaskDone(id) {
+  const s = getTasksState();
+  s[id] = Date.now();
+  saveTasksState(s);
+}
+
+function formatNumber(n) { return Math.floor(n).toLocaleString('en-US'); }
+
+function showToast(msg, type = '', duration = 2500) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast';
+  if (type) el.classList.add(type);
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), duration);
+}
+
+/* ============================================================
+   💰  RENDER BALANCE
+   ============================================================ */
+function renderBalance(bump = false) {
+  const el = document.getElementById('balanceValue');
+  el.textContent = formatNumber(getPoints());
+  if (bump) {
+    el.classList.remove('bump');
+    void el.offsetWidth;
+    el.classList.add('bump');
+  }
+}
+
+/* ============================================================
+   📋  RENDER TASKS
+   ============================================================ */
+function renderTasks() {
+  const list = document.getElementById('tasksList');
+  list.innerHTML = '';
+
+  if (TASKS.length === 0) {
+    list.innerHTML = `
+      <div class="empty-state">
+        <svg viewBox="0 0 24 24">
+          <path d="M9 11l3 3L22 4"/>
+          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+        </svg>
+        <div class="empty-state-title">No Tasks Available</div>
+        <div class="empty-state-desc">Check back later for new tasks</div>
+      </div>
+    `;
+    return;
+  }
+
+  TASKS.forEach((task, i) => {
+    const done = isTaskDone(task.id);
+
+    const card = document.createElement(done ? 'div' : 'a');
+    card.className = 'task-card' + (done ? ' completed' : '');
+    if (!done) {
+      card.href = task.link;
+      card.target = '_blank';
+      card.rel = 'noopener noreferrer';
+    }
+    card.style.setProperty('--task-accent', task.color);
+    card.style.setProperty('--task-accent-2', task.color2);
+    card.style.setProperty('--task-glow', task.color + '40');
+    card.style.animationDelay = (0.2 + i * 0.06) + 's';
+
+    card.innerHTML = `
+      <div class="task-icon" style="background: linear-gradient(135deg, ${task.color}, ${task.color2})">
+        ${ICONS_LIB[task.icon] || ICONS_LIB.website}
+      </div>
+      <div class="task-info">
+        <div class="task-title">${task.title}</div>
+        <div class="task-desc">${task.desc}</div>
+        <div class="task-reward">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M15 9H10a2 2 0 0 0 0 4h4a2 2 0 0 1 0 4h-5"/></svg>
+          +${formatNumber(task.reward)} Points
+        </div>
+      </div>
+      <div class="task-cta">
+        ${done
+          ? '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>'
+          : '<svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>'}
+      </div>
+    `;
+
+    if (!done) {
+      card.addEventListener('click', () => handleTask(task));
+    }
+
+    list.appendChild(card);
+  });
+}
+
+function handleTask(task) {
+  if (isTaskDone(task.id)) return;
+
+  markTaskDone(task.id);
+  addPoints(task.reward);
+  renderBalance(true);
+  renderTasks();
+
+  setTimeout(() => {
+    showSuccessModal({
+      icon: 'check',
+      title: 'Task Completed! 🎉',
+      desc: 'Your reward has been added<br>to your points balance',
+      rewardText: '+' + formatNumber(task.reward) + ' Points',
+      rewardColor: 'gold'
+    });
+  }, 400);
+}
+
+/* ============================================================
+   💱  RENDER EXCHANGE
+   ============================================================ */
+function renderExchange() {
+  const list = document.getElementById('exchangeList');
+  list.innerHTML = '';
+  const points = getPoints();
+
+  EXCHANGE_COINS.forEach(coin => {
+    const canAfford = points >= coin.pointsPerUnit;
+
+    const card = document.createElement('div');
+    card.className = 'exchange-card' + (canAfford ? '' : ' disabled');
+    card.style.setProperty('--coin-color', coin.color);
+    card.style.setProperty('--coin-color-2', coin.color2);
+    card.style.setProperty('--coin-glow', coin.glow);
+
+    card.innerHTML = `
+      <div class="coin-icon ${coin.cls}">
+        <img src="${coin.img}" alt="${coin.code}"
+             onerror="this.style.display='none';this.parentElement.textContent='${coin.code[0]}'">
+      </div>
+      <div class="exchange-info-wrap">
+        <div class="exchange-name">${coin.name}</div>
+        <div class="exchange-rate">
+          <b>${formatNumber(coin.pointsPerUnit)}</b> Points = 1 ${coin.code}
+        </div>
+      </div>
+      <div class="exchange-btn">
+        <span>${canAfford ? 'Exchange' : 'Not enough'}</span>
+        ${canAfford ? '<svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>' : ''}
+      </div>
+    `;
+
+    if (canAfford) {
+      card.addEventListener('click', () => openExchangeModal(coin));
+    }
+    list.appendChild(card);
+  });
+}
+
+let currentCoin = null;
+
+function openExchangeModal(coin) {
+  currentCoin = coin;
+  const points = getPoints();
+  const maxUnits = Math.floor(points / coin.pointsPerUnit);
+  const cost = maxUnits * coin.pointsPerUnit;
+  const remaining = points - cost;
+
+  showSuccessModal({
+    icon: 'exchange',
+    title: 'Confirm Exchange',
+    desc: `Exchange <b>${formatNumber(cost)} Points</b><br>for <b>${formatNumber(maxUnits)} ${coin.code}</b><br><span style="font-size: 11.5px; color: var(--sub);">Remaining: ${formatNumber(remaining)} Points</span>`,
+    rewardText: '+' + formatNumber(maxUnits) + ' ' + coin.code,
+    rewardColor: 'purple',
+    buttonText: 'Confirm Exchange',
+    buttonAction: confirmExchange
+  });
+}
+
+function confirmExchange() {
+  if (!currentCoin) return;
+  const coin = currentCoin;
+  const points = getPoints();
+  const maxUnits = Math.floor(points / coin.pointsPerUnit);
+  const cost = maxUnits * coin.pointsPerUnit;
+
+  if (maxUnits <= 0) {
+    showToast('Not enough points', 'error');
+    return;
+  }
+
+  spendPoints(cost);
+
+  const storageKey = coin.code.toLowerCase() + '_balance';
+  const currentBalance = parseFloat(localStorage.getItem(storageKey) || '0');
+  const newBalance = currentBalance + maxUnits;
+  localStorage.setItem(storageKey, newBalance.toFixed(6));
+
+  try {
+    const history = JSON.parse(localStorage.getItem(KEY_EXCHANGES) || '[]');
+    history.push({ coin: coin.code, amount: maxUnits, points: cost, date: Date.now() });
+    localStorage.setItem(KEY_EXCHANGES, JSON.stringify(history));
+  } catch (e) {}
+
+  renderBalance(true);
+  renderExchange();
+  currentCoin = null;
+
+  showSuccessModal({
+    icon: 'check',
+    title: 'Exchange Successful! 🎉',
+    desc: `<b>${formatNumber(maxUnits)} ${coin.code}</b> has been<br>added to your wallet`,
+    rewardText: '+' + formatNumber(maxUnits) + ' ' + coin.code,
+    rewardColor: 'green',
+    buttonText: 'View Wallet',
+    buttonAction: () => { window.location.href = 'wallet.html'; }
+  });
+}
+
+/* ============================================================
+   🎉  MODAL
+   ============================================================ */
+const REWARD_STYLES = {
+  gold:   { bg: 'rgba(245,158,11,0.15)', border: 'rgba(245,158,11,0.4)', color: '#f59e0b' },
+  purple: { bg: 'rgba(139,61,255,0.15)', border: 'rgba(139,61,255,0.4)', color: '#b47cff' },
+  green:  { bg: 'rgba(34,197,94,0.15)',  border: 'rgba(34,197,94,0.4)',  color: '#22c55e' }
+};
+
+function showSuccessModal({ icon, title, desc, rewardText, rewardColor = 'gold', buttonText = 'Continue', buttonAction = closeModal }) {
+  document.getElementById('modalIcon').innerHTML = `<svg viewBox="0 0 24 24">${ICONS_LIB[icon] || ICONS_LIB.check}</svg>`;
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalDesc').innerHTML = desc;
+  document.getElementById('modalRewardText').textContent = rewardText;
+
+  const style = REWARD_STYLES[rewardColor] || REWARD_STYLES.gold;
+  const rewardEl = document.getElementById('modalReward');
+  rewardEl.style.background = style.bg;
+  rewardEl.style.borderColor = style.border;
+  rewardEl.style.color = style.color;
+
+  const btn = document.getElementById('modalBtn');
+  btn.innerHTML = `<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> ${buttonText}`;
+  btn.onclick = () => {
+    if (buttonAction === closeModal) closeModal();
+    else buttonAction();
+  };
+
+  document.getElementById('successModal').classList.add('show');
+  document.body.classList.add('no-scroll');
+}
+
+function closeModal() {
+  document.getElementById('successModal').classList.remove('show');
+  document.body.classList.remove('no-scroll');
+}
+
+/* ============================================================
+   🔀  TABS
+   ============================================================ */
+function switchTab(event, tab) {
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+
+  if (tab === 'exchange') renderExchange();
+}
+
+/* ============================================================
+   🌓  THEME
+   ============================================================ */
+const toggle = document.getElementById('themeToggle');
+const body = document.body;
+const thumbIcon = document.getElementById('thumbIcon');
+
+const moonIcon = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+const sunIcon = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>';
+
+function setTheme(dark) {
+  if (dark) {
+    body.classList.add('dark');
+    thumbIcon.innerHTML = sunIcon;
+  } else {
+    body.classList.remove('dark');
+    thumbIcon.innerHTML = moonIcon;
+  }
+}
+
+const saved = localStorage.getItem('adsy-theme');
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+if (saved === 'dark' || (!saved && prefersDark)) setTheme(true);
+
+let themeLock = false;
+toggle.addEventListener('click', () => {
+  if (themeLock) return;
+  themeLock = true;
+  const isDark = !body.classList.contains('dark');
+  requestAnimationFrame(() => setTheme(isDark));
+  try { localStorage.setItem('adsy-theme', isDark ? 'dark' : 'light'); } catch (e) {}
+  setTimeout(() => { themeLock = false; }, 280);
+});
+
+window.addEventListener('storage', (e) => {
+  if (e.key === 'adsy-theme') setTheme(e.newValue === 'dark');
+});
+
+/* ============================================================
+   🚀  INIT
+   ============================================================ */
+renderBalance();
+renderTasks();
+renderExchange();
+
+document.getElementById('successModal').addEventListener('click', (e) => {
+  if (e.target.id === 'successModal') closeModal();
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeModal();
+});
+</script>
+
+</body>
+</html>
