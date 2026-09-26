@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Gift Box | ADSY</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; }
+
+  :root {
+    --bg: #f7f8fa;
+    --bg-soft: #ffffff;
+    --card: #ffffff;
+    --text: #0b0f14;
+    --sub: #6b7681;
+    --muted: #9aa4ad;
+    --line: #e8ecf0;
+    --line-strong: #d8dee5;
+    --accent: #0066ff;
+    --accent-soft: rgba(0,102,255,0.08);
+    --accent-glow: rgba(0,102,255,0.25);
+    --gold: #f59e0b;
+    --gold-2: #fbbf24;
+    --gold-3: #ffd666;
+    --gold-soft: rgba(245,158,11,0.1);
+    --gold-glow: rgba(245,158,11,0.4);
+    --green: #22c55e;
+    --green-soft: rgba(34,197,94,0.1);
+    --red: #ef4444;
+    --shadow-sm: 0 1px 2px rgba(11,15,20,0.04);
+    --shadow-md: 0 4px 16px rgba(11,15,20,0.06);
+    --shadow-lg: 0 20px 48px rgba(11,15,20,0.12);
+    --header-bg: rgba(247,248,250,0.72);
+    --overlay: rgba(11,15,20,0.9);
+  }
+  body.dark {
+    --bg: #08090c;
+    --bg-soft: #0e1014;
+    --card: #101318;
+    --text: #f2f4f7;
+    --sub: #8b95a1;
+    --muted: #5a636e;
+    --line: #1c2027;
+    --line-strong: #262b33;
+    --accent: #3d8bff;
+    --accent-soft: rgba(61,139,255,0.12);
+    --accent-glow: rgba(61,139,255,0.35);
+    --gold: #fbbf24;
+    --gold-2: #ffd666;
+    --gold-3: #ffeaa7;
+    --gold-soft: rgba(251,191,36,0.15);
+    --gold-glow: rgba(251,191,36,0.55);
+    --green: #22c55e;
+    --green-soft: rgba(34,197,94,0.15);
+    --red: #ef4444;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.5);
+    --shadow-lg: 0 20px 48px rgba(0,0,0,0.6);
+    --header-bg: rgba(8,9,12,0.72);
+    --overlay: rgba(0,0,0,0.95);
+  }
+
+  html, body { width: 100%; min-height: 100vh; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    transition: background 0.35s ease, color 0.35s ease;
+    position: relative;
+  }
+  body.no-scroll { overflow: hidden; }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    background:
+      radial-gradient(900px circle at 50% 20%, var(--gold-soft), transparent 50%),
+      radial-gradient(600px circle at 20% 80%, var(--accent-soft), transparent 50%);
+  }
+
+  /* Header */
+  .header {
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    background: var(--header-bg);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow-sm);
+    gap: 10px;
+  }
+  .logo-text {
+    font-size: 1.15rem;
+    font-weight: 900;
+    letter-spacing: 3px;
+    background: linear-gradient(135deg, var(--text) 30%, var(--gold-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .back-btn {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 8px 14px;
+    background: var(--card);
+    border-radius: 20px;
+    border: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: 0.3s;
+  }
+  .back-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .back-btn svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+  .theme-toggle {
+    position: relative;
+    width: 56px; height: 30px;
+    border-radius: 100px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+  }
+  .theme-toggle:active { transform: scale(0.94); }
+  .toggle-thumb {
+    position: absolute;
+    top: 3px; left: 3px;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    transition: transform 0.4s cubic-bezier(0.34, 1.4, 0.64, 1);
+  }
+  body.dark .toggle-thumb { transform: translateX(26px); }
+  .toggle-thumb svg {
+    width: 12px; height: 12px;
+    stroke: var(--bg);
+    fill: none;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 0.5s cubic-bezier(0.34, 1.4, 0.64, 1);
+  }
+  body.dark .toggle-thumb svg { transform: rotate(180deg); }
+  .toggle-icon {
+    position: absolute;
+    top: 50%; transform: translateY(-50%);
+    width: 12px; height: 12px;
+    stroke: var(--muted);
+    fill: none;
+    stroke-width: 2;
+    pointer-events: none;
+  }
+  .icon-moon { left: 9px; }
+  .icon-sun  { right: 9px; }
+  body:not(.dark) .icon-moon { opacity: 0; }
+  body.dark .icon-sun { opacity: 0; }
+
+  /* Title */
+  .title-wrap {
+    text-align: center;
+    margin-bottom: 30px;
+    animation: fadeUp 0.6s ease;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .title-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 100px;
+    background: var(--gold-soft);
+    color: var(--gold);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    border: 1px solid rgba(245,158,11,0.25);
+  }
+  .title-badge svg {
+    width: 12px;
+    height: 12px;
+    stroke: var(--gold);
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .title-wrap h1 {
+    font-size: 32px;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, var(--text) 0%, var(--gold-2) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .title-wrap p {
+    font-size: 13.5px;
+    color: var(--sub);
+    line-height: 1.55;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  /* ============================================
+     GIFT BOX — الحجم الكبير الاحترافي
+  ============================================ */
+  .gift-container {
+    position: relative;
+    width: 320px;
+    height: 320px;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    animation: containerEnter 1s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @keyframes containerEnter {
+    from { opacity: 0; transform: scale(0.6) translateY(30px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  /* Glow behind box */
+  .box-glow {
+    position: absolute;
+    inset: -20px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--gold-glow) 0%, transparent 65%);
+    filter: blur(30px);
+    opacity: 0.7;
+    animation: glowPulse 3s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes glowPulse {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 0.9; transform: scale(1.08); }
+  }
+
+  /* Gift Box SVG - الكبير */
+  .gift-box {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    z-index: 2;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    filter: drop-shadow(0 20px 40px var(--gold-glow)) drop-shadow(0 10px 20px rgba(0,0,0,0.2));
+  }
+  .gift-container:hover .gift-box {
+    transform: scale(1.05) translateY(-8px);
+  }
+  .gift-container:active .gift-box {
+    transform: scale(0.98);
+  }
+
+  /* Sparkles floating around box */
+  .sparkle {
+    position: absolute;
+    border-radius: 50%;
+    background: #fff;
+    pointer-events: none;
+    z-index: 4;
+  }
+  .sp1 { 
+    width: 10px; height: 10px; 
+    top: 15%; left: 15%;
+    background: var(--gold-3);
+    box-shadow: 0 0 20px var(--gold-3), 0 0 30px var(--gold-2);
+    animation: sparkleAnim 2s ease-in-out infinite;
+  }
+  .sp2 { 
+    width: 12px; height: 12px; 
+    top: 25%; right: 12%;
+    background: #fff;
+    box-shadow: 0 0 25px #fff, 0 0 40px var(--gold-2);
+    animation: sparkleAnim 2.5s ease-in-out -0.7s infinite;
+  }
+  .sp3 { 
+    width: 8px; height: 8px; 
+    bottom: 20%; left: 12%;
+    background: var(--gold-2);
+    box-shadow: 0 0 18px var(--gold-2);
+    animation: sparkleAnim 3s ease-in-out -1.3s infinite;
+  }
+  .sp4 { 
+    width: 9px; height: 9px; 
+    bottom: 25%; right: 15%;
+    background: var(--gold-3);
+    box-shadow: 0 0 20px var(--gold-3);
+    animation: sparkleAnim 2.2s ease-in-out -1.8s infinite;
+  }
+  .sp5 { 
+    width: 7px; height: 7px; 
+    top: 8%; right: 40%;
+    background: #fff;
+    box-shadow: 0 0 15px #fff;
+    animation: sparkleAnim 1.9s ease-in-out -0.4s infinite;
+  }
+  .sp6 { 
+    width: 6px; height: 6px; 
+    bottom: 8%; left: 42%;
+    background: var(--gold-3);
+    box-shadow: 0 0 15px var(--gold-3);
+    animation: sparkleAnim 2.7s ease-in-out -1s infinite;
+  }
+  @keyframes sparkleAnim {
+    0%, 100% { opacity: 0; transform: scale(0.3); }
+    50% { opacity: 1; transform: scale(1.4); }
+  }
+
+  /* Shake animation */
+  .gift-container.shaking .gift-box {
+    animation: shakeBox 0.3s ease-in-out infinite;
+  }
+  @keyframes shakeBox {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    20% { transform: rotate(-7deg) scale(1.03) translateY(-5px); }
+    40% { transform: rotate(7deg) scale(1.03) translateY(-5px); }
+    60% { transform: rotate(-5deg) scale(1.03) translateY(-5px); }
+    80% { transform: rotate(5deg) scale(1.03) translateY(-5px); }
+  }
+
+  /* Burst animation */
+  .gift-container.bursting .gift-box {
+    animation: burstBox 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  @keyframes burstBox {
+    0% { transform: scale(1) rotate(0deg); opacity: 1; filter: brightness(1); }
+    40% { 
+      transform: scale(1.35) rotate(10deg); 
+      opacity: 1; 
+      filter: brightness(3) blur(6px);
+      filter: drop-shadow(0 0 80px var(--gold-3)) drop-shadow(0 0 120px var(--gold-2));
+    }
+    100% { transform: scale(0) rotate(30deg); opacity: 0; }
+  }
+
+  .gift-container.hidden {
+    opacity: 0;
+    transform: scale(0.2);
+    pointer-events: none;
+    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Open Button */
+  .open-btn {
+    width: 100%;
+    max-width: 340px;
+    padding: 20px 24px;
+    border: none;
+    border-radius: 18px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-2));
+    color: #0d0906;
+    font-size: 16px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: 0.3s;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    box-shadow: 0 15px 40px var(--gold-glow);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    animation: fadeUp 0.6s ease 0.2s both;
+  }
+  .open-btn:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 50px var(--gold-glow);
+  }
+  .open-btn:active:not(:disabled) { transform: translateY(0); }
+  .open-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    box-shadow: none;
+    background: var(--line);
+    color: var(--muted);
+  }
+  .open-btn svg {
+    width: 20px;
+    height: 20px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* Cooldown info */
+  .cooldown-info {
+    text-align: center;
+    font-size: 12.5px;
+    color: var(--sub);
+    font-weight: 600;
+    line-height: 1.6;
+    padding: 0 20px;
+    margin-bottom: 24px;
+    animation: fadeUp 0.6s ease 0.3s both;
+  }
+  .cooldown-info b {
+    color: var(--gold);
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Pool */
+  .pool-hint {
+    max-width: 500px;
+    width: 100%;
+    padding: 18px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow-sm);
+    animation: fadeUp 0.6s ease 0.4s both;
+  }
+  .pool-label {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+  .pool-coins {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 8px;
+    justify-items: center;
+  }
+  .pool-coin {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 900;
+    color: #fff;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    opacity: 0.75;
+    transition: 0.3s;
+  }
+  .pool-coin:hover { opacity: 1; transform: translateY(-3px) scale(1.1); }
+  .pool-coin img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .pool-coin.bttc  { background: linear-gradient(135deg, #c0c0c0, #8a8a8a); color: #1a1a1a; }
+  .pool-coin.pepe  { background: linear-gradient(135deg, #22c55e, #00ff88); color: #0a2a1a; }
+  .pool-coin.dogs  { background: linear-gradient(135deg, #6da3d6, #7ec4ff); }
+  .pool-coin.vtho  { background: linear-gradient(135deg, #8b73e8, #7c5cff); }
+  .pool-coin.solv  { background: linear-gradient(135deg, #8b3dff, #b47cff); }
+  .pool-coin.quick { background: linear-gradient(135deg, #4a90d9, #7ec4ff); }
+  .pool-coin.tut   { background: linear-gradient(135deg, #f5a623, #ffcc66); color: #0d0906; }
+  .pool-coin.chz   { background: linear-gradient(135deg, #ec1e5c, #ff5c92); }
+
+  /* Confetti */
+  .confetti {
+    position: fixed;
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    pointer-events: none;
+    z-index: 100;
+    animation: confettiFall 2.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  @keyframes confettiFall {
+    0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+    100% { transform: translate(var(--tx), var(--ty)) rotate(720deg); opacity: 0; }
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--card);
+    border: 1px solid var(--line-strong);
+    border-radius: 14px;
+    padding: 14px 24px;
+    color: var(--text);
+    font-size: 0.85rem;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 600;
+    box-shadow: var(--shadow-lg);
+    max-width: 90%;
+    text-align: center;
+    font-weight: 700;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.error { border-color: rgba(239,68,68,0.5); color: var(--red); }
+  .toast.success { border-color: rgba(34,197,94,0.5); color: var(--green); }
+  .toast.warning { border-color: rgba(245,158,11,0.5); color: var(--gold); }
+
+  /* Reward Modal */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--overlay);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 500;
+    padding: 20px;
+  }
+  .modal-overlay.show { display: flex; animation: fadeIn 0.4s; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .modal {
+    background: var(--card);
+    border: 1px solid var(--line-strong);
+    border-radius: 30px;
+    padding: 40px 26px 30px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+    animation: modalIn 0.6s cubic-bezier(0.34, 1.4, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  @keyframes modalIn {
+    0% { transform: scale(0.6) translateY(40px); opacity: 0; }
+    100% { transform: scale(1) translateY(0); opacity: 1; }
+  }
+  .modal::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 400px;
+    height: 400px;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, var(--gold-glow) 0%, transparent 60%);
+    opacity: 0;
+    animation: modalBurst 1.2s ease-out 0.2s forwards;
+    pointer-events: none;
+  }
+  @keyframes modalBurst {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
+    50% { opacity: 0.8; }
+    100% { opacity: 0.4; transform: translate(-50%, -50%) scale(1); }
+  }
+  .modal-content { position: relative; z-index: 2; }
+
+  .modal-coin-wrap {
+    position: relative;
+    width: 130px;
+    height: 130px;
+    margin: 0 auto 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-coin-ring {
+    position: absolute;
+    inset: -10px;
+    border-radius: 50%;
+    border: 2px dashed var(--gold);
+    opacity: 0.4;
+    animation: rotate 3s linear infinite;
+  }
+  @keyframes rotate { to { transform: rotate(360deg); } }
+  .modal-coin-ring-2 {
+    position: absolute;
+    inset: -20px;
+    border-radius: 50%;
+    border: 1px solid var(--gold);
+    opacity: 0.2;
+    animation: rotateRev 5s linear infinite;
+  }
+  @keyframes rotateRev { to { transform: rotate(-360deg); } }
+  .modal-coin {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    font-weight: 900;
+    color: #fff;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    animation: coinBounce 2s ease-in-out infinite;
+    overflow: hidden;
+    position: relative;
+    z-index: 2;
+  }
+  @keyframes coinBounce {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-10px) scale(1.05); }
+  }
+  .modal-coin img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .modal-coin.bttc  { background: linear-gradient(135deg, #c0c0c0, #8a8a8a); color: #1a1a1a; }
+  .modal-coin.pepe  { background: linear-gradient(135deg, #22c55e, #00ff88); color: #0a2a1a; }
+  .modal-coin.dogs  { background: linear-gradient(135deg, #6da3d6, #7ec4ff); }
+  .modal-coin.vtho  { background: linear-gradient(135deg, #8b73e8, #7c5cff); }
+  .modal-coin.solv  { background: linear-gradient(135deg, #8b3dff, #b47cff); }
+  .modal-coin.quick { background: linear-gradient(135deg, #4a90d9, #7ec4ff); }
+  .modal-coin.tut   { background: linear-gradient(135deg, #f5a623, #ffcc66); color: #0d0906; }
+  .modal-coin.chz   { background: linear-gradient(135deg, #ec1e5c, #ff5c92); }
+
+  .modal-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--gold);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .modal-amount {
+    font-size: 42px;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--gold), var(--gold-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 6px;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .modal-currency {
+    font-size: 15px;
+    color: var(--sub);
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 22px;
+  }
+  .modal-desc {
+    font-size: 13px;
+    color: var(--sub);
+    line-height: 1.7;
+    margin-bottom: 26px;
+    padding: 12px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+  }
+  .modal-desc b { color: var(--text); font-weight: 800; }
+
+  .modal-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .modal-btn {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 14px;
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    font-family: inherit;
+    transition: 0.25s;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .modal-btn svg {
+    width: 15px;
+    height: 15px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .modal-btn.primary {
+    background: linear-gradient(135deg, var(--gold), var(--gold-2));
+    color: #0d0906;
+    box-shadow: 0 10px 30px var(--gold-glow);
+  }
+  .modal-btn.primary:hover { transform: translateY(-2px); box-shadow: 0 15px 40px var(--gold-glow); }
+  .modal-btn.secondary {
+    background: var(--bg);
+    color: var(--sub);
+    border: 1px solid var(--line);
+  }
+  .modal-btn.secondary:hover { background: var(--bg-soft); border-color: var(--line-strong); }
+
+  @media (max-width: 420px) {
+    body { padding: 14px; }
+    .title-wrap h1 { font-size: 26px; }
+    .gift-container { width: 260px; height: 260px; }
+    .gift-box { width: 240px; height: 240px; }
+    .modal-amount { font-size: 34px; }
+    .modal-coin-wrap { width: 110px; height: 110px; }
+    .modal-coin { width: 95px; height: 95px; font-size: 30px; }
+    .pool-coins { grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    .pool-coin { width: 46px; height: 46px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo-text">GIFT BOX</div>
+  <div class="header-actions">
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+      <svg class="toggle-icon icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="toggle-icon icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <div class="toggle-thumb">
+        <svg viewBox="0 0 24 24" id="thumbIcon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </div>
+    </button>
+    <a href="index.html" class="back-btn">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      BACK
+    </a>
+  </div>
+</header>
+
+<section class="title-wrap">
+  <div class="title-badge">
+    <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    DAILY REWARD
+  </div>
+  <h1>Open Your Gift</h1>
+  <p>A random crypto reward awaits you</p>
+</section>
+
+<!-- ⭐ GIFT BOX الكبير -->
+<div class="gift-container" id="giftContainer">
+  <!-- Glow -->
+  <div class="box-glow"></div>
+
+  <!-- Sparkles -->
+  <div class="sparkle sp1"></div>
+  <div class="sparkle sp2"></div>
+  <div class="sparkle sp3"></div>
+  <div class="sparkle sp4"></div>
+  <div class="sparkle sp5"></div>
+  <div class="sparkle sp6"></div>
+
+  <!-- Gift Box SVG -->
+  <svg class="gift-box" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="boxBase" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#ffd666"/>
+        <stop offset="50%" stop-color="#fbbf24"/>
+        <stop offset="100%" stop-color="#d97706"/>
+      </linearGradient>
+      <linearGradient id="boxLid" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#ffeaa7"/>
+        <stop offset="50%" stop-color="#ffd666"/>
+        <stop offset="100%" stop-color="#fbbf24"/>
+      </linearGradient>
+      <linearGradient id="ribbonV" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#b91c1c"/>
+        <stop offset="50%" stop-color="#ef4444"/>
+        <stop offset="100%" stop-color="#dc2626"/>
+      </linearGradient>
+      <linearGradient id="ribbonH" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#dc2626"/>
+        <stop offset="100%" stop-color="#b91c1c"/>
+      </linearGradient>
+      <radialGradient id="bowGrad" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#ff6b6b"/>
+        <stop offset="70%" stop-color="#ef4444"/>
+        <stop offset="100%" stop-color="#b91c1c"/>
+      </radialGradient>
+      <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+        <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
+        <feOffset dx="0" dy="4" result="offsetblur"/>
+        <feComponentTransfer>
+          <feFuncA type="linear" slope="0.3"/>
+        </feComponentTransfer>
+        <feMerge>
+          <feMergeNode/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>
+
+    <!-- Box base -->
+    <rect x="75" y="140" width="150" height="120" rx="12" fill="url(#boxBase)" filter="url(#shadow)"/>
+    
+    <!-- Box highlight -->
+    <rect x="75" y="140" width="150" height="40" rx="12" fill="#ffffff" opacity="0.15"/>
+    
+    <!-- Box lid -->
+    <rect x="60" y="105" width="180" height="45" rx="10" fill="url(#boxLid)" filter="url(#shadow)"/>
+    
+    <!-- Lid highlight -->
+    <rect x="60" y="105" width="180" height="15" rx="10" fill="#ffffff" opacity="0.4"/>
+    
+    <!-- Vertical ribbon -->
+    <rect x="140" y="105" width="20" height="155" fill="url(#ribbonV)"/>
+    
+    <!-- Horizontal ribbon -->
+    <rect x="60" y="122" width="180" height="16" fill="url(#ribbonH)"/>
+    
+    <!-- Ribbon shine -->
+    <rect x="140" y="105" width="6" height="155" fill="#ffffff" opacity="0.25"/>
+
+    <!-- Left bow -->
+    <ellipse cx="122" cy="85" rx="28" ry="22" fill="url(#bowGrad)" filter="url(#shadow)"/>
+    <ellipse cx="122" cy="85" rx="14" ry="11" fill="#7f1d1d" opacity="0.35"/>
+    <ellipse cx="122" cy="80" rx="6" ry="4" fill="#ffffff" opacity="0.35"/>
+
+    <!-- Right bow -->
+    <ellipse cx="178" cy="85" rx="28" ry="22" fill="url(#bowGrad)" filter="url(#shadow)"/>
+    <ellipse cx="178" cy="85" rx="14" ry="11" fill="#7f1d1d" opacity="0.35"/>
+    <ellipse cx="178" cy="80" rx="6" ry="4" fill="#ffffff" opacity="0.35"/>
+
+    <!-- Center knot -->
+    <circle cx="150" cy="85" r="14" fill="#dc2626" filter="url(#shadow)"/>
+    <circle cx="150" cy="85" r="7" fill="#7f1d1d" opacity="0.4"/>
+    <circle cx="147" cy="82" r="3" fill="#ffffff" opacity="0.5"/>
+
+    <!-- Star decorations -->
+    <text x="100" y="200" font-size="20" fill="#ffffff" opacity="0.3" font-family="Arial">✦</text>
+    <text x="185" y="225" font-size="18" fill="#ffffff" opacity="0.25" font-family="Arial">✦</text>
+    <text x="90" y="245" font-size="14" fill="#ffffff" opacity="0.2" font-family="Arial">✦</text>
+  </svg>
+</div>
+
+<!-- Open Button -->
+<button class="open-btn" id="openBtn">
+  <svg viewBox="0 0 24 24"><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+  Open Gift Box
+</button>
+
+<div class="cooldown-info">
+  <div id="cooldownText">Tap the box to open your gift</div>
+</div>
+
+<div class="pool-hint">
+  <div class="pool-label">Random Prize Pool · 8 Coins</div>
+  <div class="pool-coins" id="poolCoins"></div>
+</div>
+
+<!-- Reward Modal -->
+<div class="modal-overlay" id="rewardModal">
+  <div class="modal">
+    <div class="modal-content">
+      <div class="modal-coin-wrap">
+        <div class="modal-coin-ring"></div>
+        <div class="modal-coin-ring-2"></div>
+        <div class="modal-coin" id="modalCoin">?</div>
+      </div>
+      <div class="modal-title">Congratulations!</div>
+      <div class="modal-amount" id="modalAmount">0</div>
+      <div class="modal-currency" id="modalCurrency">COIN</div>
+      <div class="modal-desc" id="modalDesc">
+        Your reward has been added to your wallet
+      </div>
+      <div class="modal-actions">
+        <button class="modal-btn primary" onclick="goToWallet()">
+          <svg viewBox="0 0 24 24"><path d="M21 12V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5"/><path d="M16 12h6v4h-6a2 2 0 1 1 0-4z"/></svg>
+          View in Wallet
+        </button>
+        <button class="modal-btn secondary" onclick="closeRewardModal()">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Continue
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  /* ============================================
+     CONFIG — ⚠️ بدون مؤقت (تجربة)
+  ============================================ */
+  const STORAGE_KEY_LAST_OPEN = 'adsy_gift_last_open';
+  const COOLDOWN_MS = 0;
+
+  /* ============================================
+     COINS
+  ============================================ */
+  const GIFT_COINS = [
+    { code: 'BTTC',  name: 'BitTorrent', img: 'logobttc.png', cls: 'bttc',  storageKey: 'bttc_balance',  weight: 20, min: 500,   max: 5000,  decimals: 0 },
+    { code: 'PEPE',  name: 'Pepe',       img: 'pepe.png',     cls: 'pepe',  storageKey: 'pepe_balance',  weight: 18, min: 100,   max: 1500,  decimals: 0 },
+    { code: 'DOGS',  name: 'Dogs',       img: 'dogs.png',     cls: 'dogs',  storageKey: 'dogs_balance',  weight: 15, min: 20,    max: 300,   decimals: 0 },
+    { code: 'VTHO',  name: 'VeThor',     img: 'vtho.png',     cls: 'vtho',  storageKey: 'vtho_balance',  weight: 12, min: 0.2,   max: 5,     decimals: 2 },
+    { code: 'SOLV',  name: 'Solv',       img: 'solv.png',     cls: 'solv',  storageKey: 'solv_balance',  weight: 10, min: 0.02,  max: 0.5,   decimals: 3 },
+    { code: 'QUICK', name: 'QuickSwap',  img: 'QUICK.png',    cls: 'quick', storageKey: 'quick_balance', weight: 10, min: 0.05,  max: 1,     decimals: 2 },
+    { code: 'TUT',   name: 'TUT Token',  img: 'TUT.png',      cls: 'tut',   storageKey: 'tut_balance',   weight: 8,  min: 0.01,  max: 0.3,   decimals: 3 },
+    { code: 'CHZ',   name: 'Chiliz',     img: 'CHZ.png',      cls: 'chz',   storageKey: 'chz_balance',   weight: 7,  min: 0.005, max: 0.05,  decimals: 3 }
+  ];
+
+  /* ============================================
+     DOM
+  ============================================ */
+  const giftContainer = document.getElementById('giftContainer');
+  const openBtn = document.getElementById('openBtn');
+  const cooldownText = document.getElementById('cooldownText');
+  const rewardModal = document.getElementById('rewardModal');
+  const toastEl = document.getElementById('toast');
+
+  /* ============================================
+     HELPERS
+  ============================================ */
+  function getBalance(coin) {
+    const v = parseFloat(localStorage.getItem(coin.storageKey) || '0');
+    return isFinite(v) && v >= 0 ? v : 0;
+  }
+
+  function setBalance(coin, value) {
+    localStorage.setItem(coin.storageKey, value.toFixed(6));
+  }
+
+  function formatAmount(v, dec) {
+    if (!isFinite(v) || v < 0) v = 0;
+    if (dec === 0) return Math.floor(v).toLocaleString('en-US');
+    return v.toFixed(dec);
+  }
+
+  function showToast(msg, type = '', duration = 2500) {
+    toastEl.textContent = msg;
+    toastEl.className = 'toast';
+    if (type) toastEl.classList.add(type);
+    toastEl.classList.add('show');
+    clearTimeout(toastEl._t);
+    toastEl._t = setTimeout(() => toastEl.classList.remove('show'), duration);
+  }
+
+  /* ============================================
+     RENDER POOL
+  ============================================ */
+  function renderPool() {
+    const pool = document.getElementById('poolCoins');
+    pool.innerHTML = '';
+    GIFT_COINS.forEach(coin => {
+      const el = document.createElement('div');
+      el.className = 'pool-coin ' + coin.cls;
+      el.title = coin.name;
+      el.innerHTML = `
+        <img src="${coin.img}" alt="${coin.code}"
+             onerror="this.style.display='none';this.parentElement.textContent='${coin.code[0]}'">
+      `;
+      pool.appendChild(el);
+    });
+  }
+
+  /* ============================================
+     PICK RANDOM PRIZE (Weighted)
+  ============================================ */
+  function pickRandomPrize() {
+    const totalWeight = GIFT_COINS.reduce((sum, c) => sum + c.weight, 0);
+    let random = Math.random() * totalWeight;
+    let selectedCoin = GIFT_COINS[0];
+
+    for (const coin of GIFT_COINS) {
+      random -= coin.weight;
+      if (random <= 0) {
+        selectedCoin = coin;
+        break;
+      }
+    }
+
+    const range = selectedCoin.max - selectedCoin.min;
+    const randomValue = selectedCoin.min + (Math.random() * range);
+    const amount = parseFloat(randomValue.toFixed(selectedCoin.decimals));
+
+    return { coin: selectedCoin, amount };
+  }
+
+  /* ============================================
+     OPEN GIFT
+  ============================================ */
+  function openGift() {
+    if (openBtn.disabled) return;
+    openBtn.disabled = true;
+    giftContainer.classList.add('shaking');
+
+    setTimeout(() => {
+      giftContainer.classList.remove('shaking');
+      giftContainer.classList.add('bursting');
+
+      spawnConfetti();
+
+      const prize = pickRandomPrize();
+
+      setTimeout(() => {
+        giftContainer.classList.add('hidden');
+        setTimeout(() => {
+          showReward(prize);
+        }, 400);
+      }, 700);
+
+    }, 1400);
+  }
+
+  /* ============================================
+     CONFETTI
+  ============================================ */
+  function spawnConfetti() {
+    const colors = ['#fbbf24', '#f59e0b', '#ffe8b3', '#ffffff', '#0066ff', '#22c55e', '#ef4444', '#8b3dff', '#ec1e5c'];
+    const rect = giftContainer.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+
+    for (let i = 0; i < 120; i++) {
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti';
+      confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+      confetti.style.left = cx + 'px';
+      confetti.style.top = cy + 'px';
+      const size = 8 + Math.random() * 14;
+      confetti.style.width = size + 'px';
+      confetti.style.height = size + 'px';
+      if (Math.random() > 0.5) confetti.style.borderRadius = '50%';
+
+      const angle = Math.random() * Math.PI * 2;
+      const dist = 180 + Math.random() * 350;
+      const tx = Math.cos(angle) * dist;
+      const ty = Math.sin(angle) * dist + 400;
+
+      confetti.style.setProperty('--tx', tx + 'px');
+      confetti.style.setProperty('--ty', ty + 'px');
+
+      document.body.appendChild(confetti);
+      setTimeout(() => confetti.remove(), 2500);
+    }
+  }
+
+  /* ============================================
+     SHOW REWARD
+  ============================================ */
+  function showReward(prize) {
+    const { coin, amount } = prize;
+
+    const currentBal = getBalance(coin);
+    const newBal = currentBal + amount;
+    setBalance(coin, newBal);
+
+    const modalCoin = document.getElementById('modalCoin');
+    modalCoin.className = 'modal-coin ' + coin.cls;
+    modalCoin.innerHTML = `
+      <img src="${coin.img}" alt="${coin.code}"
+           onerror="this.style.display='none';this.parentElement.textContent='${coin.code[0]}'">
+    `;
+
+    document.getElementById('modalAmount').textContent = '+' + formatAmount(amount, coin.decimals);
+    document.getElementById('modalCurrency').textContent = coin.code;
+    document.getElementById('modalDesc').innerHTML =
+      `Added to your wallet<br><b>New balance: ${formatAmount(newBal, coin.decimals)} ${coin.code}</b>`;
+
+    rewardModal.classList.add('show');
+    document.body.classList.add('no-scroll');
+  }
+
+  /* ============================================
+     CLOSE MODAL — إعادة تعيين للتجربة
+  ============================================ */
+  function closeRewardModal() {
+    rewardModal.classList.remove('show');
+    document.body.classList.remove('no-scroll');
+
+    // إعادة تعيين الصندوق (وضع التجربة)
+    setTimeout(() => {
+      giftContainer.classList.remove('hidden', 'bursting');
+      openBtn.disabled = false;
+    }, 300);
+  }
+
+  function goToWallet() {
+    window.location.href = 'wallet.html';
+  }
+
+  /* ============================================
+     THEME
+  ============================================ */
+  const toggle = document.getElementById('themeToggle');
+  const body = document.body;
+  const thumbIcon = document.getElementById('thumbIcon');
+
+  const moonIcon = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  const sunIcon = `<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>`;
+
+  function setTheme(dark) {
+    if (dark) {
+      body.classList.add('dark');
+      thumbIcon.innerHTML = sunIcon;
+    } else {
+      body.classList.remove('dark');
+      thumbIcon.innerHTML = moonIcon;
+    }
+  }
+
+  const saved = localStorage.getItem('adsy-theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  if (saved === 'dark' || (!saved && prefersDark)) setTheme(true);
+
+  let themeLock = false;
+  toggle.addEventListener('click', () => {
+    if (themeLock) return;
+    themeLock = true;
+    const isDark = !body.classList.contains('dark');
+    requestAnimationFrame(() => setTheme(isDark));
+    try { localStorage.setItem('adsy-theme', isDark ? 'dark' : 'light'); } catch (e) {}
+    setTimeout(() => { themeLock = false; }, 280);
+  });
+
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'adsy-theme') setTheme(e.newValue === 'dark');
+  });
+
+  /* ============================================
+     EVENTS
+  ============================================ */
+  openBtn.addEventListener('click', openGift);
+  giftContainer.addEventListener('click', () => {
+    if (!openBtn.disabled) openGift();
+  });
+
+  rewardModal.addEventListener('click', (e) => {
+    if (e.target.id === 'rewardModal') closeRewardModal();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeRewardModal();
+  });
+
+  /* ============================================
+     INIT
+  ============================================ */
+  renderPool();
+</script>
+
+</body>
+</html>
