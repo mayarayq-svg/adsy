@@ -1001,6 +1001,194 @@
   background: linear-gradient(135deg, #00d4a0 0%, #00ffc2 50%, #7cffd9 100%);
   box-shadow: 0 16px 40px rgba(0, 200, 150, 0.55);
 }
+
+/* ============================================
+   ⭐ Ad Banner — نسبة 16:9
+============================================ */
+.ad-banner {
+  position: relative;
+  margin: 0 auto 42px;
+  max-width: 480px;
+  width: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: pointer;
+  text-decoration: none;
+  display: block;
+  isolation: isolate;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-md);
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.45s ease,
+              border-color 0.3s ease;
+  animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
+}
+
+.ad-banner:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg), 0 0 32px var(--accent-glow);
+  border-color: var(--accent);
+}
+
+.ad-banner:active { transform: translateY(-1px) scale(0.995); }
+
+/* Slider — نسبة 16:9 */
+.ad-slider {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;   /* ⭐ التغيير الأساسي */
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.ad-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+  pointer-events: none;
+}
+.ad-slide.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.ad-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;       /* يملأ الإطار دون تشويه */
+  object-position: center;
+  display: block;
+}
+
+/* شارة "AD" في الزاوية */
+.ad-tag {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 3;
+  padding: 5px 12px;
+  border-radius: 100px;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  pointer-events: none;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+/* مؤشرات النقاط — أسفل الوسط */
+.ad-dots {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  z-index: 3;
+  padding: 6px 12px;
+  border-radius: 100px;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.ad-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.5);
+  transition: all 0.4s ease;
+  cursor: pointer;
+}
+.ad-dot.active {
+  background: #fff;
+  width: 20px;
+  border-radius: 100px;
+}
+
+/* Overlay سفلي زجاجي */
+.ad-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px 20px 18px;
+  background: linear-gradient(to top,
+    rgba(0,0,0,0.75) 0%,
+    rgba(0,0,0,0.35) 55%,
+    transparent 100%);
+  color: #fff;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  z-index: 2;
+  pointer-events: none;
+}
+.ad-overlay-text {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  line-height: 1.25;
+}
+.ad-overlay-text small {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 500;
+  opacity: 0.85;
+  margin-top: 3px;
+}
+.ad-overlay-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 100px;
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.25);
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: background 0.3s ease;
+}
+.ad-banner:hover .ad-overlay-cta {
+  background: rgba(255,255,255,0.32);
+}
+.ad-overlay-cta svg {
+  width: 13px;
+  height: 13px;
+  stroke: #fff;
+  fill: none;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .ad-banner {
+    margin-bottom: 32px;
+    border-radius: 16px;
+  }
+  .ad-overlay {
+    padding: 14px 14px 12px;
+  }
+  .ad-overlay-text { font-size: 13px; }
+  .ad-overlay-text small { font-size: 10.5px; }
+  .ad-overlay-cta {
+    font-size: 11px;
+    padding: 6px 11px;
+  }
+  .ad-dots { bottom: 10px; padding: 5px 10px; }
+  .ad-tag { top: 10px; right: 10px; font-size: 9px; padding: 4px 9px; }
+}
+                    
 </style>
 </head>
 <body>
@@ -1203,6 +1391,42 @@
         <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </div>
     </a>
+    <!-- ⭐ مساحة إعلانية 16:9 — تحت زر Wallet -->
+<a href="advertise.html" class="ad-banner" aria-label="Advertise here">
+  <span class="ad-tag">AD</span>
+
+  <div class="ad-slider">
+    <div class="ad-slide active">
+      <img src="adx0.jpg" alt="Ad 1" loading="lazy">
+    </div>
+    <div class="ad-slide">
+      <img src="adx1.jpg" alt="Ad 2" loading="lazy">
+    </div>
+    <div class="ad-slide">
+      <img src="adx2.jpg" alt="Ad 3" loading="lazy">
+    </div>
+  </div>
+
+  <div class="ad-overlay">
+    <div class="ad-overlay-text">
+      أضف إعلانك هنا
+      <small>الدفع بالعملات المشفرة فقط</small>
+    </div>
+    <div class="ad-overlay-cta">
+      Advertise
+      <svg viewBox="0 0 24 24">
+        <line x1="5" y1="12" x2="19" y2="12"/>
+        <polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="ad-dots" id="adDots">
+    <span class="ad-dot active"></span>
+    <span class="ad-dot"></span>
+    <span class="ad-dot"></span>
+  </div>
+</a>
 
   </section>
 
@@ -1349,6 +1573,53 @@
   window.addEventListener('storage', (e) => {
     if (e.key === 'adsy-theme') setTheme(e.newValue === 'dark');
   });
+
+  /* ===== Ad Banner Slider (16:9 — يتبدل كل 3 ثواني) ===== */
+(function initAdSlider() {
+  const slides = document.querySelectorAll('.ad-slide');
+  const dots = document.querySelectorAll('.ad-dot');
+  const banner = document.querySelector('.ad-banner');
+  if (!slides.length || !banner) return;
+
+  let current = 0;
+  let timer = null;
+  const INTERVAL = 3000; // ⏱️ 3 ثواني
+
+  function goTo(index) {
+    slides[current].classList.remove('active');
+    dots[current]?.classList.remove('active');
+
+    current = (index + slides.length) % slides.length;
+
+    slides[current].classList.add('active');
+    dots[current]?.classList.add('active');
+  }
+
+  function next() { goTo(current + 1); }
+  function start() { stop(); timer = setInterval(next, INTERVAL); }
+  function stop()  { if (timer) clearInterval(timer); timer = null; }
+
+  // إيقاف عند تمرير الماوس فوق الإعلان
+  banner.addEventListener('mouseenter', stop);
+  banner.addEventListener('mouseleave', start);
+
+  // إيقاف عند إخفاء التبويب (توفير موارد)
+  document.addEventListener('visibilitychange', () => {
+    document.hidden ? stop() : start();
+  });
+
+  // الضغط على النقطة ينقلك مباشرة
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      goTo(i);
+      start();
+    });
+  });
+
+  start();
+})();
 </script>
 
 </body>
