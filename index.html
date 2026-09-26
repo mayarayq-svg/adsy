@@ -975,89 +975,31 @@
   color: var(--sub);
   font-weight: 500;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+/* Tasks — أخضر نعناعي */
+.cta-tasks {
+  background: linear-gradient(135deg, #00c896 0%, #00d4a0 50%, #00ffc2 100%);
+  color: #062a20;
+  box-shadow: 0 12px 32px rgba(0, 200, 150, 0.4);
 }
-
-/* Badge */
-.tasks-card-badge {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1px;
-  padding: 8px 12px;
-  border-radius: 12px;
-  background: rgba(251,191,36,0.15);
-  border: 1px solid rgba(251,191,36,0.35);
-  flex-shrink: 0;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+.cta-tasks::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.5), transparent),
+    radial-gradient(1px 1px at 60% 70%, rgba(255,255,255,0.4), transparent),
+    radial-gradient(1.5px 1.5px at 80% 15%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1.5px 1.5px at 40% 90%, rgba(255,255,255,0.45), transparent);
+  pointer-events: none;
+  z-index: -1;
 }
-.tasks-card-badge span {
-  font-size: 15px;
-  font-weight: 900;
-  color: #f59e0b;
-  letter-spacing: -0.02em;
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
+.cta-tasks .cta-btn-icon {
+  background: rgba(255,255,255,0.25);
+  color: #062a20;
 }
-body.dark .tasks-card-badge span { color: #fbbf24; }
-.tasks-card-badge small {
-  font-size: 9px;
-  font-weight: 800;
-  color: #f59e0b;
-  letter-spacing: 0.15em;
-  opacity: 0.75;
-}
-body.dark .tasks-card-badge small { color: #fbbf24; }
-.tasks-card:hover .tasks-card-badge {
-  transform: scale(1.05);
-  background: rgba(251,191,36,0.25);
-  box-shadow: 0 6px 20px rgba(251,191,36,0.35);
-}
-
-/* Arrow */
-.tasks-card-arrow {
-  width: 38px;
-  height: 38px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
-  border: 1px solid transparent;
-  flex-shrink: 0;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.tasks-card-arrow svg {
-  width: 16px;
-  height: 16px;
-  stroke: var(--muted);
-  fill: none;
-  stroke-width: 2.4;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  transition: stroke 0.25s ease;
-}
-.tasks-card:hover .tasks-card-arrow {
-  background: linear-gradient(135deg, #8b3dff, #00d4ff);
-  border-color: transparent;
-  transform: translateX(4px);
-  box-shadow: 0 6px 18px rgba(139,61,255,0.4);
-}
-.tasks-card:hover .tasks-card-arrow svg { stroke: #fff; }
-
-/* Mobile */
-@media (max-width: 640px) {
-  .tasks-promo { margin-bottom: 32px; }
-  .tasks-card { padding: 16px; border-radius: 18px; gap: 13px; }
-  .tasks-card-icon { width: 48px; height: 48px; border-radius: 14px; }
-  .tasks-card-icon svg { width: 22px; height: 22px; }
-  .tasks-card-title { font-size: 15px; }
-  .tasks-card-desc { font-size: 11.5px; }
-  .tasks-card-badge { padding: 6px 10px; }
-  .tasks-card-badge span { font-size: 13px; }
-  .tasks-card-arrow { width: 34px; height: 34px; }
+.cta-tasks:hover {
+  background: linear-gradient(135deg, #00d4a0 0%, #00ffc2 50%, #7cffd9 100%);
+  box-shadow: 0 16px 40px rgba(0, 200, 150, 0.55);
 }
 </style>
 </head>
@@ -1205,37 +1147,25 @@ body.dark .tasks-card-badge small { color: #fbbf24; }
       </div>
     </a>
 <!-- ⭐ Tasks Card -->
-<section class="tasks-promo">
-  <a href="tasks.html" class="tasks-card">
-    <div class="tasks-card-bg"></div>
-    
-    <div class="tasks-card-content">
-      <div class="tasks-card-icon">
-        <svg viewBox="0 0 24 24">
-          <path d="M9 11l3 3L22 4"/>
-          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
-        </svg>
-      </div>
-
-      <div class="tasks-card-info">
-        <div class="tasks-card-title">Tasks & Rewards</div>
-        <div class="tasks-card-desc">Complete tasks · Earn points · Get crypto</div>
-      </div>
-
-      <div class="tasks-card-badge">
-        <span>+40K</span>
-        <small>PTS</small>
-      </div>
-
-      <div class="tasks-card-arrow">
-        <svg viewBox="0 0 24 24">
-          <line x1="5" y1="12" x2="19" y2="12"/>
-          <polyline points="12 5 19 12 12 19"/>
-        </svg>
-      </div>
-    </div>
-  </a>
-</section>
+<!-- ⭐ Tasks Card -->
+<a href="tasks.html" class="cta-btn cta-tasks">
+  <div class="cta-btn-icon">
+    <svg viewBox="0 0 24 24">
+      <path d="M9 11l3 3L22 4"/>
+      <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+    </svg>
+  </div>
+  <div class="cta-btn-content">
+    <div class="cta-btn-title">Tasks & Rewards</div>
+    <div class="cta-btn-sub">Complete tasks · Earn points · Get crypto</div>
+  </div>
+  <div class="cta-btn-arrow">
+    <svg viewBox="0 0 24 24">
+      <line x1="5" y1="12" x2="19" y2="12"/>
+      <polyline points="12 5 19 12 12 19"/>
+    </svg>
+  </div>
+</a>
 
     <!-- ⭐ زر Gift Box — الجديد -->
 <a href="gift.html" class="cta-btn cta-gift">
