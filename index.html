@@ -492,31 +492,32 @@
   .cta-mining .cta-btn-icon { background: rgba(255,255,255,0.18); color: #fff; }
 
   /* Gift Box — ذهبي */
-.cta-gift {
-  background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 50%, #ffd666 100%);
-  color: #0d0906;
-  box-shadow: 0 12px 32px rgba(245,158,11,0.4);
-}
-.cta-gift::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image:
-    radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.5), transparent),
-    radial-gradient(1px 1px at 60% 70%, rgba(255,255,255,0.4), transparent),
-    radial-gradient(1.5px 1.5px at 80% 15%, rgba(255,255,255,0.6), transparent),
-    radial-gradient(1.5px 1.5px at 40% 90%, rgba(255,255,255,0.45), transparent);
-  pointer-events: none;
-  z-index: -1;
-}
-.cta-gift .cta-btn-icon {
-  background: rgba(255,255,255,0.25);
-  color: #0d0906;
-}
-.cta-gift:hover {
-  background: linear-gradient(135deg, #fbbf24 0%, #ffd666 50%, #ffeaa7 100%);
-  box-shadow: 0 16px 40px rgba(245,158,11,0.55);
-}
+  .cta-gift {
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 50%, #ffd666 100%);
+    color: #0d0906;
+    box-shadow: 0 12px 32px rgba(245,158,11,0.4);
+  }
+  .cta-gift::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1px 1px at 60% 70%, rgba(255,255,255,0.4), transparent),
+      radial-gradient(1.5px 1.5px at 80% 15%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1.5px 1.5px at 40% 90%, rgba(255,255,255,0.45), transparent);
+    pointer-events: none;
+    z-index: -1;
+  }
+  .cta-gift .cta-btn-icon {
+    background: rgba(255,255,255,0.25);
+    color: #0d0906;
+  }
+  .cta-gift:hover {
+    background: linear-gradient(135deg, #fbbf24 0%, #ffd666 50%, #ffeaa7 100%);
+    box-shadow: 0 16px 40px rgba(245,158,11,0.55);
+  }
+
   /* Wallet — بنفسجي */
   .cta-wallet {
     background: linear-gradient(135deg, var(--purple) 0%, #b47cff 100%);
@@ -536,6 +537,197 @@
     z-index: -1;
   }
   .cta-wallet .cta-btn-icon { background: rgba(255,255,255,0.18); color: #fff; }
+
+  /* Tasks — أخضر نعناعي */
+  .cta-tasks {
+    background: linear-gradient(135deg, #00c896 0%, #00d4a0 50%, #00ffc2 100%);
+    color: #062a20;
+    box-shadow: 0 12px 32px rgba(0, 200, 150, 0.4);
+  }
+  .cta-tasks::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1px 1px at 60% 70%, rgba(255,255,255,0.4), transparent),
+      radial-gradient(1.5px 1.5px at 80% 15%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1.5px 1.5px at 40% 90%, rgba(255,255,255,0.45), transparent);
+    pointer-events: none;
+    z-index: -1;
+  }
+  .cta-tasks .cta-btn-icon {
+    background: rgba(255,255,255,0.25);
+    color: #062a20;
+  }
+  .cta-tasks:hover {
+    background: linear-gradient(135deg, #00d4a0 0%, #00ffc2 50%, #7cffd9 100%);
+    box-shadow: 0 16px 40px rgba(0, 200, 150, 0.55);
+  }
+
+  /* ============================================
+     ⭐ Ad Banner — نسبة 16:9 (تحت زر Wallet)
+  ============================================ */
+  .ad-banner {
+    position: relative;
+    margin: 0 auto 42px;
+    max-width: 480px;
+    width: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+    isolation: isolate;
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-md);
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.45s ease,
+                border-color 0.3s ease;
+    animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
+  }
+
+  .ad-banner:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg), 0 0 32px var(--accent-glow);
+    border-color: var(--accent);
+  }
+
+  .ad-banner:active { transform: translateY(-1px) scale(0.995); }
+
+  .ad-slider {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: var(--bg);
+    overflow: hidden;
+  }
+
+  .ad-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.9s ease;
+    pointer-events: none;
+  }
+  .ad-slide.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .ad-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  .ad-tag {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 3;
+    padding: 5px 12px;
+    border-radius: 100px;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    pointer-events: none;
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+
+  .ad-dots {
+    position: absolute;
+    bottom: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+    z-index: 3;
+    padding: 6px 12px;
+    border-radius: 100px;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .ad-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.5);
+    transition: all 0.4s ease;
+    cursor: pointer;
+  }
+  .ad-dot.active {
+    background: #fff;
+    width: 20px;
+    border-radius: 100px;
+  }
+
+  .ad-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px 20px 18px;
+    background: linear-gradient(to top,
+      rgba(0,0,0,0.75) 0%,
+      rgba(0,0,0,0.35) 55%,
+      transparent 100%);
+    color: #fff;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .ad-overlay-text {
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    line-height: 1.25;
+  }
+  .ad-overlay-text small {
+    display: block;
+    font-size: 11.5px;
+    font-weight: 500;
+    opacity: 0.85;
+    margin-top: 3px;
+  }
+  .ad-overlay-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: 100px;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.25);
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+    transition: background 0.3s ease;
+  }
+  .ad-banner:hover .ad-overlay-cta {
+    background: rgba(255,255,255,0.32);
+  }
+  .ad-overlay-cta svg {
+    width: 13px;
+    height: 13px;
+    stroke: #fff;
+    fill: none;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
 
   /* ===== Section ===== */
   .section-head {
@@ -814,6 +1006,15 @@
     .yt-icon-wrap svg { width: 24px; height: 24px; }
     .yt-name { font-size: 15px; }
     .yt-cta { width: 100%; justify-content: center; padding: 11px 16px; font-size: 12.5px; }
+
+    /* Ad responsive */
+    .ad-banner { margin-bottom: 32px; border-radius: 16px; }
+    .ad-overlay { padding: 14px 14px 12px; }
+    .ad-overlay-text { font-size: 13px; }
+    .ad-overlay-text small { font-size: 10.5px; }
+    .ad-overlay-cta { font-size: 11px; padding: 6px 11px; }
+    .ad-dots { bottom: 10px; padding: 5px 10px; }
+    .ad-tag { top: 10px; right: 10px; font-size: 9px; padding: 4px 9px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -822,373 +1023,6 @@
       transition-duration: 0.12s !important;
     }
   }
-  /* ============================================
-   ⭐ Tasks Promo Card
-============================================ */
-.tasks-promo {
-  margin-bottom: 40px;
-  animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
-}
-
-.tasks-card {
-  position: relative;
-  display: block;
-  padding: 22px;
-  border-radius: 22px;
-  text-decoration: none;
-  color: inherit;
-  overflow: hidden;
-  isolation: isolate;
-  background: var(--card);
-  border: 1px solid var(--line);
-  box-shadow: var(--shadow-md);
-  transition:
-    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 0.4s;
-  will-change: transform;
-}
-
-/* Animated gradient background */
-.tasks-card-bg {
-  position: absolute;
-  inset: -50%;
-  z-index: -1;
-  background:
-    conic-gradient(from 0deg,
-      rgba(139,61,255,0.15),
-      rgba(0,212,255,0.15),
-      rgba(255,193,7,0.1),
-      rgba(139,61,255,0.15));
-  opacity: 0;
-  transition: opacity 0.5s ease;
-  animation: rotateBg 12s linear infinite;
-}
-@keyframes rotateBg {
-  to { transform: rotate(360deg); }
-}
-.tasks-card:hover .tasks-card-bg { opacity: 1; }
-
-/* Gradient border on hover */
-.tasks-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 22px;
-  padding: 1.5px;
-  background: linear-gradient(135deg, #8b3dff, #00d4ff, #ffc107);
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0;
-  transition: opacity 0.45s ease;
-  pointer-events: none;
-}
-.tasks-card:hover::before { opacity: 1; }
-
-/* Shine sweep */
-.tasks-card::after {
-  content: '';
-  position: absolute;
-  top: 0; left: -100%;
-  width: 100%; height: 100%;
-  background: linear-gradient(90deg,
-    transparent,
-    rgba(255,255,255,0.4),
-    transparent);
-  transition: left 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-  pointer-events: none;
-}
-.tasks-card:hover::after { left: 100%; }
-
-.tasks-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-lg), 0 0 40px rgba(139,61,255,0.2);
-  border-color: transparent;
-}
-.tasks-card:active {
-  transform: translateY(-2px) scale(0.995);
-}
-
-.tasks-card-content {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-/* Icon */
-.tasks-card-icon {
-  width: 54px;
-  height: 54px;
-  border-radius: 16px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #8b3dff, #00d4ff);
-  box-shadow:
-    0 8px 24px rgba(139,61,255,0.4),
-    inset 0 2px 0 rgba(255,255,255,0.3);
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.tasks-card-icon svg {
-  width: 26px;
-  height: 26px;
-  stroke: #fff;
-  fill: none;
-  stroke-width: 2.2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.25));
-}
-.tasks-card:hover .tasks-card-icon {
-  transform: scale(1.08) rotate(-5deg);
-}
-
-/* Info */
-.tasks-card-info {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.tasks-card-title {
-  font-size: 17px;
-  font-weight: 800;
-  color: var(--text);
-  letter-spacing: -0.02em;
-  transition: color 0.3s ease;
-}
-.tasks-card:hover .tasks-card-title {
-  background: linear-gradient(135deg, #8b3dff, #00d4ff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-.tasks-card-desc {
-  font-size: 12.5px;
-  color: var(--sub);
-  font-weight: 500;
-  white-space: nowrap;
-/* Tasks — أخضر نعناعي */
-.cta-tasks {
-  background: linear-gradient(135deg, #00c896 0%, #00d4a0 50%, #00ffc2 100%);
-  color: #062a20;
-  box-shadow: 0 12px 32px rgba(0, 200, 150, 0.4);
-}
-.cta-tasks::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image:
-    radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.5), transparent),
-    radial-gradient(1px 1px at 60% 70%, rgba(255,255,255,0.4), transparent),
-    radial-gradient(1.5px 1.5px at 80% 15%, rgba(255,255,255,0.6), transparent),
-    radial-gradient(1.5px 1.5px at 40% 90%, rgba(255,255,255,0.45), transparent);
-  pointer-events: none;
-  z-index: -1;
-}
-.cta-tasks .cta-btn-icon {
-  background: rgba(255,255,255,0.25);
-  color: #062a20;
-}
-.cta-tasks:hover {
-  background: linear-gradient(135deg, #00d4a0 0%, #00ffc2 50%, #7cffd9 100%);
-  box-shadow: 0 16px 40px rgba(0, 200, 150, 0.55);
-}
-
-/* ============================================
-   ⭐ Ad Banner — نسبة 16:9
-============================================ */
-.ad-banner {
-  position: relative;
-  margin: 0 auto 42px;
-  max-width: 480px;
-  width: 100%;
-  border-radius: 20px;
-  overflow: hidden;
-  cursor: pointer;
-  text-decoration: none;
-  display: block;
-  isolation: isolate;
-  border: 1px solid var(--line);
-  box-shadow: var(--shadow-md);
-  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.45s ease,
-              border-color 0.3s ease;
-  animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
-}
-
-.ad-banner:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg), 0 0 32px var(--accent-glow);
-  border-color: var(--accent);
-}
-
-.ad-banner:active { transform: translateY(-1px) scale(0.995); }
-
-/* Slider — نسبة 16:9 */
-.ad-slider {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;   /* ⭐ التغيير الأساسي */
-  background: var(--bg);
-  overflow: hidden;
-}
-
-.ad-slide {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity 0.9s ease;
-  pointer-events: none;
-}
-.ad-slide.active {
-  opacity: 1;
-  pointer-events: auto;
-}
-.ad-slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;       /* يملأ الإطار دون تشويه */
-  object-position: center;
-  display: block;
-}
-
-/* شارة "AD" في الزاوية */
-.ad-tag {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  z-index: 3;
-  padding: 5px 12px;
-  border-radius: 100px;
-  background: rgba(0,0,0,0.55);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  color: #fff;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  pointer-events: none;
-  border: 1px solid rgba(255,255,255,0.15);
-}
-
-/* مؤشرات النقاط — أسفل الوسط */
-.ad-dots {
-  position: absolute;
-  bottom: 14px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 6px;
-  z-index: 3;
-  padding: 6px 12px;
-  border-radius: 100px;
-  background: rgba(0,0,0,0.4);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-.ad-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.5);
-  transition: all 0.4s ease;
-  cursor: pointer;
-}
-.ad-dot.active {
-  background: #fff;
-  width: 20px;
-  border-radius: 100px;
-}
-
-/* Overlay سفلي زجاجي */
-.ad-overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 20px 20px 18px;
-  background: linear-gradient(to top,
-    rgba(0,0,0,0.75) 0%,
-    rgba(0,0,0,0.35) 55%,
-    transparent 100%);
-  color: #fff;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 12px;
-  z-index: 2;
-  pointer-events: none;
-}
-.ad-overlay-text {
-  font-size: 15px;
-  font-weight: 800;
-  letter-spacing: -0.01em;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
-  line-height: 1.25;
-}
-.ad-overlay-text small {
-  display: block;
-  font-size: 11.5px;
-  font-weight: 500;
-  opacity: 0.85;
-  margin-top: 3px;
-}
-.ad-overlay-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
-  border-radius: 100px;
-  background: rgba(255,255,255,0.2);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.25);
-  font-size: 12px;
-  font-weight: 700;
-  flex-shrink: 0;
-  transition: background 0.3s ease;
-}
-.ad-banner:hover .ad-overlay-cta {
-  background: rgba(255,255,255,0.32);
-}
-.ad-overlay-cta svg {
-  width: 13px;
-  height: 13px;
-  stroke: #fff;
-  fill: none;
-  stroke-width: 2.4;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-/* Responsive */
-@media (max-width: 640px) {
-  .ad-banner {
-    margin-bottom: 32px;
-    border-radius: 16px;
-  }
-  .ad-overlay {
-    padding: 14px 14px 12px;
-  }
-  .ad-overlay-text { font-size: 13px; }
-  .ad-overlay-text small { font-size: 10.5px; }
-  .ad-overlay-cta {
-    font-size: 11px;
-    padding: 6px 11px;
-  }
-  .ad-dots { bottom: 10px; padding: 5px 10px; }
-  .ad-tag { top: 10px; right: 10px; font-size: 9px; padding: 4px 9px; }
-}
-                    
 </style>
 </head>
 <body>
@@ -1257,31 +1091,29 @@
     </a>
 
     <a class="nav-item" href="tasks.html">
-  <div class="nav-icon">
-    <svg viewBox="0 0 24 24">
-      <path d="M9 11l3 3L22 4"/>
-      <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
-    </svg>
-  </div>
-  <span>Tasks</span>
-  <svg class="nav-arrow" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
-</a>
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M9 11l3 3L22 4"/>
+          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+        </svg>
+      </div>
+      <span>Tasks</span>
+      <svg class="nav-arrow" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+    </a>
 
-<!-- Gift Box -->
-<a class="nav-item" href="gift.html">
-  <div class="nav-icon">
-    <svg viewBox="0 0 24 24">
-      <path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6"/>
-      <path d="M2 7h20v5H2z"/>
-      <path d="M12 22V7"/>
-      <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
-      <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
-    </svg>
-  </div>
-  <span>Gift Box</span>
-  <svg class="nav-arrow" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
-</a>
-    
+    <a class="nav-item" href="gift.html">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6"/>
+          <path d="M2 7h20v5H2z"/>
+          <path d="M12 22V7"/>
+          <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
+          <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
+        </svg>
+      </div>
+      <span>Gift Box</span>
+      <svg class="nav-arrow" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+    </a>
 
     <a class="nav-item" href="wallet.html">
       <div class="nav-icon">
@@ -1313,7 +1145,7 @@
   <!-- ===== MAIN ACTIONS ===== -->
   <section class="main-actions">
 
-    <!-- زر Start Mining -->
+    <!-- Start Mining -->
     <a href="mining.html" class="cta-btn cta-mining">
       <div class="cta-btn-icon">
         <svg viewBox="0 0 24 24">
@@ -1334,48 +1166,48 @@
         <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </div>
     </a>
-<!-- ⭐ Tasks Card -->
-<!-- ⭐ Tasks Card -->
-<a href="tasks.html" class="cta-btn cta-tasks">
-  <div class="cta-btn-icon">
-    <svg viewBox="0 0 24 24">
-      <path d="M9 11l3 3L22 4"/>
-      <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
-    </svg>
-  </div>
-  <div class="cta-btn-content">
-    <div class="cta-btn-title">Tasks & Rewards</div>
-    <div class="cta-btn-sub">Complete tasks · Earn points · Get crypto</div>
-  </div>
-  <div class="cta-btn-arrow">
-    <svg viewBox="0 0 24 24">
-      <line x1="5" y1="12" x2="19" y2="12"/>
-      <polyline points="12 5 19 12 12 19"/>
-    </svg>
-  </div>
-</a>
 
-    <!-- ⭐ زر Gift Box — الجديد -->
-<a href="gift.html" class="cta-btn cta-gift">
-  <div class="cta-btn-icon">
-    <svg viewBox="0 0 24 24">
-      <path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6"/>
-      <path d="M2 7h20v5H2z"/>
-      <path d="M12 22V7"/>
-      <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
-      <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
-    </svg>
-  </div>
-  <div class="cta-btn-content">
-    <div class="cta-btn-title">Gift Box</div>
-    <div class="cta-btn-sub">Open daily gift · Free crypto rewards</div>
-  </div>
-  <div class="cta-btn-arrow">
-    <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-  </div>
-</a>
+    <!-- Tasks -->
+    <a href="tasks.html" class="cta-btn cta-tasks">
+      <div class="cta-btn-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M9 11l3 3L22 4"/>
+          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+        </svg>
+      </div>
+      <div class="cta-btn-content">
+        <div class="cta-btn-title">Tasks & Rewards</div>
+        <div class="cta-btn-sub">Complete tasks · Earn points · Get crypto</div>
+      </div>
+      <div class="cta-btn-arrow">
+        <svg viewBox="0 0 24 24">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </div>
+    </a>
 
-    <!-- زر Wallet -->
+    <!-- Gift Box -->
+    <a href="gift.html" class="cta-btn cta-gift">
+      <div class="cta-btn-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6"/>
+          <path d="M2 7h20v5H2z"/>
+          <path d="M12 22V7"/>
+          <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
+          <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
+        </svg>
+      </div>
+      <div class="cta-btn-content">
+        <div class="cta-btn-title">Gift Box</div>
+        <div class="cta-btn-sub">Open daily gift · Free crypto rewards</div>
+      </div>
+      <div class="cta-btn-arrow">
+        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </div>
+    </a>
+
+    <!-- Wallet -->
     <a href="wallet.html" class="cta-btn cta-wallet">
       <div class="cta-btn-icon">
         <svg viewBox="0 0 24 24">
@@ -1391,42 +1223,43 @@
         <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </div>
     </a>
-    <!-- ⭐ مساحة إعلانية 16:9 — تحت زر Wallet -->
-<a href="advertise.html" class="ad-banner" aria-label="Advertise here">
-  <span class="ad-tag">AD</span>
 
-  <div class="ad-slider">
-    <div class="ad-slide active">
-      <img src="adx0.jpg" alt="Ad 1" loading="lazy">
-    </div>
-    <div class="ad-slide">
-      <img src="adx1.jpg" alt="Ad 2" loading="lazy">
-    </div>
-    <div class="ad-slide">
-      <img src="adx2.jpg" alt="Ad 3" loading="lazy">
-    </div>
-  </div>
+    <!-- ⭐ Ad Banner 16:9 — تحت زر Wallet -->
+    <a href="advertise.html" class="ad-banner" aria-label="Advertise here">
+      <span class="ad-tag">AD</span>
 
-  <div class="ad-overlay">
-    <div class="ad-overlay-text">
-      أضف إعلانك هنا
-      <small>الدفع بالعملات المشفرة فقط</small>
-    </div>
-    <div class="ad-overlay-cta">
-      Advertise
-      <svg viewBox="0 0 24 24">
-        <line x1="5" y1="12" x2="19" y2="12"/>
-        <polyline points="12 5 19 12 12 19"/>
-      </svg>
-    </div>
-  </div>
+      <div class="ad-slider">
+        <div class="ad-slide active">
+          <img src="adx0.jpg" alt="Ad 1" loading="lazy">
+        </div>
+        <div class="ad-slide">
+          <img src="adx1.jpg" alt="Ad 2" loading="lazy">
+        </div>
+        <div class="ad-slide">
+          <img src="adx2.jpg" alt="Ad 3" loading="lazy">
+        </div>
+      </div>
 
-  <div class="ad-dots" id="adDots">
-    <span class="ad-dot active"></span>
-    <span class="ad-dot"></span>
-    <span class="ad-dot"></span>
-  </div>
-</a>
+      <div class="ad-overlay">
+        <div class="ad-overlay-text">
+          Advertise Here
+          <small>Crypto payments only</small>
+        </div>
+        <div class="ad-overlay-cta">
+          Add Ad
+          <svg viewBox="0 0 24 24">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="ad-dots" id="adDots">
+        <span class="ad-dot active"></span>
+        <span class="ad-dot"></span>
+        <span class="ad-dot"></span>
+      </div>
+    </a>
 
   </section>
 
@@ -1575,51 +1408,51 @@
   });
 
   /* ===== Ad Banner Slider (16:9 — يتبدل كل 3 ثواني) ===== */
-(function initAdSlider() {
-  const slides = document.querySelectorAll('.ad-slide');
-  const dots = document.querySelectorAll('.ad-dot');
-  const banner = document.querySelector('.ad-banner');
-  if (!slides.length || !banner) return;
+  (function initAdSlider() {
+    const slides = document.querySelectorAll('.ad-slide');
+    const dots = document.querySelectorAll('.ad-dot');
+    const banner = document.querySelector('.ad-banner');
+    if (!slides.length || !banner) return;
 
-  let current = 0;
-  let timer = null;
-  const INTERVAL = 3000; // ⏱️ 3 ثواني
+    let current = 0;
+    let timer = null;
+    const INTERVAL = 3000; // ⏱️ 3 ثواني
 
-  function goTo(index) {
-    slides[current].classList.remove('active');
-    dots[current]?.classList.remove('active');
+    function goTo(index) {
+      slides[current].classList.remove('active');
+      dots[current]?.classList.remove('active');
 
-    current = (index + slides.length) % slides.length;
+      current = (index + slides.length) % slides.length;
 
-    slides[current].classList.add('active');
-    dots[current]?.classList.add('active');
-  }
+      slides[current].classList.add('active');
+      dots[current]?.classList.add('active');
+    }
 
-  function next() { goTo(current + 1); }
-  function start() { stop(); timer = setInterval(next, INTERVAL); }
-  function stop()  { if (timer) clearInterval(timer); timer = null; }
+    function next() { goTo(current + 1); }
+    function start() { stop(); timer = setInterval(next, INTERVAL); }
+    function stop()  { if (timer) clearInterval(timer); timer = null; }
 
-  // إيقاف عند تمرير الماوس فوق الإعلان
-  banner.addEventListener('mouseenter', stop);
-  banner.addEventListener('mouseleave', start);
+    // إيقاف عند تمرير الماوس فوق الإعلان
+    banner.addEventListener('mouseenter', stop);
+    banner.addEventListener('mouseleave', start);
 
-  // إيقاف عند إخفاء التبويب (توفير موارد)
-  document.addEventListener('visibilitychange', () => {
-    document.hidden ? stop() : start();
-  });
-
-  // الضغط على النقطة ينقلك مباشرة
-  dots.forEach((dot, i) => {
-    dot.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      goTo(i);
-      start();
+    // إيقاف عند إخفاء التبويب (توفير موارد)
+    document.addEventListener('visibilitychange', () => {
+      document.hidden ? stop() : start();
     });
-  });
 
-  start();
-})();
+    // الضغط على النقطة ينقلك مباشرة
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        goTo(i);
+        start();
+      });
+    });
+
+    start();
+  })();
 </script>
 
 </body>
