@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advertise — ADSY</title>
+<style>
+  :root {
+    --bg: #f7f8fa;
+    --card: #ffffff;
+    --card-hover: #fafbfc;
+    --text: #0b0f14;
+    --sub: #6b7681;
+    --muted: #9aa4ad;
+    --line: #e8ecf0;
+    --line-strong: #d8dee5;
+    --accent: #0066ff;
+    --accent-2: #7ab3ff;
+    --accent-soft: rgba(0,102,255,0.08);
+    --accent-glow: rgba(0,102,255,0.25);
+    --tg: #229ED9;
+    --tg-soft: rgba(34,158,217,0.08);
+    --tg-glow: rgba(34,158,217,0.3);
+    --purple: #8b3dff;
+    --purple-soft: rgba(139,61,255,0.08);
+    --purple-border: rgba(139,61,255,0.2);
+    --success: #00c896;
+    --shadow-sm: 0 1px 2px rgba(11,15,20,0.04);
+    --shadow-md: 0 4px 16px rgba(11,15,20,0.06);
+    --shadow-lg: 0 20px 60px rgba(11,15,20,0.1);
+  }
+  body.dark {
+    --bg: #08090c;
+    --card: #101318;
+    --card-hover: #14181f;
+    --text: #f2f4f7;
+    --sub: #8b95a1;
+    --muted: #5a636e;
+    --line: #1c2027;
+    --line-strong: #262b33;
+    --accent: #3d8bff;
+    --accent-2: #7ab3ff;
+    --accent-soft: rgba(61,139,255,0.12);
+    --accent-glow: rgba(61,139,255,0.35);
+    --tg: #4EB5E8;
+    --tg-soft: rgba(78,181,232,0.12);
+    --tg-glow: rgba(78,181,232,0.4);
+    --purple: #b47cff;
+    --purple-soft: rgba(180,124,255,0.12);
+    --purple-border: rgba(180,124,255,0.25);
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.5);
+    --shadow-lg: 0 20px 60px rgba(0,0,0,0.6);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    -webkit-font-smoothing: antialiased;
+    transition: background 0.35s ease, color 0.35s ease;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Ambient background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(900px circle at 15% 0%, var(--accent-soft), transparent 45%),
+      radial-gradient(700px circle at 85% 100%, var(--purple-soft), transparent 50%);
+  }
+
+  /* Subtle grid */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(circle at 50% 40%, black 0%, transparent 70%);
+    -webkit-mask-image: radial-gradient(circle at 50% 40%, black 0%, transparent 70%);
+    opacity: 0.5;
+  }
+
+  /* ===== Card ===== */
+  .ad-card {
+    width: 100%;
+    max-width: 520px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 26px;
+    padding: 28px 28px 26px;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    animation: cardIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(24px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* ===== Back link ===== */
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--sub);
+    text-decoration: none;
+    margin-bottom: 26px;
+    transition: color 0.25s ease, transform 0.25s ease;
+  }
+  .back-link:hover {
+    color: var(--accent);
+    transform: translateX(-3px);
+  }
+  .back-link svg {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* ===== Header ===== */
+  .ad-head {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  .ad-icon-wrap {
+    width: 64px;
+    height: 64px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 18px;
+    box-shadow: 0 12px 28px var(--accent-glow);
+    position: relative;
+  }
+  .ad-icon-wrap::after {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: 26px;
+    background: radial-gradient(circle, var(--accent-glow), transparent 65%);
+    z-index: -1;
+    opacity: 0.5;
+    animation: pulseGlow 3s ease-in-out infinite;
+  }
+  @keyframes pulseGlow {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.05); }
+  }
+  .ad-icon-wrap svg {
+    width: 30px;
+    height: 30px;
+    stroke: #fff;
+    fill: none;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .ad-title {
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .ad-sub {
+    font-size: 14px;
+    color: var(--sub);
+    line-height: 1.6;
+    max-width: 380px;
+    margin: 0 auto;
+    font-weight: 500;
+  }
+
+  /* ===== Contact buttons ===== */
+  .contact-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .contact-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 20px;
+    border-radius: 18px;
+    text-decoration: none;
+    cursor: pointer;
+    overflow: hidden;
+    isolation: isolate;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.4s ease,
+                border-color 0.3s ease;
+    border: 1.5px solid var(--line);
+    background: var(--card);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .contact-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .contact-btn:active { transform: translateY(-1px) scale(0.995); }
+
+  /* Telegram */
+  .contact-tg {
+    border-color: var(--tg);
+    background: var(--tg-soft);
+  }
+  .contact-tg:hover {
+    box-shadow: var(--shadow-lg), 0 0 32px var(--tg-glow);
+    background: var(--tg);
+    border-color: var(--tg);
+  }
+
+  .contact-tg .contact-icon {
+    background: var(--tg);
+    color: #fff;
+  }
+  .contact-tg:hover .contact-icon {
+    background: rgba(255,255,255,0.2);
+  }
+
+  .contact-tg .contact-name { color: var(--tg); }
+  .contact-tg:hover .contact-name { color: #fff; }
+  .contact-tg .contact-desc { color: var(--tg); opacity: 0.75; }
+  .contact-tg:hover .contact-desc { color: #fff; opacity: 0.9; }
+  .contact-tg .contact-arrow { color: var(--tg); }
+  .contact-tg:hover .contact-arrow {
+    color: #fff;
+    background: rgba(255,255,255,0.2);
+  }
+
+  /* Email */
+  .contact-email {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+  .contact-email:hover {
+    box-shadow: var(--shadow-lg), 0 0 32px var(--accent-glow);
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .contact-email .contact-icon {
+    background: var(--accent);
+    color: #fff;
+  }
+  .contact-email:hover .contact-icon {
+    background: rgba(255,255,255,0.2);
+  }
+
+  .contact-email .contact-name { color: var(--accent); }
+  .contact-email:hover .contact-name { color: #fff; }
+  .contact-email .contact-desc { color: var(--accent); opacity: 0.75; }
+  .contact-email:hover .contact-desc { color: #fff; opacity: 0.9; }
+  .contact-email .contact-arrow { color: var(--accent); }
+  .contact-email:hover .contact-arrow {
+    color: #fff;
+    background: rgba(255,255,255,0.2);
+  }
+
+  .contact-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.35s ease;
+  }
+  .contact-icon svg {
+    width: 22px;
+    height: 22px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .contact-icon svg.fill-icon {
+    fill: currentColor;
+    stroke: none;
+  }
+
+  .contact-info {
+    flex: 1;
+    min-width: 0;
+  }
+  .contact-name {
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    margin-bottom: 3px;
+    line-height: 1.2;
+    transition: color 0.35s ease;
+  }
+  .contact-desc {
+    font-size: 12.5px;
+    font-weight: 500;
+    line-height: 1.3;
+    transition: color 0.35s ease, opacity 0.35s ease;
+  }
+
+  .contact-arrow {
+    width: 34px;
+    height: 34px;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform 0.35s ease, background 0.35s ease, color 0.35s ease;
+  }
+  .contact-btn:hover .contact-arrow {
+    transform: translateX(4px);
+  }
+  .contact-arrow svg {
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* ===== Divider ===== */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 4px 0 22px;
+  }
+  .divider::before,
+  .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--line-strong), transparent);
+  }
+  .divider span {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  /* ===== Info block ===== */
+  .info-block {
+    padding: 18px 18px 16px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    margin-bottom: 16px;
+  }
+
+  .info-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--muted);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .info-title svg {
+    width: 14px;
+    height: 14px;
+    stroke: var(--muted);
+    fill: none;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .info-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .info-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--text);
+    font-weight: 500;
+    line-height: 1.45;
+  }
+  .info-list li .check {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .info-list li .check svg {
+    width: 10px;
+    height: 10px;
+    stroke: var(--accent);
+    fill: none;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .info-list li strong {
+    color: var(--text);
+    font-weight: 700;
+  }
+  .info-list li span {
+    color: var(--sub);
+    font-weight: 500;
+  }
+
+  /* ===== Crypto note ===== */
+  .crypto-note {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: var(--purple-soft);
+    border: 1px solid var(--purple-border);
+    border-radius: 16px;
+  }
+
+  .crypto-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: var(--purple);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 6px 16px var(--purple-soft);
+  }
+  .crypto-icon svg {
+    width: 18px;
+    height: 18px;
+    stroke: #fff;
+    fill: none;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .crypto-text {
+    flex: 1;
+    min-width: 0;
+  }
+  .crypto-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--purple);
+    letter-spacing: -0.01em;
+    margin-bottom: 2px;
+  }
+  .crypto-coins {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--sub);
+    letter-spacing: 0.06em;
+  }
+  .crypto-coins strong {
+    color: var(--purple);
+    font-weight: 800;
+  }
+
+  /* ===== Footer ===== */
+  .ad-foot {
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+    text-align: center;
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 640px) {
+    body { padding: 16px; }
+    .ad-card {
+      padding: 22px 20px 22px;
+      border-radius: 22px;
+    }
+    .ad-icon-wrap {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      margin-bottom: 16px;
+    }
+    .ad-icon-wrap svg { width: 26px; height: 26px; }
+    .ad-title { font-size: 24px; }
+    .ad-sub { font-size: 13px; }
+    .contact-btn { padding: 15px 16px; border-radius: 16px; gap: 14px; }
+    .contact-icon { width: 42px; height: 42px; border-radius: 12px; }
+    .contact-icon svg { width: 20px; height: 20px; }
+    .contact-name { font-size: 15px; }
+    .contact-desc { font-size: 11.5px; }
+    .contact-arrow { width: 30px; height: 30px; border-radius: 10px; }
+    .info-block { padding: 16px; border-radius: 16px; }
+    .info-list li { font-size: 12.5px; }
+    .crypto-note { padding: 12px 14px; }
+    .crypto-title { font-size: 12.5px; }
+    .crypto-coins { font-size: 11px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.12s !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<main class="ad-card">
+
+  <!-- Back -->
+  <a href="index.html" class="back-link">
+    <svg viewBox="0 0 24 24">
+      <line x1="19" y1="12" x2="5" y2="12"/>
+      <polyline points="12 19 5 12 12 5"/>
+    </svg>
+    Back
+  </a>
+
+  <!-- Header -->
+  <div class="ad-head">
+    <div class="ad-icon-wrap">
+      <svg viewBox="0 0 24 24">
+        <path d="M3 11l18-8-8 18-2-8-8-2z"/>
+      </svg>
+    </div>
+    <h1 class="ad-title">Advertise on ADSY</h1>
+    <p class="ad-sub">
+      Reach thousands of crypto users daily.
+      Simple, fast, and effective.
+    </p>
+  </div>
+
+  <!-- Contact buttons -->
+  <div class="contact-stack">
+
+    <!-- Telegram -->
+    <a href="https://t.me/abdulqadirturkah"
+       target="_blank"
+       rel="noopener noreferrer"
+       class="contact-btn contact-tg"
+       aria-label="Contact us on Telegram">
+      <div class="contact-icon">
+        <svg class="fill-icon" viewBox="0 0 24 24">
+          <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/>
+        </svg>
+      </div>
+      <div class="contact-info">
+        <div class="contact-name">Telegram</div>
+        <div class="contact-desc">Fastest response · Direct chat</div>
+      </div>
+      <div class="contact-arrow">
+        <svg viewBox="0 0 24 24">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </div>
+    </a>
+
+    <!-- Email -->
+    <a href="mailto:mayarayq@gmail.com?subject=Advertise%20Inquiry%20-%20ADSY&body=Hi%2C%0A%0AI'm%20interested%20in%20advertising%20on%20ADSY.%0A%0AHere%20are%20the%20details%3A%0A-%20Ad%20image%20(1280x720)%3A%0A-%20Target%20link%3A%0A-%20Duration%3A%0A%0AThanks!"
+       class="contact-btn contact-email"
+       aria-label="Contact us by email">
+      <div class="contact-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+          <polyline points="22,6 12,13 2,6"/>
+        </svg>
+      </div>
+      <div class="contact-info">
+        <div class="contact-name">Email</div>
+        <div class="contact-desc">For business inquiries</div>
+      </div>
+      <div class="contact-arrow">
+        <svg viewBox="0 0 24 24">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- Divider -->
+  <div class="divider">
+    <span>What to send</span>
+  </div>
+
+  <!-- Info block -->
+  <div class="info-block">
+    <div class="info-title">
+      <svg viewBox="0 0 24 24">
+        <path d="M9 11l3 3L22 4"/>
+        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+      </svg>
+      Campaign details
+    </div>
+    <ul class="info-list">
+      <li>
+        <span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+        <div><strong>Ad image</strong> <span>· 1280×720 (16:9)</span></div>
+      </li>
+      <li>
+        <span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+        <div><strong>Target link</strong> <span>· website, bot, or app</span></div>
+      </li>
+      <li>
+        <span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+        <div><strong>Duration</strong> <span>· week, month, or custom</span></div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Crypto note -->
+  <div class="crypto-note">
+    <div class="crypto-icon">
+      <svg viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M9.5 9.5h3.5a2 2 0 0 1 0 4H9.5m0-4V7m0 2.5V12m3.5 0h-3.5m0 0v3.5"/>
+      </svg>
+    </div>
+    <div class="crypto-text">
+      <div class="crypto-title">Crypto payments only</div>
+      <div class="crypto-coins"><strong>USDT</strong> · <strong>BTC</strong> · <strong>ETH</strong></div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="ad-foot">ADSY · 2026</div>
+
+</main>
+
+<script>
+  /* Apply saved theme from main site */
+  (function applyTheme() {
+    try {
+      const saved = localStorage.getItem('adsy-theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (saved === 'dark' || (!saved && prefersDark)) {
+        document.body.classList.add('dark');
+      }
+    } catch (e) {}
+  })();
+</script>
+
+</body>
+</html>
